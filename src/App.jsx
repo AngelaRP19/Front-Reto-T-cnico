@@ -28,26 +28,36 @@ function App() {
 
         <Card
           plataforma="PC"
-          titulo="Vida Urbana"
+          titulo="Dinastías y Linajes"
           precio="$79.900 COP"
+          image="https://res.cloudinary.com/w1jl4sa5/image/upload/v1784574803/TS4_Pack-Art_Royalty-and-Legacy_ES_zggtwv.avif"
         />
 
         <Card
           plataforma="PC"
-          titulo="Aventura Costera"
+          titulo="Rancho de Caballos"
           precio="$89.900 COP"
+          image="https://res.cloudinary.com/w1jl4sa5/image/upload/v1784574889/TS4_Pack-Art_HorseRanch_ES_r2ddxj.avif"
         />
 
         <Card
           plataforma="PC"
-          titulo="Estudio Creativo"
+          titulo="Vida en el Pueblo"
           precio="$69.900 COP"
+          image="https://res.cloudinary.com/w1jl4sa5/image/upload/v1784574983/ES_Sims4-cottage-living-1x1-Loc_rp5yll.avif"
+        />
+        <Card
+          plataforma="PC"
+          titulo="Perros y Gatos"
+          precio="$69.900 COP"
+          image="https://res.cloudinary.com/w1jl4sa5/image/upload/v1784575067/ES_Sims4-cats-and-dogs-1x1-Loc_rw592n.avif"
         />
 
         <Card
           plataforma="PC"
-          titulo="Fiesta Nocturna"
+          titulo="iA Trabajar"
           precio="$74.900 COP"
+          image="https://res.cloudinary.com/w1jl4sa5/image/upload/v1784575123/ES_Sims4-get-to-work-1x1-Loc_saiuva.avif"
         />
       </section>
 
