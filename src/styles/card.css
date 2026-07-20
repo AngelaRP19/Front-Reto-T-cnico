@@ -39,8 +39,8 @@
 
 /* Efecto de zoom al pasar el cursor */
 .card:hover .card-image img {
-  transform: scale(1.08); /* zoom ligero */
-}
+  transform: scale(1.08); }
+
 
 /* Cuerpo de la tarjeta */
 .card-body {
