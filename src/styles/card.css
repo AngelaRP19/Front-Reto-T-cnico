@@ -1,77 +1,75 @@
-.cards{
-    display:flex;
-    justify-content:center;
-    gap:30px;
-    flex-wrap:wrap;
-    padding:70px;
-    background:#ffffff;
+.cards {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  flex-wrap: wrap;
+  padding: 70px;
+  background: #ffffff;
 }
 
-.card{
-    width:260px;
-    background:white;
-    border-radius:12px;
-    overflow:hidden;
-    box-shadow:0 5px 15px rgba(0,0,0,.08);
-    transition:.3s;
+/* Tarjeta general */
+.card {
+  width: 260px;
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, .08);
+  transition: .3s;
 }
 
-.card:hover{
-    transform:translateY(-6px);
+.card:hover {
+  transform: translateY(-6px);
 }
 
-.card-image{
-    height:180px;
-    background:#d9d9d9;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    color:#666;
+/* Imagen dentro de la tarjeta */
+.card-image {
+  width: 100%;
+  height: 180px;
+  overflow: hidden;
+  background: none;
 }
 
-.card-body{
-    padding:18px;
+.card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* mantiene proporción sin deformar */
+  display: block;
+  border-radius: 0;
 }
 
-.platform{
-    display:inline-block;
-    background:#d9ecff;
-    color: #3cb9e1;
-    padding:4px 10px;
-    border-radius:8px;
-    font-size:13px;
-    margin-bottom:10px;
+/* Cuerpo de la tarjeta */
+.card-body {
+  padding: 18px;
+  color: black;
+  display: block;
 }
 
-.card h3{
-    font-size:24px;
-    margin-bottom:12px;
+.platform {
+  display: inline-block;
+  background: #d9ecff;
+  color: #3cb9e1;
+  padding: 4px 10px;
+  border-radius: 8px;
+  font-size: 13px;
+  margin-bottom: 10px;
 }
 
-.price{
-    color:#21B96B;
-    font-size:22px;
-    font-weight:bold;
+.card h3 {
+  font-size: 24px;
+  margin-bottom: 12px;
+  color: #111;
 }
 
-
-
-
-
-.card-body{
-    padding:18px;
-    color:black;
-    display:block;
+.price {
+  color: #21B96B;
+  font-size: 22px;
+  font-weight: bold;
 }
 
-.card-body h3{
-    color:#111;
+.card-body p {
+  color: #21B96B;
 }
 
-.card-body p{
-    color:#21B96B;
-}
-
-.card-body span{
-    color:#3CB9E1;
+.card-body span {
+  color: #3CB9E1;
 }

@@ -21,8 +21,9 @@ function App() {
 
         <Card
           plataforma="PC"
-          titulo="Vida Urbana"
+          titulo="Naturaleza Encantada"
           precio="$79.900 COP"
+          image="https://res.cloudinary.com/w1jl4sa5/image/upload/v1784572920/TS4_Pack-Art_Enchanted-by-Nature_ES_iv5fev.avif"
         />
 
         <Card
