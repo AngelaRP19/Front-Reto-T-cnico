@@ -1,0 +1,72 @@
+/* TABLETS */
+
+@media (max-width: 1024px){
+
+    .navbar{
+        padding: 20px 40px;
+    }
+
+    .menu ul{
+        gap:20px;
+    }
+
+    .hero{
+        flex-direction:column;
+        text-align:center;
+        gap:40px;
+    }
+
+    .hero-info,
+    .hero-image{
+        width:100%;
+    }
+
+    .cards{
+        justify-content:center;
+    }
+
+}
+
+/* CELULARES */
+
+@media (max-width:768px){
+
+    .navbar{
+        flex-direction:column;
+        height:auto;
+        padding:20px;
+        gap:20px;
+    }
+
+    .menu ul{
+        flex-direction:column;
+        align-items:center;
+        gap:15px;
+    }
+
+    .hero{
+        padding:40px 20px;
+    }
+
+    .hero-info h2{
+        font-size:40px;
+    }
+
+    .hero-info p{
+        font-size:18px;
+    }
+
+    .hero-image{
+        height:220px;
+    }
+
+    .cards{
+        padding:30px 20px;
+    }
+
+    .card{
+        width:100%;
+        max-width:350px;
+    }
+
+}
