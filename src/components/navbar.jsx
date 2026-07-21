@@ -13,7 +13,7 @@ function Navbar() {
           <h1>The Sims</h1>
         </div>
 
-        {/* 🌙 Botón modo oscuro al lado del logo */}
+        {/*  Botón modo oscuro al lado del logo */}
         <button className="btn-theme" onClick={toggleTheme}>
           {theme === "light" ? "🌙" : "☀️"}
         </button>
