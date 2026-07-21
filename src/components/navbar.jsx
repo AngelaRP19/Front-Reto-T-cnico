@@ -2,7 +2,7 @@ import { useState } from "react";
 import "../styles/navbar.css";
 import { useTheme } from "../hooks/ThemeContext";
 
-function Navbar() {
+function Navbar({ onLoginClick }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const { theme, toggleTheme } = useTheme();
 
@@ -33,7 +33,7 @@ function Navbar() {
           <li><a href="#">Expansiones</a></li>
           <li><a href="#">Comunidad</a></li>
         </ul>
-        <button className="btn-login">Iniciar sesión</button>
+        <button className="btn-login" onClick={onLoginClick}>Iniciar sesión</button>
       </nav>
     </header>
   );

@@ -1,7 +1,9 @@
+import { useState } from "react";
 import Navbar from "./components/navbar";
 import Hero from "./components/hero";
 import Card from "./components/card";
 import Footer from "./components/footer";
+import Login from "./pages/Login";
 
 import "./App.css";
 import "./styles/navbar.css";
@@ -11,9 +13,15 @@ import "./styles/footer.css";
 import "./styles/responsive.css";
 
 function App() {
+  const [view, setView] = useState("home");
+
+  if (view === "login") {
+    return <Login onBack={() => setView("home")} />;
+  }
+
   return (
     <>
-      <Navbar />
+      <Navbar onLoginClick={() => setView("login")} />
 
       <Hero />
 
