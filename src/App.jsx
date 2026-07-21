@@ -3,7 +3,7 @@ import Hero from "./components/hero";
 import Card from "./components/card";
 import Footer from "./components/footer";
 
-import "./app.css";
+import "./App.css";
 import "./styles/navbar.css";
 import "./styles/hero.css";
 import "./styles/card.css";
