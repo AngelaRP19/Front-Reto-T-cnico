@@ -1,10 +1,65 @@
-*{
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-body{
-    font-family: "Nunito", sans-serif;
-    background: #f5f7fb;
+body {
+  font-family: "Nunito", sans-serif;
+  background-color: var(--bg-color); 
+  color: var(--text-color);
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+:root {
+  --bg-color: #ffffff;       /* fondo claro */
+  --snd-bg-color: #f3f3f3;   /* fondo secundario claro */
+  --text-color: #1d1d1d;
+  --main-color: #58B9FF;
+  --accent-color: #7CFC00;
+  --hover-color: #3eaaf7;
+  --card-bg: #ffffff;
+  --footer-bg: #f3f3f3;
+}
+
+/* 🌙 Modo oscuro Sims */
+[data-theme="dark"] {
+  --bg-color: #0a1a2f;       /* azul oscuro sólido */
+  --snd-bg-color: #0e2438;   /* azul petróleo */
+  --text-color: #e8f9f1;     /* texto claro verdoso */
+  --main-color: #00b4d8;     /* azul Sims */
+  --accent-color: #00ff87;   /* verde plumbob */
+  --hover-color: #00e0a8;    /* verde agua */
+  --card-bg: #0e2438;        /* tarjetas igual al fondo */
+  --footer-bg: #0b1a1f;
+}
+
+/* Secciones */
+section, .content, .hero, .footer, .cards {
+  background-color: var(--snd-bg-color);
+  transition: background-color 0.4s ease;
+}
+
+/* Tarjetas */
+.card {
+  background-color: var(--card-bg);
+  color: var(--text-color);
+  border-radius: 15px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.6); /* sombra más marcada */
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+/* Botón modo oscuro */
+.btn-theme {
+  background: none;
+  border: none;
+  color: var(--accent-color);
+  font-size: 1.6rem;
+  cursor: pointer;
+  transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.btn-theme:hover {
+  transform: rotate(20deg);
+  color: var(--hover-color);
 }

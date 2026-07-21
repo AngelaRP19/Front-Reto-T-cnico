@@ -1,14 +1,22 @@
 import { useState } from "react";
 import "../styles/navbar.css";
-
+import { useTheme } from "../hooks/ThemeContext";
 
 function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const { theme, toggleTheme } = useTheme();
 
   return (
     <header className="navbar">
-      <div className="logo">
-        <h1>The Sims</h1>
+      <div className="logo-container">
+        <div className="logo">
+          <h1>The Sims</h1>
+        </div>
+
+        {/* 🌙 Botón modo oscuro al lado del logo */}
+        <button className="btn-theme" onClick={toggleTheme}>
+          {theme === "light" ? "🌙" : "☀️"}
+        </button>
       </div>
 
       <div
@@ -32,3 +40,4 @@ function Navbar() {
 }
 
 export default Navbar;
+

@@ -3,8 +3,9 @@
   align-items: center;
   justify-content: space-between;
   padding: 60px 80px;
-  background: #f3f3f3;
+  background: var(--snd-bg-color); /* usa el color del tema */
   overflow: hidden;
+  transition: background-color 0.4s ease;
 }
 
 .hero-info {
@@ -13,18 +14,18 @@
 
 .hero-info h2 {
   font-size: 36px;
-  color: #111;
+  color: var(--text-color);
   margin-bottom: 15px;
 }
 
 .hero-info p {
   font-size: 18px;
-  color: #333;
+  color: var(--text-color);
   margin-bottom: 25px;
 }
 
 .hero-info button {
-  background: #9ef01a;
+  background: var(--accent-color);
   color: #111;
   border: none;
   padding: 12px 24px;
@@ -35,7 +36,7 @@
 }
 
 .hero-info button:hover {
-  background: #7cd000;
+  background: var(--hover-color);
 }
 
 /* Imagen del Hero */
@@ -48,8 +49,23 @@
 
 .hero-image img {
   width: 100%;
-  max-width: 600px; /* controla el tamaño máximo */
+  max-width: 600px;
   height: auto;
   object-fit: cover;
   border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5); /* sombra sutil */
 }
+
+/*  Fondo animado del modo oscuro */
+[data-theme="dark"] body {
+  background: linear-gradient(-45deg, #0a1a2f, #0e2438, #00b4d8, #0a1a2f);
+  background-size: 300% 300%;
+  animation: simsGradient 18s ease infinite;
+}
+
+@keyframes simsGradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+

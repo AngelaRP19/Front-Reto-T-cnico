@@ -4,17 +4,17 @@
   gap: 30px;
   flex-wrap: wrap;
   padding: 70px;
-  background: #ffffff;
+  background: var(--bg-color); /* ✅ usa el fondo del tema */
+  transition: background-color 0.4s ease;
 }
 
 /* Tarjeta general */
 .card {
-  width: 280px;
-  background: white;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, .08);
-  transition: .3s;
+  background-color: var(--card-bg); /* ✅ color del tema */
+  color: var(--text-color);
+  border-radius: 15px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.6); /* sombra más marcada */
+  transition: background-color 0.4s ease, color 0.4s ease, transform 0.3s ease;
 }
 
 .card:hover {
@@ -34,25 +34,23 @@
   height: 100%;
   object-fit: cover;
   display: block;
-  transition: transform 0.4s ease; /* transición suave */
+  transition: transform 0.4s ease;
 }
 
-/* Efecto de zoom al pasar el cursor */
 .card:hover .card-image img {
-  transform: scale(1.08); }
-
+  transform: scale(1.08);
+}
 
 /* Cuerpo de la tarjeta */
 .card-body {
   padding: 18px;
-  color: black;
-  display: block;
+  color: var(--text-color); 
 }
 
 .platform {
   display: inline-block;
-  background: #d9ecff;
-  color: #3cb9e1;
+  background: var(--bg-color); 
+  color: var(--bg-color);        
   padding: 4px 10px;
   border-radius: 8px;
   font-size: 13px;
@@ -62,19 +60,20 @@
 .card h3 {
   font-size: 24px;
   margin-bottom: 12px;
-  color: #111;
+  color: var(--text-color);
 }
 
 .price {
-  color: #21B96B;
+  color: var(--accent-color); /* verde plumbob */
   font-size: 22px;
   font-weight: bold;
 }
 
 .card-body p {
-  color: #21B96B;
+  color: var(--accent-color);
 }
 
 .card-body span {
-  color: #3CB9E1;
+  color: var(--main-color);
 }
+
