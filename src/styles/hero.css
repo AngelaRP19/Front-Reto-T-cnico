@@ -56,16 +56,6 @@
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5); /* sombra sutil */
 }
 
-/*  Fondo animado del modo oscuro */
-[data-theme="dark"] body {
-  background: linear-gradient(-45deg, #0a1a2f, #0e2438, #00b4d8, #0a1a2f);
-  background-size: 300% 300%;
-  animation: simsGradient 18s ease infinite;
-}
 
-@keyframes simsGradient {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
+
 
