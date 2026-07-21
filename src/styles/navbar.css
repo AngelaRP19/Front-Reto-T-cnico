@@ -1,4 +1,4 @@
-/* 🌈 Paleta base */
+
 :root {
   --bg-color: #ffffff;
   --snd-bg-color: #f3f3f3;
@@ -47,7 +47,7 @@
 
 .btn-theme {
   background: none;
-  border: none; /* sin borde */
+  border: none;
   color: var(--accent-color);
   font-size: 1.6rem;
   cursor: pointer;
@@ -58,7 +58,6 @@
   transform: rotate(20deg);
   color: var(--hover-color);
 }
-
 
 /* Menú */
 .menu ul {
@@ -90,6 +89,7 @@
   font-weight: bold;
   cursor: pointer;
   transition: background 0.3s ease;
+  margin-left: auto; /* ✅ lo empuja a la derecha */
 }
 
 .btn-login:hover {
@@ -141,3 +141,51 @@
     margin: 25px auto 10px auto;
   }
 }
+
+/* Escritorio */
+
+@media (min-width: 1025px) {
+  .menu-toggle {
+    display: none; /* Oculta el ícono hamburguesa */
+  }
+
+  .navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 70px;
+    background: var(--bg-color);
+  }
+
+  .menu {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    flex-grow: 1; /* Permite que el menú ocupe el espacio disponible */
+  }
+
+  .menu ul {
+    display: flex;
+    gap: 30px;
+    list-style: none;
+    margin-right: auto; /* Empuja el botón hacia la derecha */
+  }
+
+  .btn-login {
+    margin-left: auto; /* ✅ lo coloca al extremo derecho */
+    background: var(--main-color);
+    color: white;
+    padding: 12px 28px;
+    border-radius: 30px;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+
+  .btn-login:hover {
+    background: var(--hover-color);
+  }
+}
+
