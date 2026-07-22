@@ -1,6 +1,6 @@
 function Hero() {
   return (
-    <section className="flex flex-col lg:flex-row items-center justify-between text-center lg:text-left gap-10 lg:gap-0 px-5 py-10 md:px-20 md:py-[60px] bg-snd-bg overflow-hidden transition-colors duration-400">
+    <section className="flex flex-col lg:flex-row items-center justify-between text-center lg:text-left gap-10 lg:gap-0 px-5 py-10 md:px-20 md:py-[60px] bg-snd-bg overflow-hidden transition-colors duration-[400ms]">
       <div className="w-full lg:w-auto lg:max-w-[400px]">
         <h2 className="text-[40px] md:text-[36px] text-text mb-[15px]">Expande tu mundo</h2>
         <p className="text-lg text-text mb-[25px]">Descubre los últimos packs de expansión para PC y Móvil.</p>

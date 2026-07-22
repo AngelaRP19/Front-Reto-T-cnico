@@ -7,7 +7,7 @@ function Navbar({ onLoginClick }) {
   const { theme, toggleTheme } = useTheme();
 
   return (
-    <header className="flex flex-col md:flex-row justify-between items-center w-full h-auto md:h-20 p-5 md:px-10 lg:px-[70px] lg:py-0 gap-5 md:gap-0 bg-bg shadow-[0_2px_10px_rgba(0,0,0,0.08)] mb-[30px] ml-auto transition-colors duration-400">
+    <header className="flex flex-col md:flex-row justify-between items-center w-full h-auto md:h-20 p-5 md:px-10 lg:px-[70px] lg:py-0 gap-5 md:gap-0 bg-bg shadow-[0_2px_10px_rgba(0,0,0,0.08)] mb-[30px] ml-auto transition-colors duration-[400ms]">
       <div className="flex items-center gap-[15px] justify-start">
         <div>
           <h1 className="font-nunito text-[42px] font-extrabold text-main cursor-pointer">The Sims</h1>
