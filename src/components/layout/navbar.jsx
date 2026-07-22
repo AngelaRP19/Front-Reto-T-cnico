@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { useTheme } from "../hooks/ThemeContext";
+import { useTheme } from "../../context/ThemeContext";
+
 
 function Navbar({ onLoginClick }) {
   const [menuOpen, setMenuOpen] = useState(false);

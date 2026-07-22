@@ -1,8 +1,8 @@
 import { useState } from "react";
-import Navbar from "./components/navbar";
-import Hero from "./components/hero";
-import Card from "./components/card";
-import Footer from "./components/footer";
+import Navbar from "./components/layout/navbar";
+import Hero from "./components/layout/hero";
+import Card from "./components/layout/card";
+import Footer from "./components/layout/footer";
 import Login from "./pages/Login";
 
 function App() {
