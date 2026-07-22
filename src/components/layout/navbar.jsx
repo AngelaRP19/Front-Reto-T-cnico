@@ -1,6 +1,6 @@
 import { useState } from "react";
 import "../styles/navbar.css";
-import { useTheme } from "../hooks/ThemeContext";
+import { useTheme } from "../../context/ThemeContext";
 
 function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
