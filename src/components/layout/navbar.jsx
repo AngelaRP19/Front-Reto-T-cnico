@@ -22,12 +22,15 @@ function Navbar({ onLoginClick }) {
         </button>
       </div>
 
-      <div
+      <button
+        type="button"
         className="block lg:hidden text-[2rem] cursor-pointer text-text absolute top-[25px] right-[30px] z-[1200]"
         onClick={() => setMenuOpen(!menuOpen)}
+        aria-label="Abrir menú"
+        aria-expanded={menuOpen}
       >
         ☰
-      </div>
+      </button>
 
       <nav
         className={`absolute lg:static top-20 left-0 w-full lg:w-auto bg-snd-bg lg:bg-transparent shadow-[0_6px_18px_rgba(0,0,0,0.25)] lg:shadow-none overflow-hidden lg:overflow-visible transition-[max-height,opacity] duration-[400ms] ease-in-out lg:flex lg:items-center lg:gap-10 lg:grow lg:max-h-none lg:opacity-100 lg:pointer-events-auto lg:py-0 lg:transition-none ${
