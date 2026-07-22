@@ -5,13 +5,6 @@ import Card from "./components/card";
 import Footer from "./components/footer";
 import Login from "./pages/Login";
 
-import "./App.css";
-import "./styles/navbar.css";
-import "./styles/hero.css";
-import "./styles/card.css";
-import "./styles/footer.css";
-import "./styles/responsive.css";
-
 function App() {
   const [view, setView] = useState("home");
 
@@ -25,7 +18,7 @@ function App() {
 
       <Hero />
 
-      <section className="cards">
+      <section className="w-[90%] mx-auto my-[60px] flex justify-center flex-wrap gap-[30px] px-5 py-[30px] md:p-[70px] bg-bg transition-colors duration-400">
 
         <Card
           plataforma="PC"

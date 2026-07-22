@@ -1,6 +1,6 @@
 function Footer() {
   return (
-    <footer className="footer">
+    <footer className="bg-snd-bg transition-colors duration-400">
       <p>© 2026 The Sims</p>
     </footer>
   );
