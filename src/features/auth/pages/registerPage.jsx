@@ -1,8 +1,7 @@
 import { useState } from "react";
-import Button from "../components/common/Button";
-import FormInput from "../components/common/FormInput";
-
-const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:8081";
+import Button from "../../../components/common/Button";
+import FormInput from "../../../components/common/FormInput";
+import { register } from "../services/authService";
 
 const USERNAME_RE = /^[a-zA-Z0-9_]{3,30}$/;
 const PASSWORD_RE = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,50}$/;
@@ -39,7 +38,7 @@ function validate(form) {
   return errors;
 }
 
-function Register({ onBack, onRegistered }) {
+function RegisterPage({ onBack, onRegistered }) {
   const [form, setForm] = useState(INITIAL_FORM);
   const [errors, setErrors] = useState({});
   const [acceptedTerms, setAcceptedTerms] = useState(false);
@@ -65,36 +64,19 @@ function Register({ onBack, onRegistered }) {
 
     setSubmitting(true);
     try {
-      const response = await fetch(`${API_BASE}/auth/register`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          firstName: form.firstName.trim(),
-          lastName: form.lastName.trim(),
-          username: form.username.trim(),
-          nickname: form.nickname.trim(),
-          email: form.email.trim(),
-          country: form.country.trim(),
-          password: form.password,
-        }),
+      const data = await register({
+        firstName: form.firstName.trim(),
+        lastName: form.lastName.trim(),
+        username: form.username.trim(),
+        nickname: form.nickname.trim(),
+        email: form.email.trim(),
+        country: form.country.trim(),
+        password: form.password,
       });
-
-      if (!response.ok) {
-        const body = await response.json().catch(() => null);
-        setServerError(
-          body?.message || "No se pudo crear la cuenta. Verificá los datos e intentá de nuevo."
-        );
-        return;
-      }
-
-      const data = await response.json();
-      if (data.token) {
-        localStorage.setItem("authToken", data.token);
-      }
 
       onRegistered?.(data);
     } catch (err) {
-      setServerError("No se pudo conectar con el servidor. Intentá de nuevo.");
+      setServerError(err.message);
     } finally {
       setSubmitting(false);
     }
@@ -235,4 +217,4 @@ function Register({ onBack, onRegistered }) {
   );
 }
 
-export default Register;
+export default RegisterPage;

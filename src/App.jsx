@@ -3,8 +3,8 @@ import Navbar from "./components/layout/navbar";
 import Hero from "./components/layout/hero";
 import Card from "./components/layout/card";
 import Footer from "./components/layout/footer";
-import Login from "./pages/Login";
-import Register from "./pages/Register";
+import LoginPage from "./features/auth/pages/loginPage";
+import RegisterPage from "./features/auth/pages/registerPage";
 import SubscriptionForm from "./features/beta/components/subscriptionForm";
 
 function App() {
@@ -13,16 +13,17 @@ function App() {
 
   if (view === "login") {
     return (
-      <Login
+      <LoginPage
         onBack={() => setView("home")}
         onRegisterClick={() => setView("register")}
+        onLoginSuccess={() => setView("home")}
       />
     );
   }
 
   if (view === "register") {
     return (
-      <Register
+      <RegisterPage
         onBack={() => setView("login")}
         onRegistered={() => setView("home")}
       />
