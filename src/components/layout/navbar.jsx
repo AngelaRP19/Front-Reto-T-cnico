@@ -10,7 +10,12 @@ function Navbar({ onLoginClick, abrirFormulario }) {
     <header className="flex flex-col md:flex-row justify-between items-center w-full h-auto md:h-20 p-5 md:px-10 lg:px-[70px] lg:py-0 gap-5 md:gap-0 bg-bg shadow-[0_2px_10px_rgba(0,0,0,0.08)] mb-[30px] ml-auto transition-colors duration-[400ms]">
       <div className="flex items-center gap-[15px] justify-start">
         <div>
-          <h1 className="font-nunito text-[42px] font-extrabold text-main cursor-pointer">The Sims  </h1>
+          <img 
+            src="https://res.cloudinary.com/w1jl4sa5/image/upload/v1784825556/Logo_of_The_Sims_4.svg_jagzsl.webp" 
+            alt="Logo" 
+            className="w-[120px] h-[120px] m-4 object-contain" 
+          />
+          {/* <h1 className="font-nunito text-[42px] font-extrabold text-main cursor-pointer">The Sims  </h1> */}
         </div>
 
         </div>
@@ -35,7 +40,6 @@ function Navbar({ onLoginClick, abrirFormulario }) {
         <ul className="flex flex-col items-center gap-[15px] md:gap-5 lg:flex-row lg:gap-[30px] lg:mr-auto list-none">
           <li><a href="#" className="no-underline text-text text-lg font-semibold transition-colors duration-300 hover:text-main">Inicio</a></li>
           <li><a href="#" className="no-underline text-text text-lg font-semibold transition-colors duration-300 hover:text-main">Catálogo</a></li>
-          <li><a href="#" className="no-underline text-text text-lg font-semibold transition-colors duration-300 hover:text-main">Expansiones</a></li>
           <li><a href="#" className="no-underline text-text text-lg font-semibold transition-colors duration-300 hover:text-main">Comunidad</a></li>
         </ul>
 
