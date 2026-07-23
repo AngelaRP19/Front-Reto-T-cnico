@@ -58,7 +58,7 @@ function Navbar({ onLoginClick, abrirFormulario }) {
       active:scale-95
       animate-pulse"
   >
-    Quieres ser Beta testing??
+    ¿Quieres ser Beta testing?
   </button>
 
   <button
