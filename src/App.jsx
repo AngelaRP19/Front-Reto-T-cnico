@@ -5,9 +5,11 @@ import Card from "./components/layout/card";
 import Footer from "./components/layout/footer";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import SubscriptionForm from "./features/beta/components/subscriptionForm";
 
 function App() {
   const [view, setView] = useState("home");
+  const [showForm, setShowForm] = useState(false);
 
   if (view === "login") {
     return (
@@ -27,9 +29,12 @@ function App() {
     );
   }
 
+  
+
   return (
     <>
-      <Navbar onLoginClick={() => setView("login")} />
+      <Navbar onLoginClick={() => setView("login")}
+      abrirFormulario={() => setShowForm(true)} />
 
       <Hero />
 
@@ -76,6 +81,12 @@ function App() {
           image="https://res.cloudinary.com/w1jl4sa5/image/upload/v1784575123/ES_Sims4-get-to-work-1x1-Loc_saiuva.avif"
         />
       </section>
+
+      {showForm && (
+        <SubscriptionForm 
+          cerrarFormulario={() => setShowForm(false)}
+          />
+      )}
 
       <Footer />
     </>
