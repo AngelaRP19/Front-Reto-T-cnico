@@ -2,6 +2,8 @@ import { useState } from "react";
 import Button from "../../../components/common/Button";
 import FormInput from "../../../components/common/FormInput";
 import { register } from "../services/authService";
+import { API_BASE_URL } from "../../../services/apiClient";
+import { useAuth } from "../../../context/AuthContext";
 
 const USERNAME_RE = /^[a-zA-Z0-9_]{3,30}$/;
 const PASSWORD_RE = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,50}$/;
@@ -12,7 +14,6 @@ const INITIAL_FORM = {
   firstName: "",
   lastName: "",
   username: "",
-  nickname: "",
   email: "",
   country: "",
   password: "",
@@ -26,10 +27,9 @@ function validate(form) {
   if (!NAME_RE.test(form.lastName.trim())) errors.lastName = "Solo letras y espacios";
   if (!USERNAME_RE.test(form.username.trim()))
     errors.username = "3-30 caracteres: letras, números y guion bajo";
-  if (form.nickname.trim().length < 3 || form.nickname.trim().length > 30)
-    errors.nickname = "Debe tener entre 3 y 30 caracteres";
   if (!EMAIL_RE.test(form.email.trim())) errors.email = "Correo inválido";
-  if (form.country.trim().length < 2) errors.country = "País inválido";
+  if (form.country.trim().length < 2 || form.country.trim().length > 56)
+    errors.country = "Debe tener entre 2 y 56 caracteres";
   if (!PASSWORD_RE.test(form.password))
     errors.password = "Mín. 8 caracteres, con mayúscula, minúscula, número y símbolo";
   if (form.password !== form.confirmPassword)
@@ -44,6 +44,7 @@ function RegisterPage({ onBack, onHomeClick, onRegistered }) {
   const [acceptedTerms, setAcceptedTerms] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [serverError, setServerError] = useState("");
+  const { setUser } = useAuth();
 
   const updateField = (field) => (e) => {
     setForm((prev) => ({ ...prev, [field]: e.target.value }));
@@ -68,18 +69,26 @@ function RegisterPage({ onBack, onHomeClick, onRegistered }) {
         firstName: form.firstName.trim(),
         lastName: form.lastName.trim(),
         username: form.username.trim(),
-        nickname: form.nickname.trim(),
         email: form.email.trim(),
         country: form.country.trim(),
         password: form.password,
       });
 
+      setUser({
+        username: form.username.trim(),
+        firstName: form.firstName.trim(),
+        lastName: form.lastName.trim(),
+      });
       onRegistered?.(data);
     } catch (err) {
       setServerError(err.message);
     } finally {
       setSubmitting(false);
     }
+  };
+
+  const handleOAuthRegister = (provider) => {
+    window.location.href = `${API_BASE_URL}/oauth2/authorization/${provider}`;
   };
 
   return (
@@ -130,16 +139,6 @@ function RegisterPage({ onBack, onHomeClick, onRegistered }) {
             onChange={updateField("username")}
             error={errors.username}
             hint={!errors.username ? "Letras, números y guion bajo" : undefined}
-          />
-
-          <FormInput
-            id="register-nickname"
-            label="Nickname"
-            placeholder="Panda7"
-            value={form.nickname}
-            onChange={updateField("nickname")}
-            error={errors.nickname}
-            hint={!errors.nickname ? "Así te van a ver otros simmers" : undefined}
           />
 
           <FormInput
@@ -206,10 +205,10 @@ function RegisterPage({ onBack, onHomeClick, onRegistered }) {
         </div>
 
         <div className="flex gap-3 w-full mb-6">
-          <Button variant="oauth" onClick={() => console.log("Registro con Google")}>
+          <Button variant="oauth" onClick={() => handleOAuthRegister("google")}>
             Google
           </Button>
-          <Button variant="oauth" onClick={() => console.log("Registro con Meta")}>
+          <Button variant="oauth" onClick={() => handleOAuthRegister("meta")}>
             Meta
           </Button>
         </div>

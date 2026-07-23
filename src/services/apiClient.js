@@ -1,4 +1,4 @@
-const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:8081";
+export const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:8081";
 const TOKEN_KEY = "authToken";
 
 export function getToken() {
@@ -20,6 +20,7 @@ async function request(path, { method = "GET", body, headers = {}, auth = true }
   try {
     response = await fetch(`${API_BASE_URL}${path}`, {
       method,
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
         ...(token ? { Authorization: `Bearer ${token}` } : {}),
