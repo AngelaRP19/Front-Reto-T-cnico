@@ -3,13 +3,16 @@ import Navbar from "./components/layout/Navbar";
 import Hero from "./components/layout/Hero";
 import Card from "./components/layout/Card";
 import Footer from "./components/layout/Footer";
-import Login from "./pages/Login";
 import ExpansionDetail from "./components/ExpansionDetail";
+import LoginPage from "./features/auth/pages/loginPage";
+import RegisterPage from "./features/auth/pages/registerPage";
+import SubscriptionForm from "./features/beta/components/subscriptionForm";
 
 function App() {
   const [view, setView] = useState("home");
   const [selectedPack, setSelectedPack] = useState(null);
   const [returnToCatalog, setReturnToCatalog] = useState(false);
+  const [showForm, setShowForm] = useState(false);
 
   // 1. Pack Naturaleza Encantada
   const packNaturaleza = {
@@ -134,8 +137,15 @@ function App() {
     }
   }, [view, returnToCatalog]);
 
+  // Vistas condicionales
   if (view === "login") {
-    return <Login onBack={() => setView("home")} />;
+    return (
+      <LoginPage
+        onBack={() => setView("home")}
+        onRegisterClick={() => setView("register")}
+        onLoginSuccess={() => setView("home")}
+      />
+    );
   }
 
   if (view === "expansion") {
@@ -148,9 +158,22 @@ function App() {
     );
   }
 
+  if (view === "register") {
+    return (
+      <RegisterPage
+        onBack={() => setView("login")}
+        onHomeClick={() => setView("home")}
+        onRegistered={() => setView("home")}
+      />
+    );
+  }
+
   return (
     <>
-      <Navbar onLoginClick={() => setView("login")} />
+      <Navbar 
+        onLoginClick={() => setView("login")}
+        abrirFormulario={() => setShowForm(true)} 
+      />
 
       {/* Función para el botón 'Ver catálogo' */}
       <Hero onExploreClick={() => {
@@ -223,6 +246,12 @@ function App() {
         </div>
 
       </section>
+
+      {showForm && (
+        <SubscriptionForm 
+          cerrarFormulario={() => setShowForm(false)}
+        />
+      )}
 
       <Footer />
     </>
