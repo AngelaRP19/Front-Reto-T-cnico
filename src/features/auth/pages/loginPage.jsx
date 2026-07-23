@@ -32,11 +32,14 @@ function LoginPage({ onBack, onRegisterClick, onLoginSuccess }) {
     <div className="min-h-screen w-full flex items-center justify-center bg-bg px-5 py-10 transition-colors duration-400">
       <div className="w-full max-w-[380px] flex flex-col items-center text-center">
         <div
-          className="w-[76px] h-[76px] rounded-full flex items-center justify-center bg-[linear-gradient(135deg,var(--main-color),var(--accent-color))] text-white font-nunito text-4xl font-extrabold cursor-pointer mb-5 transition-transform duration-300 hover:scale-105"
           onClick={onBack}
           title="Volver al inicio"
         >
-          S
+          <img 
+            src="https://res.cloudinary.com/w1jl4sa5/image/upload/v1784825556/Logo_of_The_Sims_4.svg_jagzsl.webp" 
+            alt="Logo" 
+            className="w-[120px] h-[120px] object-contain" 
+          />
         </div>
 
         <h1 className="font-nunito text-2xl font-extrabold text-text mb-7 transition-colors duration-400">Inicia sesión en tu cuenta The Sims</h1>

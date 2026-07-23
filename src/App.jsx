@@ -25,6 +25,7 @@ function App() {
     return (
       <RegisterPage
         onBack={() => setView("login")}
+        onHomeClick={() => setView("home")}
         onRegistered={() => setView("home")}
       />
     );
