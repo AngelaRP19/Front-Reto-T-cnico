@@ -1,0 +1,97 @@
+import React from 'react';
+
+const ExpansionDetail = ({ data, onBack }) => {
+  // Datos por default //
+  const expansion = data || {
+    title: "The Sims™ 4: Pack de Expansión",
+    category: "PACK DE EXPANSIÓN",
+    price: "$79.900 COP",
+    platform: "PC / Mac / Consolas",
+    releaseDate: "Disponible ahora",
+    description: "Explora nuevas historias, mundos e interacciones con tus Sims.",
+    features: ["Nuevos objetos", "Nuevas mecánicas", "Mundo exclusivo"],
+    image: "https://res.cloudinary.com/w1jl4sa5/image/upload/v1784572920/TS4_Pack-Art_Enchanted-by-Nature_ES_iv5fev.avif"
+  };
+
+  return (
+    <div className="min-h-screen bg-slate-100 text-slate-800 py-10 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-5xl mx-auto">
+        
+        {/* Botón para regresar al catálogo */}
+        <button 
+          onClick={onBack}
+          className="mb-6 flex items-center gap-2 text-sm font-bold text-sky-600 hover:text-sky-800 transition duration-200 cursor-pointer"
+        >
+          ← Volver al catálogo
+        </button>
+
+        {/* Tarjeta de detalle */}
+        <div className="bg-white rounded-3xl shadow-xl overflow-hidden border border-slate-200">
+          <div className="md:flex">
+            
+            {/* Contenedor de la Imagen con la clase 'group' para detectar el hover */}
+            <div className="md:w-1/2 bg-slate-900 p-6 flex items-center justify-center relative group overflow-hidden">
+              
+              {/* Etiqueta / Recuadro con transición rápida de 200ms */}
+              <span className="absolute top-4 left-4 bg-lime-400 text-slate-900 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider z-10 transition-opacity duration-200 ease-in-out group-hover:opacity-0 pointer-events-none">
+                {expansion.category || "PACK DE EXPANSIÓN"}
+              </span>
+
+              <img 
+                src={expansion.image} 
+                alt={expansion.title}
+                className="rounded-2xl shadow-md w-full h-80 md:h-full object-cover transform group-hover:scale-105 transition duration-300"
+              />
+            </div>
+
+            {/* Información */}
+            <div className="md:w-1/2 p-8 flex flex-col justify-between">
+              <div>
+                <h1 className="text-3xl font-extrabold text-slate-900 mb-2">
+                  {expansion.title}
+                </h1>
+                
+                <div className="flex items-center gap-3 mb-4 text-xs font-medium text-slate-500">
+                  <span className="bg-sky-100 text-sky-700 px-2.5 py-1 rounded-md">{expansion.platform}</span>
+                  <span>• {expansion.releaseDate}</span>
+                </div>
+
+                <p className="text-slate-600 mb-6 text-sm leading-relaxed">
+                  {expansion.description}
+                </p>
+
+                <h3 className="text-base font-bold text-slate-900 mb-3 border-b border-slate-200 pb-2">
+                  ¿Qué incluye este pack?
+                </h3>
+                <ul className="space-y-2 mb-6 text-sm text-slate-600">
+                  {expansion.features?.map((feature, idx) => (
+                    <li key={idx} className="flex items-start gap-2">
+                      <span className="text-lime-500 font-bold">✓</span>
+                      <span>{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* Botón de compra */}
+              <div className="pt-4 border-t border-slate-100 flex items-center justify-between">
+                <div>
+                  <span className="text-xs text-slate-400 block">Precio total</span>
+                  <span className="text-2xl font-black text-lime-600">{expansion.price}</span>
+                </div>
+
+                <button className="bg-sky-500 hover:bg-sky-600 text-white font-bold py-3 px-6 rounded-2xl shadow-lg hover:shadow-sky-500/30 transition duration-300 cursor-pointer">
+                  Añadir al carrito 🛒
+                </button>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  );
+};
+
+export default ExpansionDetail;
