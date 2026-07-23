@@ -4,6 +4,7 @@ import Hero from "./components/layout/hero";
 import Card from "./components/layout/card";
 import Footer from "./components/layout/footer";
 import Login from "./pages/Login";
+import Register from "./pages/Register";
 import SubscriptionForm from "./features/beta/components/subscriptionForm";
 
 function App() {
@@ -11,7 +12,21 @@ function App() {
   const [showForm, setShowForm] = useState(false);
 
   if (view === "login") {
-    return <Login onBack={() => setView("home")} />;
+    return (
+      <Login
+        onBack={() => setView("home")}
+        onRegisterClick={() => setView("register")}
+      />
+    );
+  }
+
+  if (view === "register") {
+    return (
+      <Register
+        onBack={() => setView("login")}
+        onRegistered={() => setView("home")}
+      />
+    );
   }
 
   

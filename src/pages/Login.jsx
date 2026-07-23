@@ -2,7 +2,7 @@ import { useState } from "react";
 import Button from "../components/common/Button";
 import FormInput from "../components/common/FormInput";
 
-function Login({ onBack }) {
+function Login({ onBack, onRegisterClick }) {
   const [email, setEmail] = useState("");
   const [remember, setRemember] = useState(true);
 
@@ -69,7 +69,7 @@ function Login({ onBack }) {
           ¿Olvidaste tu contraseña?
         </Button>
 
-        <Button variant="outline" onClick={() => console.log("Crear cuenta")}>
+        <Button variant="outline" onClick={onRegisterClick}>
           Crear cuenta
         </Button>
       </div>
