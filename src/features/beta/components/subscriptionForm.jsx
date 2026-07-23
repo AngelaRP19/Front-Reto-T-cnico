@@ -1,10 +1,8 @@
 import { useState } from "react";
-import { useTheme } from "../../../context/ThemeContext";
-
+import Button from "../../../components/common/Button";
+import FormInput from "../../../components/common/FormInput";
 
 function SubscriptionForm({ cerrarFormulario }) {
-  const { theme } = useTheme(); // 'light' o 'dark'
-
   const [formData, setFormData] = useState({
     nombre: "",
     email: "",
@@ -50,16 +48,10 @@ function SubscriptionForm({ cerrarFormulario }) {
         z-50
         animate-fadeIn"
     >
-      <div
-        className={`rounded-2xl shadow-2xl w-[550px] p-8 relative animate-[zoomIn_.35s_ease] transition-colors duration-300 ${
-          theme === "dark"
-            ? "bg-[#0e2438] text-[#e8f9f1]"
-            : "bg-white text-black"
-        }`}
-      >
+      <div className="rounded-2xl shadow-2xl w-[550px] p-8 relative animate-[zoomIn_.35s_ease] bg-card-bg text-text transition-colors duration-300">
         <button
           onClick={cerrarFormulario}
-          className="absolute top-4 right-4 text-2xl font-bold text-gray-500 hover:text-red-500"
+          className="absolute top-4 right-4 text-2xl font-bold text-text hover:text-hover"
         >
           ×
         </button>
@@ -69,58 +61,43 @@ function SubscriptionForm({ cerrarFormulario }) {
         </h2>
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          <input
-            type="text"
+          <FormInput
+            id="subscription-nombre"
             name="nombre"
+            label="Nombre completo"
             placeholder="Nombre completo"
             value={formData.nombre}
             onChange={handleChange}
-            className={`w-full border rounded-lg p-3 ${
-              theme === "dark"
-                ? "bg-[#122b45] border-[#1f3b5b] text-[#e8f9f1]"
-                : "bg-white border-gray-300 text-black"
-            }`}
           />
 
-          <input
-            type="email"
+          <FormInput
+            id="subscription-email"
             name="email"
+            type="email"
+            label="Correo electrónico"
             placeholder="Correo electrónico"
             value={formData.email}
             onChange={handleChange}
-            className={`w-full border rounded-lg p-3 ${
-              theme === "dark"
-                ? "bg-[#122b45] border-[#1f3b5b] text-[#e8f9f1]"
-                : "bg-white border-gray-300 text-black"
-            }`}
           />
 
           <select
             name="tipoSuscripcion"
             value={formData.tipoSuscripcion}
             onChange={handleChange}
-            className={`w-full border rounded-lg p-3 ${
-              theme === "dark"
-                ? "bg-[#122b45] border-[#1f3b5b] text-[#e8f9f1]"
-                : "bg-white border-gray-300 text-black"
-            }`}
+            className="w-full px-4 py-3 rounded-[10px] border border-snd-bg bg-snd-bg text-text font-nunito focus:outline-none focus:border-main"
           >
             <option value="">Seleccione el tipo de suscripción</option>
             <option value="Retos Simer">Retos Simmer</option>
             <option value="Beta Testing">Beta Testing</option>
           </select>
 
-          <input
-            type="text"
+          <FormInput
+            id="subscription-pais"
             name="pais"
+            label="País"
             placeholder="País"
             value={formData.pais}
             onChange={handleChange}
-            className={`w-full border rounded-lg p-3 ${
-              theme === "dark"
-                ? "bg-[#122b45] border-[#1f3b5b] text-[#e8f9f1]"
-                : "bg-white border-gray-300 text-black"
-            }`}
           />
 
           <div className="flex items-start gap-2">
@@ -129,8 +106,9 @@ function SubscriptionForm({ cerrarFormulario }) {
               name="terminos"
               checked={formData.terminos}
               onChange={handleChange}
+              className="accent-main w-4 h-4 cursor-pointer"
             />
-            <label>Acepto los términos y condiciones.</label>
+            <label className="text-text">Acepto los términos y condiciones.</label>
           </div>
 
           <div className="flex items-start gap-2">
@@ -139,18 +117,16 @@ function SubscriptionForm({ cerrarFormulario }) {
               name="marketing"
               checked={formData.marketing}
               onChange={handleChange}
+              className="accent-main w-4 h-4 cursor-pointer"
             />
-            <label>
+            <label className="text-text">
               Deseo recibir información y promociones por correo.
             </label>
           </div>
 
-          <button
-            type="submit"
-            className="w-full bg-blue-500 hover:bg-blue-600 text-white py-3 rounded-lg transition"
-          >
+          <Button type="submit" variant="primary">
             Enviar inscripción
-          </button>
+          </Button>
         </form>
       </div>
     </div>
