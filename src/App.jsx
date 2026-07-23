@@ -4,7 +4,7 @@ import Hero from "./components/layout/hero";
 import Card from "./components/layout/card";
 import Footer from "./components/layout/footer";
 import Login from "./pages/Login";
-import SubscriptionForm from "./features/beta/subscriptionForm";
+import SubscriptionForm from "./features/beta/components/subscriptionForm";
 
 function App() {
   const [view, setView] = useState("home");
