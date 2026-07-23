@@ -2,26 +2,34 @@ import { useState } from "react";
 import Button from "../../../components/common/Button";
 import FormInput from "../../../components/common/FormInput";
 import { login } from "../services/authService";
+import { API_BASE_URL } from "../../../services/apiClient";
+import { useAuth } from "../../../context/AuthContext";
 
 function LoginPage({ onBack, onRegisterClick, onLoginSuccess }) {
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [remember, setRemember] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [serverError, setServerError] = useState("");
+  const { setUser } = useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setServerError("");
     setSubmitting(true);
     try {
-      const data = await login(email.trim(), password);
+      const data = await login(username.trim(), password);
+      setUser({ username: username.trim() });
       onLoginSuccess?.(data);
     } catch (err) {
       setServerError(err.message);
     } finally {
       setSubmitting(false);
     }
+  };
+
+  const handleOAuthLogin = (provider) => {
+    window.location.href = `${API_BASE_URL}/oauth2/authorization/${provider}`;
   };
 
   const handleForgotPassword = () => {
@@ -47,10 +55,10 @@ function LoginPage({ onBack, onRegisterClick, onLoginSuccess }) {
         <form className="w-full flex flex-col text-left" onSubmit={handleSubmit}>
           <FormInput
             id="login-email"
-            label="Correo electrónico o usuario"
-            placeholder="tucorreo@ejemplo.com"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            label="Nombre de usuario"
+            placeholder="panda7"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
           />
 
           <FormInput
@@ -67,10 +75,10 @@ function LoginPage({ onBack, onRegisterClick, onLoginSuccess }) {
           </div>
 
           <div className="flex gap-3 w-full mb-6">
-            <Button variant="oauth" onClick={() => console.log("Login con Google")}>
+            <Button variant="oauth" onClick={() => handleOAuthLogin("google")}>
               Google
             </Button>
-            <Button variant="oauth" onClick={() => console.log("Login con Meta")}>
+            <Button variant="oauth" onClick={() => handleOAuthLogin("meta")}>
               Meta
             </Button>
           </div>
