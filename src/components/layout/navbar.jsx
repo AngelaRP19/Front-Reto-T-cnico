@@ -4,7 +4,7 @@ import { useAuth } from "../../context/AuthContext";
 import { logout } from "../../features/auth/services/authService";
 
 
-function Navbar({ onLoginClick, abrirFormulario }) {
+function Navbar({ onLoginClick, abrirFormulario, onCommunityClick, onHomeClick }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
   const { theme, toggleTheme } = useTheme();
@@ -51,9 +51,9 @@ function Navbar({ onLoginClick, abrirFormulario }) {
         }`}
       >
         <ul className="flex flex-col items-center gap-[15px] md:gap-5 lg:flex-row lg:gap-[30px] lg:mr-auto list-none">
-          <li><a href="#" className="no-underline text-text text-lg font-semibold transition-colors duration-300 hover:text-main">Inicio</a></li>
+          <li><a href="#" onClick={(e) => { e.preventDefault(); onHomeClick?.(); }} className="no-underline text-text text-lg font-semibold transition-colors duration-300 hover:text-main">Inicio</a></li>
           <li><a href="#" className="no-underline text-text text-lg font-semibold transition-colors duration-300 hover:text-main">Catálogo</a></li>
-          <li><a href="#" className="no-underline text-text text-lg font-semibold transition-colors duration-300 hover:text-main">Comunidad</a></li>
+          <li><a href="#" onClick={(e) => { e.preventDefault(); onCommunityClick?.(); }} className="no-underline text-text text-lg font-semibold transition-colors duration-300 hover:text-main">Comunidad</a></li>
         </ul>
 
         <div className="flex items-center gap-4 lg:ml-auto">

@@ -7,6 +7,7 @@ import ExpansionDetail from "./components/ExpansionDetail";
 import LoginPage from "./features/auth/pages/loginPage";
 import RegisterPage from "./features/auth/pages/registerPage";
 import SubscriptionForm from "./features/beta/components/subscriptionForm";
+import ChallengesPage from "./features/challenges/pages/ChallengesPage";
 import { getExpansionPacks } from "./features/catalog/services/expansionsService";
 
 function App() {
@@ -60,8 +61,26 @@ function App() {
   if (view === "expansion") {
     return (
       <>
-        <Navbar onLoginClick={() => setView("login")} />
+        <Navbar
+          onLoginClick={() => setView("login")}
+          onCommunityClick={() => setView("community")}
+          onHomeClick={() => setView("home")}
+        />
         <ExpansionDetail data={selectedPack} onBack={handleBackToCatalog} />
+        <Footer />
+      </>
+    );
+  }
+
+  if (view === "community") {
+    return (
+      <>
+        <Navbar
+          onLoginClick={() => setView("login")}
+          onCommunityClick={() => setView("community")}
+          onHomeClick={() => setView("home")}
+        />
+        <ChallengesPage onRequireLogin={() => setView("login")} />
         <Footer />
       </>
     );
@@ -79,9 +98,11 @@ function App() {
 
   return (
     <>
-      <Navbar 
+      <Navbar
         onLoginClick={() => setView("login")}
-        abrirFormulario={() => setShowForm(true)} 
+        abrirFormulario={() => setShowForm(true)}
+        onCommunityClick={() => setView("community")}
+        onHomeClick={() => setView("home")}
       />
 
       {/* Función para el botón 'Ver catálogo' */}

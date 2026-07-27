@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Button from "../../../components/common/Button";
 import FormInput from "../../../components/common/FormInput";
-import { register } from "../services/authService";
+import { register, fetchCurrentUser } from "../services/authService";
 import { API_BASE_URL } from "../../../services/apiClient";
 import { useAuth } from "../../../context/AuthContext";
 
@@ -74,10 +74,12 @@ function RegisterPage({ onBack, onHomeClick, onRegistered }) {
         password: form.password,
       });
 
+      const me = await fetchCurrentUser();
       setUser({
         username: form.username.trim(),
         firstName: form.firstName.trim(),
         lastName: form.lastName.trim(),
+        ...me,
       });
       onRegistered?.(data);
     } catch (err) {

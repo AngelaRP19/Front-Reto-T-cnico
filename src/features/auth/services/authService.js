@@ -27,3 +27,11 @@ export async function checkOAuthSession() {
   if (data?.token) setToken(data.token);
   return data;
 }
+
+export async function fetchCurrentUser() {
+  try {
+    return await apiClient.get("/auth/me");
+  } catch {
+    return null;
+  }
+}
