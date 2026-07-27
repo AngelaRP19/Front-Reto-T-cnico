@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Button from "../../../components/common/Button";
 import FormInput from "../../../components/common/FormInput";
-import { login } from "../services/authService";
+import { login, fetchCurrentUser } from "../services/authService";
 import { API_BASE_URL } from "../../../services/apiClient";
 import { useAuth } from "../../../context/AuthContext";
 
@@ -19,7 +19,8 @@ function LoginPage({ onBack, onRegisterClick, onLoginSuccess }) {
     setSubmitting(true);
     try {
       const data = await login(username.trim(), password);
-      setUser({ username: username.trim() });
+      const me = await fetchCurrentUser();
+      setUser({ username: username.trim(), ...me });
       onLoginSuccess?.(data);
     } catch (err) {
       setServerError(err.message);

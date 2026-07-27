@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { getToken } from "../services/apiClient";
-import { checkOAuthSession } from "../features/auth/services/authService";
+import { checkOAuthSession, fetchCurrentUser } from "../features/auth/services/authService";
 
 const AuthContext = createContext();
 
@@ -27,9 +27,10 @@ export function AuthProvider({ children }) {
     if (user || getToken()) return;
 
     checkOAuthSession()
-      .then((data) => {
+      .then(async (data) => {
         if (data) {
-          setUser({ name: data.name, email: data.email, provider: data.provider });
+          const me = await fetchCurrentUser();
+          setUser({ name: data.name, email: data.email, provider: data.provider, ...me });
         }
       })
       .catch(() => {
