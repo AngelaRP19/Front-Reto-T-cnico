@@ -1,11 +1,14 @@
 import { useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import Button from "../../../components/common/Button";
 import FormInput from "../../../components/common/FormInput";
 import { login, fetchCurrentUser } from "../services/authService";
 import { API_BASE_URL, clearLoggedOutMark } from "../../../services/apiClient";
 import { useAuth } from "../../../context/AuthContext";
 
-function LoginPage({ onBack, onRegisterClick, onLoginSuccess }) {
+function LoginPage() {
+  const navigate = useNavigate();
+  const location = useLocation();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [remember, setRemember] = useState(true);
@@ -18,10 +21,10 @@ function LoginPage({ onBack, onRegisterClick, onLoginSuccess }) {
     setServerError("");
     setSubmitting(true);
     try {
-      const data = await login(username.trim(), password);
+      await login(username.trim(), password);
       const me = await fetchCurrentUser();
       setUser({ username: username.trim(), ...me });
-      onLoginSuccess?.(data);
+      navigate(location.state?.from ?? "/", { replace: true });
     } catch (err) {
       setServerError(err.message);
     } finally {
@@ -42,7 +45,7 @@ function LoginPage({ onBack, onRegisterClick, onLoginSuccess }) {
     <div className="min-h-screen w-full flex items-center justify-center bg-bg px-5 py-10 transition-colors duration-400">
       <div className="w-full max-w-[380px] flex flex-col items-center text-center">
         <div
-          onClick={onBack}
+          onClick={() => navigate("/")}
           title="Volver al inicio"
         >
           <img 
@@ -108,7 +111,7 @@ function LoginPage({ onBack, onRegisterClick, onLoginSuccess }) {
           ¿Olvidaste tu contraseña?
         </Button>
 
-        <Button variant="outline" onClick={onRegisterClick}>
+        <Button variant="outline" onClick={() => navigate("/register")}>
           Crear cuenta
         </Button>
       </div>

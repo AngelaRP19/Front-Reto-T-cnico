@@ -1,156 +1,24 @@
-import { useState, useEffect } from "react";
-import Navbar from "./components/layout/Navbar";
-import Hero from "./components/layout/Hero";
-import Card from "./components/layout/Card";
-import Footer from "./components/layout/Footer";
-import ExpansionDetail from "./components/ExpansionDetail";
+import { Routes, Route } from "react-router-dom";
+import MainLayout from "./components/layout/MainLayout";
+import HomePage from "./features/catalog/pages/HomePage";
+import ExpansionDetailPage from "./features/catalog/pages/ExpansionDetailPage";
+import ChallengesPage from "./features/challenges/pages/ChallengesPage";
 import LoginPage from "./features/auth/pages/loginPage";
 import RegisterPage from "./features/auth/pages/registerPage";
-import ChallengesPage from "./features/challenges/pages/ChallengesPage";
-import { getExpansionPacks } from "./features/catalog/services/expansionsService";
+import NotFoundPage from "./pages/NotFoundPage";
 
 function App() {
-  const [view, setView] = useState("home");
-  const [selectedPack, setSelectedPack] = useState(null);
-  const [returnToCatalog, setReturnToCatalog] = useState(false);
-  const [packs, setPacks] = useState([]);
-  const [loadingPacks, setLoadingPacks] = useState(true);
-  const [packsError, setPacksError] = useState("");
-
-  useEffect(() => {
-    getExpansionPacks()
-      .then(setPacks)
-      .catch((err) => setPacksError(err.message))
-      .finally(() => setLoadingPacks(false));
-  }, []);
-
-  const handleSelectPack = (packData) => {
-    setSelectedPack(packData);
-    setView("expansion");
-  };
-
-  const handleBackToCatalog = () => {
-    setReturnToCatalog(true);
-    setView("home");
-  };
-
-  const handleCatalogClick = () => {
-    if (view !== "home") {
-      setReturnToCatalog(true);
-      setView("home");
-      return;
-    }
-    const catalogSection = document.getElementById("catalogo");
-    if (catalogSection) {
-      catalogSection.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
-  };
-
-  // Posicionamiento inmediato al volver del detalle
-  useEffect(() => {
-    if (view === "home" && returnToCatalog) {
-      const catalogSection = document.getElementById("catalogo");
-      if (catalogSection) {
-        catalogSection.scrollIntoView({ behavior: "auto", block: "start" });
-      }
-      setReturnToCatalog(false);
-    }
-  }, [view, returnToCatalog]);
-
-  // Vistas condicionales
-  if (view === "login") {
-    return (
-      <LoginPage
-        onBack={() => setView("home")}
-        onRegisterClick={() => setView("register")}
-        onLoginSuccess={() => setView("home")}
-      />
-    );
-  }
-
-  if (view === "expansion") {
-    return (
-      <>
-        <Navbar
-          onLoginClick={() => setView("login")}
-          onCreateAccountClick={() => setView("register")}
-          onCommunityClick={() => setView("community")}
-          onHomeClick={() => setView("home")}
-          onCatalogClick={handleCatalogClick}
-        />
-        <ExpansionDetail data={selectedPack} onBack={handleBackToCatalog} />
-        <Footer />
-      </>
-    );
-  }
-
-  if (view === "community") {
-    return (
-      <>
-        <Navbar
-          onLoginClick={() => setView("login")}
-          onCreateAccountClick={() => setView("register")}
-          onCommunityClick={() => setView("community")}
-          onHomeClick={() => setView("home")}
-          onCatalogClick={handleCatalogClick}
-        />
-        <ChallengesPage onRequireLogin={() => setView("login")} />
-        <Footer />
-      </>
-    );
-  }
-
-  if (view === "register") {
-    return (
-      <RegisterPage
-        onBack={() => setView("login")}
-        onHomeClick={() => setView("home")}
-        onRegistered={() => setView("home")}
-      />
-    );
-  }
-
   return (
-    <>
-      <Navbar
-        onLoginClick={() => setView("login")}
-        onCreateAccountClick={() => setView("register")}
-        onCommunityClick={() => setView("community")}
-        onHomeClick={() => setView("home")}
-        onCatalogClick={handleCatalogClick}
-      />
-
-      {/* Función para el botón 'Ver catálogo' */}
-      <Hero onExploreClick={() => {
-        const catalogSection = document.getElementById("catalogo");
-        if (catalogSection) {
-          catalogSection.scrollIntoView({ behavior: "smooth", block: "start" });
-        }
-      }} />
-
-      <section id="catalogo" className="w-[90%] mx-auto my-[60px] flex justify-center flex-wrap gap-[30px] px-5 py-[30px] md:p-[70px] bg-bg transition-colors duration-400">
-
-        {loadingPacks ? (
-          <p className="text-text w-full text-center py-10">Cargando catálogo...</p>
-        ) : packsError ? (
-          <p className="text-text w-full text-center py-10">{packsError}</p>
-        ) : (
-          packs.map((pack) => (
-            <div key={pack.id} onClick={() => handleSelectPack(pack)} className="cursor-pointer">
-              <Card
-                plataforma={pack.platform}
-                titulo={pack.title}
-                precio={pack.price}
-                image={pack.image}
-              />
-            </div>
-          ))
-        )}
-
-      </section>
-
-      <Footer />
-    </>
+    <Routes>
+      <Route element={<MainLayout />}>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/catalogo/:packId" element={<ExpansionDetailPage />} />
+        <Route path="/comunidad" element={<ChallengesPage />} />
+      </Route>
+      <Route path="/login" element={<LoginPage />} />
+      <Route path="/register" element={<RegisterPage />} />
+      <Route path="*" element={<NotFoundPage />} />
+    </Routes>
   );
 }
 

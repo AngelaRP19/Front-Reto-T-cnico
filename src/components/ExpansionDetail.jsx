@@ -1,18 +1,6 @@
 import React from 'react';
 
-const ExpansionDetail = ({ data, onBack }) => {
-  // Datos por default //
-  const expansion = data || {
-    title: "The Sims™ 4: Pack de Expansión",
-    category: "PACK DE EXPANSIÓN",
-    price: "$79.900 COP",
-    platform: "PC / Mac / Consolas",
-    releaseDate: "Disponible ahora",
-    description: "Explora nuevas historias, mundos e interacciones con tus Sims.",
-    features: ["Nuevos objetos", "Nuevas mecánicas", "Mundo exclusivo"],
-    image: "https://res.cloudinary.com/w1jl4sa5/image/upload/v1784572920/TS4_Pack-Art_Enchanted-by-Nature_ES_iv5fev.avif"
-  };
-
+const ExpansionDetail = ({ data: expansion, onBack }) => {
   return (
     <div className="min-h-screen bg-bg text-text py-10 px-4 sm:px-6 lg:px-8 transition-colors duration-400">
       <div className="max-w-5xl mx-auto">

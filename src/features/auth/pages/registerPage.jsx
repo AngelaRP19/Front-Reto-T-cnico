@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Button from "../../../components/common/Button";
 import FormInput from "../../../components/common/FormInput";
 import FormSelect from "../../../components/common/FormSelect";
@@ -49,7 +50,8 @@ function isFieldErrorMap(data) {
   );
 }
 
-function RegisterPage({ onBack, onHomeClick, onRegistered }) {
+function RegisterPage() {
+  const navigate = useNavigate();
   const [form, setForm] = useState(INITIAL_FORM);
   const [errors, setErrors] = useState({});
   const [acceptedTerms, setAcceptedTerms] = useState(false);
@@ -77,7 +79,7 @@ function RegisterPage({ onBack, onHomeClick, onRegistered }) {
 
     setSubmitting(true);
     try {
-      const data = await register({
+      await register({
         firstName: form.firstName.trim(),
         lastName: form.lastName.trim(),
         username: form.username.trim(),
@@ -94,7 +96,7 @@ function RegisterPage({ onBack, onHomeClick, onRegistered }) {
         lastName: form.lastName.trim(),
         ...me,
       });
-      onRegistered?.(data);
+      navigate("/");
     } catch (err) {
       if (isFieldErrorMap(err.data)) {
         setErrors((prev) => ({ ...prev, ...err.data }));
@@ -117,7 +119,7 @@ function RegisterPage({ onBack, onHomeClick, onRegistered }) {
       <div className="w-full max-w-[380px] flex flex-col items-center text-center">
         <button
           type="button"
-          onClick={onHomeClick}
+          onClick={() => navigate("/")}
           title="Volver al inicio"
           className="cursor-pointer"
         >
@@ -245,7 +247,7 @@ function RegisterPage({ onBack, onHomeClick, onRegistered }) {
           </Button>
         </div>
 
-        <Button variant="link" onClick={onBack}>
+        <Button variant="link" onClick={() => navigate("/login")}>
           ¿Ya tienes cuenta? Inicia sesión
         </Button>
       </div>

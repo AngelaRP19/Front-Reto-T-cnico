@@ -1,10 +1,12 @@
 import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { useTheme } from "../../context/ThemeContext";
 import { useAuth } from "../../context/AuthContext";
 import { logout, setBetaTester } from "../../features/auth/services/authService";
 
 
-function Navbar({ onLoginClick, onCreateAccountClick, onCommunityClick, onHomeClick, onCatalogClick }) {
+function Navbar() {
+  const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [showBetaConfirm, setShowBetaConfirm] = useState(false);
@@ -24,7 +26,7 @@ function Navbar({ onLoginClick, onCreateAccountClick, onCommunityClick, onHomeCl
 
   const handleBetaButtonClick = () => {
     if (!user) {
-      onCreateAccountClick?.();
+      navigate("/register");
       return;
     }
     setBetaError("");
@@ -80,9 +82,9 @@ function Navbar({ onLoginClick, onCreateAccountClick, onCommunityClick, onHomeCl
         }`}
       >
         <ul className="flex flex-col items-center gap-[15px] md:gap-5 lg:flex-row lg:gap-[30px] lg:mr-auto list-none">
-          <li><a href="#" onClick={(e) => { e.preventDefault(); onHomeClick?.(); }} className="no-underline text-text text-lg font-semibold transition-colors duration-300 hover:text-main">Inicio</a></li>
-          <li><a href="#" onClick={(e) => { e.preventDefault(); onCatalogClick?.(); }} className="no-underline text-text text-lg font-semibold transition-colors duration-300 hover:text-main">Catálogo</a></li>
-          <li><a href="#" onClick={(e) => { e.preventDefault(); onCommunityClick?.(); }} className="no-underline text-text text-lg font-semibold transition-colors duration-300 hover:text-main">Comunidad</a></li>
+          <li><Link to="/" className="no-underline text-text text-lg font-semibold transition-colors duration-300 hover:text-main">Inicio</Link></li>
+          <li><Link to="/#catalogo" className="no-underline text-text text-lg font-semibold transition-colors duration-300 hover:text-main">Catálogo</Link></li>
+          <li><Link to="/comunidad" className="no-underline text-text text-lg font-semibold transition-colors duration-300 hover:text-main">Comunidad</Link></li>
         </ul>
 
         <div className="flex items-center gap-4 lg:ml-auto">
@@ -176,7 +178,7 @@ function Navbar({ onLoginClick, onCreateAccountClick, onCommunityClick, onHomeCl
   ) : (
     <button
       className="bg-main text-white px-[28px] py-[12px] rounded-full font-bold hover:bg-hover transition"
-      onClick={onLoginClick}
+      onClick={() => navigate("/login")}
     >
       Iniciar sesión
     </button>

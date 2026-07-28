@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import { acceptChallenge, cancelChallenge, reactivateChallenge } from "../services/challengesService";
 
 const STATUS_STYLES = {
@@ -15,7 +16,9 @@ const STATUS_LABELS = {
   FALLIDO: "Fallido",
 };
 
-function CardChallenge({ challenge, subscription, userId, isAuthenticated, onRequireLogin, onSubscriptionChange }) {
+function CardChallenge({ challenge, subscription, userId, isAuthenticated, onSubscriptionChange }) {
+  const navigate = useNavigate();
+  const location = useLocation();
   const [showModal, setShowModal] = useState(false);
   const [showCancelConfirm, setShowCancelConfirm] = useState(false);
   const [submitting, setSubmitting] = useState(false);
@@ -29,7 +32,7 @@ function CardChallenge({ challenge, subscription, userId, isAuthenticated, onReq
     e.stopPropagation();
 
     if (!isAuthenticated) {
-      onRequireLogin?.();
+      navigate("/login", { state: { from: location.pathname } });
       return;
     }
 
