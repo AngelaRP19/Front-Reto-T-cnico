@@ -6,16 +6,32 @@ Se migró a [`react-router-dom`](https://reactrouter.com/) (v7.x, declarativo �
 
 ## Tabla de rutas
 
-| Ruta | Página | Layout (Navbar + Footer) |
-|---|---|---|
-| `/` | `HomePage` (Hero + grilla de catálogo) | Sí |
-| `/catalogo/:packId` | `ExpansionDetailPage` | Sí |
-| `/comunidad` | `ChallengesPage` | Sí |
-| `/login` | `LoginPage` | No |
-| `/register` | `RegisterPage` | No |
-| `*` (cualquier otra) | `NotFoundPage` | No |
+| Ruta | Página | Layout (Navbar + Footer) | Requiere sesión |
+|---|---|---|---|
+| `/` | `HomePage` (Hero + grilla de catálogo) | Sí | No |
+| `/catalogo/:packId` | `ExpansionDetailPage` | Sí | No |
+| `/comunidad` | `ChallengesPage` | Sí | No |
+| `/perfil` | `ProfileLayout` → `ProfileInfoTab` (tab por defecto) | Sí | **Sí** |
+| `/perfil/retos` | `ProfileLayout` → `ProfileChallengesTab` | Sí | **Sí** |
+| `/perfil/compras` | `ProfileLayout` → `ProfilePurchasesTab` | Sí | **Sí** |
+| `/perfil/configuracion` | `ProfileLayout` → `ProfileSettingsTab` | Sí | **Sí** |
+| `/login` | `LoginPage` | No | No |
+| `/register` | `RegisterPage` | No | No |
+| `*` (cualquier otra) | `NotFoundPage` | No | No |
 
 `/login` y `/register` quedan fuera del layout compartido a propósito — son pantallas completas, igual que antes de la migración.
+
+### `/perfil/*` — segundo nivel de layout anidado
+
+`ProfileLayout` (`src/features/profile/pages/ProfileLayout.jsx`) agrega un segundo `<Outlet/>` **dentro** del de `MainLayout`: sidebar de navegación (`NavLink` a cada tab, con `end` en el link de "Mi perfil" para que no quede marcado activo en las sub-rutas) + el tab activo. No tiene costo funcional — React renderiza las tres capas (`MainLayout` → `ProfileLayout` → tab), y cambiar de tab solo remonta el contenido interno (Navbar/Footer/sidebar no se remontan).
+
+Al entrar a `/perfil`, `ProfileLayout` llama `fetchCurrentUser()` una vez y mergea el resultado al `user` de `AuthContext`, para que `betaTester`/`completedChallenges` estén frescos.
+
+### Guard de autenticación: `RequireAuth`
+
+`src/components/common/RequireAuth.jsx` envuelve la ruta `/perfil`: si no hay `user`, redirige a `/login` guardando `state: { from: location.pathname } }` (mismo patrón "volver a donde estabas" que ya usa `CardChallenge`, ver más abajo) — pero como componente **declarativo** que envuelve la ruta, no como un `navigate()` en un `onClick`, porque acá hay que bloquear el *render* de la página protegida, no reaccionar a un click puntual.
+
+**Caso borde conocido, no corregido:** si alguien entró por OAuth y su `localStorage` está vacío pero la cookie de sesión del backend sigue viva, `user` es `null` en el primer render mientras `AuthContext` resuelve `checkOAuthSession()` en segundo plano — en ese instante, `RequireAuth` podría rebotar de más a un usuario que en realidad sí está logueado. Es una condición de carrera preexistente (nada protegía rutas antes de esto), documentada acá y no resuelta en este trabajo.
 
 ## Estructura
 
