@@ -56,7 +56,6 @@ async function request(path, { method = "GET", body, headers = {}, auth = true }
   // a una página HTML de login en vez de responder 401 — sin este chequeo, ese HTML
   // terminaría tratado como si fuera una respuesta válida.
   if (response.redirected) {
-    window.__apiDebug = "redirected-for:" + path;
     clearToken();
     const err = new Error("Tu sesión expiró o no es válida. Iniciá sesión de nuevo.");
     err.sessionExpired = true;

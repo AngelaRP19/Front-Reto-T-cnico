@@ -32,7 +32,6 @@ function Navbar({ onLoginClick, onCreateAccountClick, onCommunityClick, onHomeCl
   };
 
   const handleBetaConfirm = async (accept) => {
-    document.title = "ENTERED:" + accept;
     setShowBetaConfirm(false);
     if (!accept) return;
 
@@ -40,10 +39,8 @@ function Navbar({ onLoginClick, onCreateAccountClick, onCommunityClick, onHomeCl
     setBetaError("");
     try {
       const updated = await setBetaTester(true);
-      document.title = "SUCCESS";
       setUser({ ...user, ...updated });
     } catch (err) {
-      document.title = "CAUGHT:" + err.message + ":se=" + err.sessionExpired;
       if (err.sessionExpired) clearUser();
       setBetaError(err.message || "No se pudo activar beta testing. Intentá de nuevo.");
     } finally {
