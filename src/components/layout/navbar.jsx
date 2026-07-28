@@ -167,6 +167,15 @@ function Navbar() {
             <p className="text-xs opacity-60 mb-3">Conectado con {user.provider}</p>
           )}
           <button
+            onClick={() => {
+              navigate("/perfil");
+              setShowUserMenu(false);
+            }}
+            className="w-full text-sm font-bold text-text hover:text-hover transition-colors text-left mb-2"
+          >
+            Ver perfil
+          </button>
+          <button
             onClick={handleLogout}
             className="w-full mt-2 text-sm font-bold text-main hover:text-hover transition-colors text-left"
           >

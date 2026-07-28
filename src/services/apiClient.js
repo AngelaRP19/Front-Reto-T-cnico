@@ -46,7 +46,7 @@ async function request(path, { method = "GET", body, headers = {}, auth = true }
         ...(token ? { Authorization: `Bearer ${token}` } : {}),
         ...headers,
       },
-      body: body ? JSON.stringify(body) : undefined,
+      body: body !== undefined ? JSON.stringify(body) : undefined,
     });
   } catch {
     throw new Error("No se pudo conectar con el servidor. Intentá de nuevo.");
