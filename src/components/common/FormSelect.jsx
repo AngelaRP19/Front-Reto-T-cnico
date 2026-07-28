@@ -1,0 +1,36 @@
+function FormSelect({ id, label, value, onChange, options = [], placeholder, error, hint, ...rest }) {
+  return (
+    <div className="w-full">
+      <label
+        className="block text-xs font-bold tracking-[0.03125rem] uppercase text-text opacity-70 mb-2 transition-colors duration-400"
+        htmlFor={id}
+      >
+        {label}
+      </label>
+      <select
+        id={id}
+        className={`w-full px-4 py-3 rounded-[0.625rem] border bg-snd-bg text-text text-[0.9375rem] font-nunito [transition:border-color_0.3s_ease,background-color_0.4s_ease,color_0.4s_ease] focus:outline-none focus:border-main ${
+          error ? "border-red-400" : "border-snd-bg"
+        } ${error || hint ? "mb-1" : "mb-4"}`}
+        value={value}
+        onChange={onChange}
+        aria-invalid={Boolean(error)}
+        {...rest}
+      >
+        {placeholder ? <option value="">{placeholder}</option> : null}
+        {options.map((option) => (
+          <option key={option} value={option}>
+            {option}
+          </option>
+        ))}
+      </select>
+      {error ? (
+        <p className="text-red-400 text-xs mb-4">{error}</p>
+      ) : hint ? (
+        <p className="text-text opacity-50 text-xs mb-4">{hint}</p>
+      ) : null}
+    </div>
+  );
+}
+
+export default FormSelect;

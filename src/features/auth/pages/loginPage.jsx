@@ -1,27 +1,40 @@
 import { useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import Button from "../../../components/common/Button";
 import FormInput from "../../../components/common/FormInput";
-import { login } from "../services/authService";
+import { login, fetchCurrentUser } from "../services/authService";
+import { API_BASE_URL, clearLoggedOutMark } from "../../../services/apiClient";
+import { useAuth } from "../../../context/AuthContext";
 
-function LoginPage({ onBack, onRegisterClick, onLoginSuccess }) {
-  const [email, setEmail] = useState("");
+function LoginPage() {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [remember, setRemember] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [serverError, setServerError] = useState("");
+  const { setUser } = useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setServerError("");
     setSubmitting(true);
     try {
-      const data = await login(email.trim(), password);
-      onLoginSuccess?.(data);
+      await login(username.trim(), password);
+      const me = await fetchCurrentUser();
+      setUser({ username: username.trim(), ...me });
+      navigate(location.state?.from ?? "/", { replace: true });
     } catch (err) {
       setServerError(err.message);
     } finally {
       setSubmitting(false);
     }
+  };
+
+  const handleOAuthLogin = (provider) => {
+    clearLoggedOutMark();
+    window.location.href = `${API_BASE_URL}/oauth2/authorization/${provider}`;
   };
 
   const handleForgotPassword = () => {
@@ -32,7 +45,7 @@ function LoginPage({ onBack, onRegisterClick, onLoginSuccess }) {
     <div className="min-h-screen w-full flex items-center justify-center bg-bg px-5 py-10 transition-colors duration-400">
       <div className="w-full max-w-[380px] flex flex-col items-center text-center">
         <div
-          onClick={onBack}
+          onClick={() => navigate("/")}
           title="Volver al inicio"
         >
           <img 
@@ -47,10 +60,10 @@ function LoginPage({ onBack, onRegisterClick, onLoginSuccess }) {
         <form className="w-full flex flex-col text-left" onSubmit={handleSubmit}>
           <FormInput
             id="login-email"
-            label="Correo electrónico o usuario"
-            placeholder="tucorreo@ejemplo.com"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            label="Nombre de usuario"
+            placeholder="panda7"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
           />
 
           <FormInput
@@ -67,10 +80,10 @@ function LoginPage({ onBack, onRegisterClick, onLoginSuccess }) {
           </div>
 
           <div className="flex gap-3 w-full mb-6">
-            <Button variant="oauth" onClick={() => console.log("Login con Google")}>
+            <Button variant="oauth" onClick={() => handleOAuthLogin("google")}>
               Google
             </Button>
-            <Button variant="oauth" onClick={() => console.log("Login con Meta")}>
+            <Button variant="oauth" onClick={() => handleOAuthLogin("meta")}>
               Meta
             </Button>
           </div>
@@ -98,7 +111,7 @@ function LoginPage({ onBack, onRegisterClick, onLoginSuccess }) {
           ¿Olvidaste tu contraseña?
         </Button>
 
-        <Button variant="outline" onClick={onRegisterClick}>
+        <Button variant="outline" onClick={() => navigate("/register")}>
           Crear cuenta
         </Button>
       </div>

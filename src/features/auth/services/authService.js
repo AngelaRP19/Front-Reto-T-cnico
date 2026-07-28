@@ -1,4 +1,4 @@
-import { apiClient, setToken, clearToken } from "../../../services/apiClient";
+import { apiClient, setToken, clearToken, markLoggedOut } from "../../../services/apiClient";
 
 export async function register(payload) {
   const data = await apiClient.post("/auth/register", payload, { auth: false });
@@ -6,12 +6,37 @@ export async function register(payload) {
   return data;
 }
 
-export async function login(email, password) {
-  const data = await apiClient.post("/auth/login", { email, password }, { auth: false });
+export async function login(username, password) {
+  const data = await apiClient.post("/auth/login", { username, password }, { auth: false });
   if (data?.token) setToken(data.token);
   return data;
 }
 
-export function logout() {
-  clearToken();
+export async function logout() {
+  try {
+    await apiClient.post("/auth/logout", undefined, { auth: true });
+  } catch {
+    // Si falla la llamada al backend, igual se limpia la sesión localmente.
+  } finally {
+    clearToken();
+    markLoggedOut();
+  }
+}
+
+export async function checkOAuthSession() {
+  const data = await apiClient.get("/auth/oauth2/success", { auth: false });
+  if (data?.token) setToken(data.token);
+  return data;
+}
+
+export async function fetchCurrentUser() {
+  try {
+    return await apiClient.get("/auth/me");
+  } catch {
+    return null;
+  }
+}
+
+export function setBetaTester(value) {
+  return apiClient.put("/auth/me/betatester", value);
 }
