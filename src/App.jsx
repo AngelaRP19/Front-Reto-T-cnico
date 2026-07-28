@@ -6,7 +6,6 @@ import Footer from "./components/layout/Footer";
 import ExpansionDetail from "./components/ExpansionDetail";
 import LoginPage from "./features/auth/pages/loginPage";
 import RegisterPage from "./features/auth/pages/registerPage";
-import SubscriptionForm from "./features/beta/components/subscriptionForm";
 import ChallengesPage from "./features/challenges/pages/ChallengesPage";
 import { getExpansionPacks } from "./features/catalog/services/expansionsService";
 
@@ -14,7 +13,6 @@ function App() {
   const [view, setView] = useState("home");
   const [selectedPack, setSelectedPack] = useState(null);
   const [returnToCatalog, setReturnToCatalog] = useState(false);
-  const [showForm, setShowForm] = useState(false);
   const [packs, setPacks] = useState([]);
   const [loadingPacks, setLoadingPacks] = useState(true);
   const [packsError, setPacksError] = useState("");
@@ -34,6 +32,18 @@ function App() {
   const handleBackToCatalog = () => {
     setReturnToCatalog(true);
     setView("home");
+  };
+
+  const handleCatalogClick = () => {
+    if (view !== "home") {
+      setReturnToCatalog(true);
+      setView("home");
+      return;
+    }
+    const catalogSection = document.getElementById("catalogo");
+    if (catalogSection) {
+      catalogSection.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
   };
 
   // Posicionamiento inmediato al volver del detalle
@@ -63,8 +73,10 @@ function App() {
       <>
         <Navbar
           onLoginClick={() => setView("login")}
+          onCreateAccountClick={() => setView("register")}
           onCommunityClick={() => setView("community")}
           onHomeClick={() => setView("home")}
+          onCatalogClick={handleCatalogClick}
         />
         <ExpansionDetail data={selectedPack} onBack={handleBackToCatalog} />
         <Footer />
@@ -77,8 +89,10 @@ function App() {
       <>
         <Navbar
           onLoginClick={() => setView("login")}
+          onCreateAccountClick={() => setView("register")}
           onCommunityClick={() => setView("community")}
           onHomeClick={() => setView("home")}
+          onCatalogClick={handleCatalogClick}
         />
         <ChallengesPage onRequireLogin={() => setView("login")} />
         <Footer />
@@ -100,9 +114,10 @@ function App() {
     <>
       <Navbar
         onLoginClick={() => setView("login")}
-        abrirFormulario={() => setShowForm(true)}
+        onCreateAccountClick={() => setView("register")}
         onCommunityClick={() => setView("community")}
         onHomeClick={() => setView("home")}
+        onCatalogClick={handleCatalogClick}
       />
 
       {/* Función para el botón 'Ver catálogo' */}
@@ -133,12 +148,6 @@ function App() {
         )}
 
       </section>
-
-      {showForm && (
-        <SubscriptionForm 
-          cerrarFormulario={() => setShowForm(false)}
-        />
-      )}
 
       <Footer />
     </>

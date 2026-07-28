@@ -2,7 +2,7 @@ import { useState } from "react";
 import Button from "../../../components/common/Button";
 import FormInput from "../../../components/common/FormInput";
 import { login, fetchCurrentUser } from "../services/authService";
-import { API_BASE_URL } from "../../../services/apiClient";
+import { API_BASE_URL, clearLoggedOutMark } from "../../../services/apiClient";
 import { useAuth } from "../../../context/AuthContext";
 
 function LoginPage({ onBack, onRegisterClick, onLoginSuccess }) {
@@ -30,6 +30,7 @@ function LoginPage({ onBack, onRegisterClick, onLoginSuccess }) {
   };
 
   const handleOAuthLogin = (provider) => {
+    clearLoggedOutMark();
     window.location.href = `${API_BASE_URL}/oauth2/authorization/${provider}`;
   };
 
