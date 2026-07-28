@@ -9,6 +9,7 @@ import RegisterPage from "./features/auth/pages/registerPage";
 import SubscriptionForm from "./features/beta/components/subscriptionForm";
 import ChallengesPage from "./features/challenges/pages/ChallengesPage";
 import { getExpansionPacks } from "./features/catalog/services/expansionsService";
+import { useTranslation } from "react-i18next";
 
 function App() {
   const [view, setView] = useState("home");
@@ -18,6 +19,7 @@ function App() {
   const [packs, setPacks] = useState([]);
   const [loadingPacks, setLoadingPacks] = useState(true);
   const [packsError, setPacksError] = useState("");
+  const {t}= useTranslation();
 
   useEffect(() => {
     getExpansionPacks()
@@ -116,9 +118,9 @@ function App() {
       <section id="catalogo" className="w-[90%] mx-auto my-[60px] flex justify-center flex-wrap gap-[30px] px-5 py-[30px] md:p-[70px] bg-bg transition-colors duration-400">
 
         {loadingPacks ? (
-          <p className="text-text w-full text-center py-10">Cargando catálogo...</p>
+          <p className="text-text w-full text-center py-10">{t("catalog.loading")}</p>
         ) : packsError ? (
-          <p className="text-text w-full text-center py-10">{packsError}</p>
+          <p className="text-text w-full text-center py-10">{packsError || t("catalog.error")}</p>
         ) : (
           packs.map((pack) => (
             <div key={pack.id} onClick={() => handleSelectPack(pack)} className="cursor-pointer">

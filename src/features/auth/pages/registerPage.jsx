@@ -4,6 +4,7 @@ import FormInput from "../../../components/common/FormInput";
 import { register, fetchCurrentUser } from "../services/authService";
 import { API_BASE_URL } from "../../../services/apiClient";
 import { useAuth } from "../../../context/AuthContext";
+import { useTranslation } from "react-i18next";
 
 const USERNAME_RE = /^[a-zA-Z0-9_]{3,30}$/;
 const PASSWORD_RE = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,50}$/;
@@ -20,23 +21,7 @@ const INITIAL_FORM = {
   confirmPassword: "",
 };
 
-function validate(form) {
-  const errors = {};
 
-  if (!NAME_RE.test(form.firstName.trim())) errors.firstName = "Solo letras y espacios";
-  if (!NAME_RE.test(form.lastName.trim())) errors.lastName = "Solo letras y espacios";
-  if (!USERNAME_RE.test(form.username.trim()))
-    errors.username = "3-30 caracteres: letras, números y guion bajo";
-  if (!EMAIL_RE.test(form.email.trim())) errors.email = "Correo inválido";
-  if (form.country.trim().length < 2 || form.country.trim().length > 56)
-    errors.country = "Debe tener entre 2 y 56 caracteres";
-  if (!PASSWORD_RE.test(form.password))
-    errors.password = "Mín. 8 caracteres, con mayúscula, minúscula, número y símbolo";
-  if (form.password !== form.confirmPassword)
-    errors.confirmPassword = "Las contraseñas no coinciden";
-
-  return errors;
-}
 
 function RegisterPage({ onBack, onHomeClick, onRegistered }) {
   const [form, setForm] = useState(INITIAL_FORM);
@@ -44,7 +29,26 @@ function RegisterPage({ onBack, onHomeClick, onRegistered }) {
   const [acceptedTerms, setAcceptedTerms] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [serverError, setServerError] = useState("");
-  const { setUser } = useAuth();
+  const { t } = useTranslation();
+  const { setUser } = useAuth();  
+
+  function validate(form) {
+  const errors = {};
+
+  if (!NAME_RE.test(form.firstName.trim())) errors.firstName = t("register.errors.name");
+  if (!NAME_RE.test(form.lastName.trim())) errors.lastName = t("register.errors.name");
+  if (!USERNAME_RE.test(form.username.trim()))
+    errors.username = t("register.errors.username");
+  if (!EMAIL_RE.test(form.email.trim())) errors.email = t("register.errors.email");
+  if (form.country.trim().length < 2 || form.country.trim().length > 56)
+    errors.country = t("register.errors.country");
+  if (!PASSWORD_RE.test(form.password))
+    errors.password = t("register.errors.password");
+  if (form.password !== form.confirmPassword)
+    errors.confirmPassword = t("register.errors.confirmPassword");
+
+  return errors;
+}
 
   const updateField = (field) => (e) => {
     setForm((prev) => ({ ...prev, [field]: e.target.value }));
@@ -55,7 +59,7 @@ function RegisterPage({ onBack, onHomeClick, onRegistered }) {
     setServerError("");
 
     if (!acceptedTerms) {
-      setServerError("Debes aceptar los términos y la política de privacidad");
+      setServerError(t("register.errors.terms"));
       return;
     }
 
@@ -110,23 +114,23 @@ function RegisterPage({ onBack, onHomeClick, onRegistered }) {
         </button>
 
         <h1 className="font-nunito text-2xl font-extrabold text-text mb-7 transition-colors duration-400">
-          Crea tu cuenta The Sims
+            {t("register.title")}
         </h1>
 
         <form className="w-full flex flex-col text-left" onSubmit={handleSubmit}>
           <div className="grid grid-cols-2 gap-3">
             <FormInput
               id="register-firstName"
-              label="Nombre"
-              placeholder="Sarah"
+              label={t("register.firstName")}
+              placeholder={t("register.firstNamePlaceholder")}
               value={form.firstName}
               onChange={updateField("firstName")}
               error={errors.firstName}
             />
             <FormInput
               id="register-lastName"
-              label="Apellido"
-              placeholder="Lopez"
+              label={t("register.lastName")}
+              placeholder={t("register.lastNamePlaceholder")}
               value={form.lastName}
               onChange={updateField("lastName")}
               error={errors.lastName}
@@ -135,19 +139,19 @@ function RegisterPage({ onBack, onHomeClick, onRegistered }) {
 
           <FormInput
             id="register-username"
-            label="Nombre de usuario"
-            placeholder="panda7"
+            label={t("register.username")}
+            placeholder={t("register.usernamePlaceholder")}
             value={form.username}
             onChange={updateField("username")}
             error={errors.username}
-            hint={!errors.username ? "Letras, números y guion bajo" : undefined}
+            hint={!errors.username ? t("register.usernameHint") : undefined}
           />
 
           <FormInput
             id="register-email"
-            label="Correo electrónico"
+            label={t("register.email")}
+            placeholder={t("register.emailPlaceholder")}
             type="email"
-            placeholder="tucorreo@ejemplo.com"
             value={form.email}
             onChange={updateField("email")}
             error={errors.email}
@@ -155,8 +159,8 @@ function RegisterPage({ onBack, onHomeClick, onRegistered }) {
 
           <FormInput
             id="register-country"
-            label="País"
-            placeholder="Colombia"
+            label={t("register.country")}
+            placeholder={t("register.countryPlaceholder")}
             value={form.country}
             onChange={updateField("country")}
             error={errors.country}
@@ -165,18 +169,18 @@ function RegisterPage({ onBack, onHomeClick, onRegistered }) {
           <div className="grid grid-cols-2 gap-3">
             <FormInput
               id="register-password"
-              label="Contraseña"
+              label={t("register.password")}
               type="password"
-              placeholder="••••••••"
+              placeholder={t("register.passwordPlaceholder")}
               value={form.password}
               onChange={updateField("password")}
               error={errors.password}
             />
             <FormInput
               id="register-confirmPassword"
-              label="Confirmar"
+              label={t("register.confirmPassword")}
               type="password"
-              placeholder="••••••••"
+              placeholder={t("register.passwordPlaceholder")}
               value={form.confirmPassword}
               onChange={updateField("confirmPassword")}
               error={errors.confirmPassword}
@@ -190,7 +194,7 @@ function RegisterPage({ onBack, onHomeClick, onRegistered }) {
               checked={acceptedTerms}
               onChange={(e) => setAcceptedTerms(e.target.checked)}
             />
-            Acepto los términos y la política de privacidad
+            {t("register.terms")}
           </label>
 
           {serverError ? (
@@ -198,12 +202,12 @@ function RegisterPage({ onBack, onHomeClick, onRegistered }) {
           ) : null}
 
           <Button type="submit" variant="primary" disabled={submitting}>
-            {submitting ? "Creando cuenta..." : "Crear cuenta"}
+            {submitting ? t("register.loading") : t("register.button")}
           </Button>
         </form>
 
         <div className="flex items-center w-full mb-6 text-text opacity-60 text-[13px] before:content-[''] before:flex-1 before:h-px before:bg-snd-bg after:content-[''] after:flex-1 after:h-px after:bg-snd-bg">
-          <span className="px-3">o regístrate con</span>
+          <span className="px-3">{t("register.or")}</span>
         </div>
 
         <div className="flex gap-3 w-full mb-6">
@@ -216,7 +220,7 @@ function RegisterPage({ onBack, onHomeClick, onRegistered }) {
         </div>
 
         <Button variant="link" onClick={onBack}>
-          ¿Ya tienes cuenta? Inicia sesión
+          {t("register.login")}
         </Button>
       </div>
     </div>

@@ -4,6 +4,7 @@ import FormInput from "../../../components/common/FormInput";
 import { login, fetchCurrentUser } from "../services/authService";
 import { API_BASE_URL } from "../../../services/apiClient";
 import { useAuth } from "../../../context/AuthContext";
+import { useTranslation } from "react-i18next";
 
 function LoginPage({ onBack, onRegisterClick, onLoginSuccess }) {
   const [username, setUsername] = useState("");
@@ -12,6 +13,7 @@ function LoginPage({ onBack, onRegisterClick, onLoginSuccess }) {
   const [submitting, setSubmitting] = useState(false);
   const [serverError, setServerError] = useState("");
   const { setUser } = useAuth();
+  const { t } = useTranslation();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -51,20 +53,22 @@ function LoginPage({ onBack, onRegisterClick, onLoginSuccess }) {
           />
         </div>
 
-        <h1 className="font-nunito text-2xl font-extrabold text-text mb-7 transition-colors duration-400">Inicia sesión en tu cuenta The Sims</h1>
+        <h1 className="font-nunito text-2xl font-extrabold text-text mb-7 transition-colors duration-400">
+          {t("login.title")}
+        </h1>
 
         <form className="w-full flex flex-col text-left" onSubmit={handleSubmit}>
           <FormInput
             id="login-email"
-            label="Nombre de usuario"
-            placeholder="panda7"
+            label={t("login.username")}
+            placeholder={t("login.usernamePlaceholder")}
             value={username}
             onChange={(e) => setUsername(e.target.value)}
           />
 
           <FormInput
             id="login-password"
-            label="Contraseña"
+            label={t("login.password")}
             type="password"
             placeholder="••••••••"
             value={password}
@@ -72,7 +76,7 @@ function LoginPage({ onBack, onRegisterClick, onLoginSuccess }) {
           />
 
           <div className="flex items-center w-full mb-6 text-text opacity-60 text-[13px] before:content-[''] before:flex-1 before:h-px before:bg-snd-bg after:content-[''] after:flex-1 after:h-px after:bg-snd-bg">
-            <span className="px-3">o</span>
+            <span className="px-3">{t("login.or")}</span>
           </div>
 
           <div className="flex gap-3 w-full mb-6">
@@ -91,7 +95,7 @@ function LoginPage({ onBack, onRegisterClick, onLoginSuccess }) {
               checked={remember}
               onChange={(e) => setRemember(e.target.checked)}
             />
-            No cerrar sesión
+            {t("login.remember")}
           </label>
 
           {serverError ? (
@@ -99,16 +103,16 @@ function LoginPage({ onBack, onRegisterClick, onLoginSuccess }) {
           ) : null}
 
           <Button type="submit" variant="primary" disabled={submitting}>
-            {submitting ? "Iniciando sesión..." : "Iniciar sesión"}
+            {submitting ? t("login.loading") : t("login.button")}
           </Button>
         </form>
 
         <Button variant="link" onClick={handleForgotPassword}>
-          ¿Olvidaste tu contraseña?
+          {t("login.forgot")}
         </Button>
 
         <Button variant="outline" onClick={onRegisterClick}>
-          Crear cuenta
+          {t("login.register")}
         </Button>
       </div>
     </div>

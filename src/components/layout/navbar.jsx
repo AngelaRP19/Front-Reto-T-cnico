@@ -2,12 +2,15 @@ import { useState } from "react";
 import { useTheme } from "../../context/ThemeContext";
 import { useAuth } from "../../context/AuthContext";
 import { logout } from "../../features/auth/services/authService";
+import LanguageSelector from "../common/LanguageSelector";
+import { useTranslation } from "react-i18next";
 
 
 function Navbar({ onLoginClick, abrirFormulario, onCommunityClick, onHomeClick }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
   const { theme, toggleTheme } = useTheme();
+  const { t } = useTranslation();
   const { user, clearUser } = useAuth();
 
   const displayName = user?.firstName || user?.name || user?.username || "";
@@ -51,9 +54,27 @@ function Navbar({ onLoginClick, abrirFormulario, onCommunityClick, onHomeClick }
         }`}
       >
         <ul className="flex flex-col items-center gap-[15px] md:gap-5 lg:flex-row lg:gap-[30px] lg:mr-auto list-none">
-          <li><a href="#" onClick={(e) => { e.preventDefault(); onHomeClick?.(); }} className="no-underline text-text text-lg font-semibold transition-colors duration-300 hover:text-main">Inicio</a></li>
-          <li><a href="#" className="no-underline text-text text-lg font-semibold transition-colors duration-300 hover:text-main">Catálogo</a></li>
-          <li><a href="#" onClick={(e) => { e.preventDefault(); onCommunityClick?.(); }} className="no-underline text-text text-lg font-semibold transition-colors duration-300 hover:text-main">Comunidad</a></li>
+          <li>
+         <a href="#" onClick={(e) => { e.preventDefault(); onHomeClick?.(); }}
+            className="no-underline text-text text-lg font-semibold transition-colors duration-300 hover:text-[#7CFC00]"
+          >
+            Inicio
+          </a>
+          </li>
+          <li>
+          <a href="#" onClick={(e) => { e.preventDefault(); onCommunityClick?.(); }}
+            className="no-underline text-text text-lg font-semibold transition-colors duration-300 hover:text-[#7CFC00]"
+          >
+            Comunidad
+          </a>
+          </li>
+          <li>
+           <a href="#" className="no-underline text-text text-lg font-semibold transition-colors duration-300 hover:text-[#7CFC00]"
+          >
+             Catálogo
+           </a>
+          </li>
+
         </ul>
 
         <div className="flex items-center gap-4 lg:ml-auto">
@@ -75,7 +96,8 @@ function Navbar({ onLoginClick, abrirFormulario, onCommunityClick, onHomeClick }
       active:scale-95
       animate-pulse"
   >
-    ¿Quieres ser Beta testing?
+    {t("navbar.beta")}
+
   </button>
 
   {user ? (
@@ -91,7 +113,7 @@ function Navbar({ onLoginClick, abrirFormulario, onCommunityClick, onHomeClick }
       {showUserMenu && (
         <div className="absolute right-0 top-full mt-2 w-64 bg-card-bg text-text rounded-xl shadow-lg p-4 z-50 transition-colors duration-300">
           <p className="font-bold text-base mb-1">
-            {displayName || "Usuario"}
+            {displayName || t("navbar.user")}
           </p>
           {user.email && (
             <p className="text-sm opacity-70 mb-1 break-all">{user.email}</p>
@@ -103,7 +125,8 @@ function Navbar({ onLoginClick, abrirFormulario, onCommunityClick, onHomeClick }
             onClick={handleLogout}
             className="w-full mt-2 text-sm font-bold text-main hover:text-hover transition-colors text-left"
           >
-            Cerrar sesión
+          {t("navbar.logout")}
+
           </button>
         </div>
       )}
@@ -113,8 +136,9 @@ function Navbar({ onLoginClick, abrirFormulario, onCommunityClick, onHomeClick }
       className="bg-main text-white px-[28px] py-[12px] rounded-full font-bold hover:bg-hover transition"
       onClick={onLoginClick}
     >
-      Iniciar sesión
-    </button>
+    {t("navbar.login")}
+
+      </button>
   )}
 
   <button
@@ -123,6 +147,8 @@ function Navbar({ onLoginClick, abrirFormulario, onCommunityClick, onHomeClick }
   >
     {theme === "light" ? "🌙" : "☀️"}
   </button>
+
+  <LanguageSelector />
 
  </div>
       </nav>

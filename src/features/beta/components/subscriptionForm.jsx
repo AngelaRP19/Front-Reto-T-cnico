@@ -2,6 +2,7 @@ import { useState } from "react";
 import Button from "../../../components/common/Button";
 import FormInput from "../../../components/common/FormInput";
 import { createSubscription } from "../services/subscriptionService";
+import { useTranslation } from "react-i18next";
 
 function SubscriptionForm({ cerrarFormulario }) {
   const [formData, setFormData] = useState({
@@ -15,6 +16,7 @@ function SubscriptionForm({ cerrarFormulario }) {
   const [submitting, setSubmitting] = useState(false);
   const [serverError, setServerError] = useState("");
   const [submitted, setSubmitted] = useState(false);
+  const {t} = useTranslation();
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -28,7 +30,7 @@ function SubscriptionForm({ cerrarFormulario }) {
     e.preventDefault();
 
     if (!formData.terminos) {
-      alert("Debes aceptar los términos y condiciones para continuar.");
+      alert(t("subscription.alertTerms"));
       return;
     }
 
@@ -69,25 +71,22 @@ function SubscriptionForm({ cerrarFormulario }) {
 
         {submitted ? (
           <div className="text-center py-8">
-            <p className="text-text text-lg font-semibold mb-6">
-              ¡Gracias por registrarte! Te enviaremos más información al correo registrado.
-            </p>
-            <Button variant="primary" onClick={cerrarFormulario}>
-              Cerrar
+            <p className="text-text text-lg font-semibold mb-6">{t("subscription.success")}</p>
+            <Button variant="primary" onClick={cerrarFormulario}>{t("subscription.close")}
             </Button>
           </div>
         ) : (
           <>
             <h2 className="text-3xl font-bold text-center mb-6">
-              Inscripción a la comunidad
-            </h2>
+            {t("subscription.title")}
+          </h2>
 
             <form onSubmit={handleSubmit} className="space-y-4">
               <FormInput
                 id="subscription-nombre"
                 name="nombre"
                 label="Nombre completo"
-                placeholder="Nombre completo"
+                placeholder={t("subscription.name")}
                 value={formData.nombre}
                 onChange={handleChange}
               />
@@ -97,7 +96,7 @@ function SubscriptionForm({ cerrarFormulario }) {
                 name="email"
                 type="email"
                 label="Correo electrónico"
-                placeholder="Correo electrónico"
+                placeholder={t("subscription.email")}
                 value={formData.email}
                 onChange={handleChange}
               />
@@ -108,16 +107,16 @@ function SubscriptionForm({ cerrarFormulario }) {
                 onChange={handleChange}
                 className="w-full px-4 py-3 rounded-[10px] border border-snd-bg bg-snd-bg text-text font-nunito focus:outline-none focus:border-main"
               >
-                <option value="">Seleccione el tipo de suscripción</option>
-                <option value="SIMMER_CHALLENGE">Retos Simmer</option>
-                <option value="BETA_TESTING">Beta Testing</option>
+                <option value="">{t("subscription.select")}</option>
+                <option value="">{t("subscription.challenges")}</option>
+                <option value="">{t("subscription.beta")}</option>
               </select>
 
               <FormInput
                 id="subscription-pais"
                 name="pais"
                 label="País"
-                placeholder="País"
+                placeholder={t("subscription.country")}
                 value={formData.pais}
                 onChange={handleChange}
               />
@@ -130,7 +129,7 @@ function SubscriptionForm({ cerrarFormulario }) {
                   onChange={handleChange}
                   className="accent-main w-4 h-4 cursor-pointer"
                 />
-                <label className="text-text">Acepto los términos y condiciones.</label>
+                <label>{t("subscription.terms")}</label>
               </div>
 
               <div className="flex items-start gap-2">
@@ -141,9 +140,7 @@ function SubscriptionForm({ cerrarFormulario }) {
                   onChange={handleChange}
                   className="accent-main w-4 h-4 cursor-pointer"
                 />
-                <label className="text-text">
-                  Deseo recibir información y promociones por correo.
-                </label>
+                <label>{t("subscription.marketing")}</label>
               </div>
 
               {serverError ? (
@@ -151,7 +148,7 @@ function SubscriptionForm({ cerrarFormulario }) {
               ) : null}
 
               <Button type="submit" variant="primary" disabled={submitting}>
-                {submitting ? "Enviando..." : "Enviar inscripción"}
+                {submitting ? "Enviando..." : t("subscription.send")}
               </Button>
             </form>
           </>

@@ -1,0 +1,90 @@
+{
+  "navbar": {
+    "home": "Inicio",
+    "catalog": "Catálogo",
+    "community": "Comunidad",
+    "beta": "¿Quieres ser Beta tester?",
+    "login": "Iniciar sesión",
+    "logout": "Cerrar sesión",
+    "user": "Usuario"
+  },
+
+  "hero": {
+  "title": "Expande tu mundo",
+  "description": "Descubre los últimos packs de expansión para PC y Móvil.",
+  "button": "Ver catálogo"
+},
+
+"catalog": {
+  "loading": "Cargando catálogo...",
+  "error": "No se pudo conectar al servidor. Intenta de nuevo."
+},
+
+"subscription": {
+  "title": "Inscripción a la comunidad",
+  "name": "Nombre completo",
+  "email": "Correo electrónico",
+  "country": "País",
+  "select": "Seleccione el tipo de suscripción",
+  "challenges": "Retos Simmer",
+  "beta": "Beta Testing",
+  "terms": "Acepto los términos y condiciones.",
+  "marketing": "Deseo recibir información y promociones por correo.",
+  "send": "Enviar inscripción",
+  "alertTerms": "Debes aceptar los términos y condiciones para continuar.",
+  "alertSuccess": "Formulario enviado correctamente.",
+  "success": "¡Gracias por registrarte! Te enviaremos más información al correo registrado.",
+  "close": "Cerrar"
+},
+
+"login": {
+  "title": "Inicia sesión en tu cuenta The Sims",
+  "username": "Nombre de usuario",
+  "usernamePlaceholder": "panda7",
+  "password": "Contraseña",
+  "or": "o",
+  "remember": "No cerrar sesión",
+  "loading": "Iniciando sesión...",
+  "button": "Iniciar sesión",
+  "forgot": "¿Olvidaste tu contraseña?",
+  "register": "Crear cuenta"
+},
+
+"register": {
+  "title": "Crea tu cuenta The Sims",
+  "firstName": "Nombre",
+  "firstNamePlaceholder": "Sarah",
+  "lastName": "Apellido",
+  "lastNamePlaceholder": "López",
+  "username": "Nombre de usuario",
+  "usernamePlaceholder": "panda7",
+  "usernameHint": "Letras, números y guion bajo",
+  "email": "Correo electrónico",
+  "emailPlaceholder": "tucorreo@ejemplo.com",
+  "country": "País",
+  "countryPlaceholder": "Colombia",
+  "password": "Contraseña",
+  "passwordPlaceholder": "••••••••",
+  "confirmPassword": "Confirmar",
+  "terms": "Acepto los términos y la política de privacidad",
+  "button": "Crear cuenta",
+  "loading": "Creando cuenta...",
+  "or": "o regístrate con",
+  "login": "¿Ya tienes cuenta? Inicia sesión",
+
+  "errors": {
+    "name": "Solo letras y espacios",
+    "username": "3-30 caracteres: letras, números y guion bajo",
+    "email": "Correo inválido",
+    "country": "Debe tener entre 2 y 56 caracteres",
+    "password": "Mín. 8 caracteres, con mayúscula, minúscula, número y símbolo",
+    "confirmPassword": "Las contraseñas no coinciden",
+    "terms": "Debes aceptar los términos y la política de privacidad"
+  }
+},
+
+"footer": {
+  "copyright": "© 2026 The Sims"
+}
+}
+
