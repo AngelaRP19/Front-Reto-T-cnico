@@ -1,4 +1,4 @@
-import { apiClient, setToken, clearToken } from "../../../services/apiClient";
+import { apiClient, setToken, clearToken, markLoggedOut } from "../../../services/apiClient";
 
 export async function register(payload) {
   const data = await apiClient.post("/auth/register", payload, { auth: false });
@@ -19,6 +19,7 @@ export async function logout() {
     // Si falla la llamada al backend, igual se limpia la sesión localmente.
   } finally {
     clearToken();
+    markLoggedOut();
   }
 }
 
@@ -34,4 +35,8 @@ export async function fetchCurrentUser() {
   } catch {
     return null;
   }
+}
+
+export function setBetaTester(value) {
+  return apiClient.put("/auth/me/betatester", value);
 }

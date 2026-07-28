@@ -11,6 +11,7 @@ Proyecto React + Vite (Tailwind CSS v4 para estilos) organizado por responsabili
 - `eslint.config.js`: reglas de linting.
 - `README.md`: este archivo.
 - `API.md`: cómo funciona la capa de conexión al API y cómo conectar una funcionalidad nueva.
+- `ROUTING.md`: cómo funciona el enrutamiento con `react-router-dom` (rutas, layout, deep-linking).
 - `.env.example`: plantilla de variables de entorno (copiar a `.env`).
 
 ### `public/`
@@ -32,7 +33,7 @@ Contextos globales de React. Hoy: `ThemeContext.jsx`, maneja el modo claro/oscur
 #### `src/features/`
 Módulos por dominio de negocio. Cada feature agrupa sus propias páginas/componentes y su propio servicio de API si necesita hablar con el backend.
 - **`auth/`** — inicio de sesión y registro.
-  - `pages/loginPage.jsx`, `pages/registerPage.jsx`: las pantallas completas (sin separar en "form" + "page" aparte — no hay router ni otro lugar donde el formulario se use fuera de su pantalla, así que un wrapper adicional no aportaría nada).
+  - `pages/loginPage.jsx`, `pages/registerPage.jsx`: las pantallas completas, montadas en las rutas `/login` y `/register` (sin separar en "form" + "page" aparte — no hay otro lugar donde el formulario se use fuera de su pantalla, así que un wrapper adicional no aportaría nada).
   - `services/authService.js`: `login`, `register`, `logout` — conectados al backend Java vía `apiClient` (ver [`API.md`](API.md)).
 - **`beta/`** — inscripción a beta testing.
   - `components/subscriptionForm.jsx`: modal de inscripción, abierto desde el botón del navbar.
@@ -47,7 +48,7 @@ Cliente HTTP compartido (`apiClient.js`): base URL, headers, token de sesión y 
 Reservada para funciones utilitarias puras (formateo, validaciones, helpers) compartidas entre features. Vacía por ahora.
 
 #### `src/App.jsx` / `src/main.jsx`
-`main.jsx` monta `App` dentro de `ThemeProvider`. `App.jsx` alterna entre pantallas (`home`, `login`, `register`) con un `useState` simple — no hay router instalado todavía.
+`main.jsx` monta `App` dentro de `BrowserRouter` → `ThemeProvider` → `AuthProvider`. `App.jsx` define el árbol de rutas con `react-router-dom` (cada pantalla tiene su propia URL). Ver [`ROUTING.md`](ROUTING.md) para el detalle completo.
 
 ## Convenciones
 

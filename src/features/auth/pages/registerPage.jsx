@@ -1,9 +1,12 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Button from "../../../components/common/Button";
 import FormInput from "../../../components/common/FormInput";
+import FormSelect from "../../../components/common/FormSelect";
 import { register, fetchCurrentUser } from "../services/authService";
-import { API_BASE_URL } from "../../../services/apiClient";
+import { API_BASE_URL, clearLoggedOutMark } from "../../../services/apiClient";
 import { useAuth } from "../../../context/AuthContext";
+import COUNTRIES from "../data/countries";
 
 const USERNAME_RE = /^[a-zA-Z0-9_]{3,30}$/;
 const PASSWORD_RE = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,50}$/;
@@ -27,9 +30,8 @@ function validate(form) {
   if (!NAME_RE.test(form.lastName.trim())) errors.lastName = "Solo letras y espacios";
   if (!USERNAME_RE.test(form.username.trim()))
     errors.username = "3-30 caracteres: letras, números y guion bajo";
-  if (!EMAIL_RE.test(form.email.trim())) errors.email = "Correo inválido";
-  if (form.country.trim().length < 2 || form.country.trim().length > 56)
-    errors.country = "Debe tener entre 2 y 56 caracteres";
+  if (!EMAIL_RE.test(form.email.trim())) errors.email = "Ingresá un correo electrónico válido";
+  if (!form.country) errors.country = "Selecciona tu país";
   if (!PASSWORD_RE.test(form.password))
     errors.password = "Mín. 8 caracteres, con mayúscula, minúscula, número y símbolo";
   if (form.password !== form.confirmPassword)
@@ -38,10 +40,22 @@ function validate(form) {
   return errors;
 }
 
-function RegisterPage({ onBack, onHomeClick, onRegistered }) {
+function isFieldErrorMap(data) {
+  return (
+    data &&
+    typeof data === "object" &&
+    !Array.isArray(data) &&
+    typeof data.message !== "string" &&
+    typeof data.error !== "string"
+  );
+}
+
+function RegisterPage() {
+  const navigate = useNavigate();
   const [form, setForm] = useState(INITIAL_FORM);
   const [errors, setErrors] = useState({});
   const [acceptedTerms, setAcceptedTerms] = useState(false);
+  const [betaConsent, setBetaConsent] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [serverError, setServerError] = useState("");
   const { setUser } = useAuth();
@@ -55,7 +69,7 @@ function RegisterPage({ onBack, onHomeClick, onRegistered }) {
     setServerError("");
 
     if (!acceptedTerms) {
-      setServerError("Debes aceptar los términos y la política de privacidad");
+      setServerError("Debes aceptar los términos, la política de privacidad y el manejo de tus datos");
       return;
     }
 
@@ -65,13 +79,14 @@ function RegisterPage({ onBack, onHomeClick, onRegistered }) {
 
     setSubmitting(true);
     try {
-      const data = await register({
+      await register({
         firstName: form.firstName.trim(),
         lastName: form.lastName.trim(),
         username: form.username.trim(),
         email: form.email.trim(),
         country: form.country.trim(),
         password: form.password,
+        betaTester: betaConsent,
       });
 
       const me = await fetchCurrentUser();
@@ -81,15 +96,21 @@ function RegisterPage({ onBack, onHomeClick, onRegistered }) {
         lastName: form.lastName.trim(),
         ...me,
       });
-      onRegistered?.(data);
+      navigate("/");
     } catch (err) {
-      setServerError(err.message);
+      if (isFieldErrorMap(err.data)) {
+        setErrors((prev) => ({ ...prev, ...err.data }));
+        setServerError("Revisá los campos marcados en el formulario.");
+      } else {
+        setServerError(err.message);
+      }
     } finally {
       setSubmitting(false);
     }
   };
 
   const handleOAuthRegister = (provider) => {
+    clearLoggedOutMark();
     window.location.href = `${API_BASE_URL}/oauth2/authorization/${provider}`;
   };
 
@@ -98,14 +119,14 @@ function RegisterPage({ onBack, onHomeClick, onRegistered }) {
       <div className="w-full max-w-[380px] flex flex-col items-center text-center">
         <button
           type="button"
-          onClick={onHomeClick}
+          onClick={() => navigate("/")}
           title="Volver al inicio"
           className="cursor-pointer"
         >
-          <img 
-            src="https://res.cloudinary.com/w1jl4sa5/image/upload/v1784825556/Logo_of_The_Sims_4.svg_jagzsl.webp" 
-            alt="Logo" 
-            className="w-[120px] h-[120px] object-contain" 
+          <img
+            src="https://res.cloudinary.com/w1jl4sa5/image/upload/v1784825556/Logo_of_The_Sims_4.svg_jagzsl.webp"
+            alt="Logo"
+            className="w-[120px] h-[120px] object-contain"
           />
         </button>
 
@@ -134,16 +155,6 @@ function RegisterPage({ onBack, onHomeClick, onRegistered }) {
           </div>
 
           <FormInput
-            id="register-username"
-            label="Nombre de usuario"
-            placeholder="panda7"
-            value={form.username}
-            onChange={updateField("username")}
-            error={errors.username}
-            hint={!errors.username ? "Letras, números y guion bajo" : undefined}
-          />
-
-          <FormInput
             id="register-email"
             label="Correo electrónico"
             type="email"
@@ -153,13 +164,24 @@ function RegisterPage({ onBack, onHomeClick, onRegistered }) {
             error={errors.email}
           />
 
-          <FormInput
+          <FormSelect
             id="register-country"
             label="País"
-            placeholder="Colombia"
+            placeholder="Selecciona tu país"
+            options={COUNTRIES}
             value={form.country}
             onChange={updateField("country")}
             error={errors.country}
+          />
+
+          <FormInput
+            id="register-username"
+            label="Nombre de usuario"
+            placeholder="panda7"
+            value={form.username}
+            onChange={updateField("username")}
+            error={errors.username}
+            hint={!errors.username ? "Letras, números y guion bajo" : undefined}
           />
 
           <div className="grid grid-cols-2 gap-3">
@@ -183,6 +205,16 @@ function RegisterPage({ onBack, onHomeClick, onRegistered }) {
             />
           </div>
 
+          <label className="flex items-center gap-3 p-3 mb-4 rounded-xl border-2 border-accent bg-accent/10 cursor-pointer transition-colors duration-300">
+            <input
+              type="checkbox"
+              className="accent-accent w-5 h-5 cursor-pointer shrink-0"
+              checked={betaConsent}
+              onChange={(e) => setBetaConsent(e.target.checked)}
+            />
+            <span className="text-sm font-bold text-text">¡Acepto recibir correos para beta testing!</span>
+          </label>
+
           <label className="flex items-center gap-2 text-sm text-text mb-5 cursor-pointer transition-colors duration-400">
             <input
               type="checkbox"
@@ -190,7 +222,7 @@ function RegisterPage({ onBack, onHomeClick, onRegistered }) {
               checked={acceptedTerms}
               onChange={(e) => setAcceptedTerms(e.target.checked)}
             />
-            Acepto los términos y la política de privacidad
+            Acepto los términos, la política de privacidad y el manejo de mis datos
           </label>
 
           {serverError ? (
@@ -215,7 +247,7 @@ function RegisterPage({ onBack, onHomeClick, onRegistered }) {
           </Button>
         </div>
 
-        <Button variant="link" onClick={onBack}>
+        <Button variant="link" onClick={() => navigate("/login")}>
           ¿Ya tienes cuenta? Inicia sesión
         </Button>
       </div>

@@ -3,7 +3,7 @@ import { useAuth } from "../../../context/AuthContext";
 import CardChallenge from "../components/CardChallenge";
 import { getChallenges, getUserChallengeSubscriptions } from "../services/challengesService";
 
-function ChallengesPage({ onRequireLogin }) {
+function ChallengesPage() {
   const { user } = useAuth();
   const isAuthenticated = Boolean(user);
 
@@ -57,7 +57,6 @@ function ChallengesPage({ onRequireLogin }) {
               subscription={subscriptions[challenge.id] || null}
               userId={user?.id}
               isAuthenticated={isAuthenticated}
-              onRequireLogin={onRequireLogin}
               onSubscriptionChange={handleSubscriptionChange}
             />
           ))}

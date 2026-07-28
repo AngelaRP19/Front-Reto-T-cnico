@@ -1,14 +1,19 @@
 import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { useTheme } from "../../context/ThemeContext";
 import { useAuth } from "../../context/AuthContext";
-import { logout } from "../../features/auth/services/authService";
+import { logout, setBetaTester } from "../../features/auth/services/authService";
 
 
-function Navbar({ onLoginClick, abrirFormulario, onCommunityClick, onHomeClick }) {
+function Navbar() {
+  const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
+  const [showBetaConfirm, setShowBetaConfirm] = useState(false);
+  const [betaSubmitting, setBetaSubmitting] = useState(false);
+  const [betaError, setBetaError] = useState("");
   const { theme, toggleTheme } = useTheme();
-  const { user, clearUser } = useAuth();
+  const { user, setUser, clearUser } = useAuth();
 
   const displayName = user?.firstName || user?.name || user?.username || "";
   const initial = displayName.charAt(0).toUpperCase() || "?";
@@ -19,14 +24,40 @@ function Navbar({ onLoginClick, abrirFormulario, onCommunityClick, onHomeClick }
     setShowUserMenu(false);
   };
 
+  const handleBetaButtonClick = () => {
+    if (!user) {
+      navigate("/register");
+      return;
+    }
+    setBetaError("");
+    setShowBetaConfirm((prev) => !prev);
+  };
+
+  const handleBetaConfirm = async (accept) => {
+    setShowBetaConfirm(false);
+    if (!accept) return;
+
+    setBetaSubmitting(true);
+    setBetaError("");
+    try {
+      const updated = await setBetaTester(true);
+      setUser({ ...user, ...updated });
+    } catch (err) {
+      if (err.sessionExpired) clearUser();
+      setBetaError(err.message || "No se pudo activar beta testing. Intentá de nuevo.");
+    } finally {
+      setBetaSubmitting(false);
+    }
+  };
+
   return (
     <header className="flex flex-col md:flex-row justify-between items-center w-full h-auto md:h-20 p-5 md:px-10 lg:px-[70px] lg:py-0 gap-5 md:gap-0 bg-bg shadow-[0_2px_10px_rgba(0,0,0,0.08)] mb-[30px] ml-auto transition-colors duration-[400ms]">
       <div className="flex items-center gap-[15px] justify-start">
         <div>
-          <img 
-            src="https://res.cloudinary.com/w1jl4sa5/image/upload/v1784825556/Logo_of_The_Sims_4.svg_jagzsl.webp" 
-            alt="Logo" 
-            className="w-[120px] h-[120px] m-4 object-contain" 
+          <img
+            src="https://res.cloudinary.com/w1jl4sa5/image/upload/v1784825556/Logo_of_The_Sims_4.svg_jagzsl.webp"
+            alt="Logo"
+            className="w-[120px] h-[120px] m-4 object-contain"
           />
           {/* <h1 className="font-nunito text-[42px] font-extrabold text-main cursor-pointer">The Sims  </h1> */}
         </div>
@@ -51,32 +82,68 @@ function Navbar({ onLoginClick, abrirFormulario, onCommunityClick, onHomeClick }
         }`}
       >
         <ul className="flex flex-col items-center gap-[15px] md:gap-5 lg:flex-row lg:gap-[30px] lg:mr-auto list-none">
-          <li><a href="#" onClick={(e) => { e.preventDefault(); onHomeClick?.(); }} className="no-underline text-text text-lg font-semibold transition-colors duration-300 hover:text-main">Inicio</a></li>
-          <li><a href="#" className="no-underline text-text text-lg font-semibold transition-colors duration-300 hover:text-main">Catálogo</a></li>
-          <li><a href="#" onClick={(e) => { e.preventDefault(); onCommunityClick?.(); }} className="no-underline text-text text-lg font-semibold transition-colors duration-300 hover:text-main">Comunidad</a></li>
+          <li><Link to="/" className="no-underline text-text text-lg font-semibold transition-colors duration-300 hover:text-main">Inicio</Link></li>
+          <li><Link to="/#catalogo" className="no-underline text-text text-lg font-semibold transition-colors duration-300 hover:text-main">Catálogo</Link></li>
+          <li><Link to="/comunidad" className="no-underline text-text text-lg font-semibold transition-colors duration-300 hover:text-main">Comunidad</Link></li>
         </ul>
 
         <div className="flex items-center gap-4 lg:ml-auto">
 
-  <button
-    onClick={abrirFormulario}
-    className="
-      bg-[#7CFC00]
-      text-black
-      font-semibold
-      px-5
-      py-3
-      rounded-full
-      transition-all
-      duration-300
-      hover:scale-110
-      hover:shadow-[0_0_20px_#7CFC00]
-      hover:-translate-y-1
-      active:scale-95
-      animate-pulse"
-  >
-    ¿Quieres ser Beta testing?
-  </button>
+  {user?.betaTester ? (
+    <span className="px-4 py-2 rounded-full text-sm font-bold text-accent border-2 border-accent bg-accent/10">
+      Beta tester
+    </span>
+  ) : (
+    <div className="relative">
+      <button
+        onClick={handleBetaButtonClick}
+        disabled={betaSubmitting}
+        className="
+          bg-accent
+          text-black
+          font-semibold
+          px-5
+          py-3
+          rounded-full
+          transition-all
+          duration-300
+          hover:scale-110
+          hover:shadow-[0_0_20px_var(--accent-color)]
+          hover:-translate-y-1
+          active:scale-95
+          disabled:opacity-60
+          animate-pulse"
+      >
+        ¿Quieres ser beta tester?
+      </button>
+
+      {showBetaConfirm && (
+        <div className="absolute right-0 top-full mt-2 w-64 bg-card-bg text-text rounded-xl shadow-lg p-4 z-50 transition-colors duration-300">
+          <p className="text-sm font-bold mb-3">¿Quieres suscribirte a beta testing?</p>
+          <div className="flex gap-2">
+            <button
+              onClick={() => handleBetaConfirm(true)}
+              className="flex-1 bg-accent text-black rounded-full py-2 text-sm font-bold cursor-pointer"
+            >
+              Sí, quiero
+            </button>
+            <button
+              onClick={() => handleBetaConfirm(false)}
+              className="flex-1 bg-snd-bg text-text rounded-full py-2 text-sm font-bold cursor-pointer"
+            >
+              No, gracias
+            </button>
+          </div>
+        </div>
+      )}
+
+      {betaError && (
+        <div className="absolute right-0 top-full mt-2 w-64 bg-card-bg text-text rounded-xl shadow-lg p-3 z-50 transition-colors duration-300">
+          <p className="text-red-400 text-xs font-semibold">{betaError}</p>
+        </div>
+      )}
+    </div>
+  )}
 
   {user ? (
     <div className="relative">
@@ -111,7 +178,7 @@ function Navbar({ onLoginClick, abrirFormulario, onCommunityClick, onHomeClick }
   ) : (
     <button
       className="bg-main text-white px-[28px] py-[12px] rounded-full font-bold hover:bg-hover transition"
-      onClick={onLoginClick}
+      onClick={() => navigate("/login")}
     >
       Iniciar sesión
     </button>
