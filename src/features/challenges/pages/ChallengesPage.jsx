@@ -2,10 +2,12 @@ import { useEffect, useState } from "react";
 import { useAuth } from "../../../context/AuthContext";
 import CardChallenge from "../components/CardChallenge";
 import { getChallenges, getUserChallengeSubscriptions } from "../services/challengesService";
+import { useTranslation } from "react-i18next";
 
 function ChallengesPage({ onRequireLogin }) {
   const { user } = useAuth();
   const isAuthenticated = Boolean(user);
+  const { t } = useTranslation("challenges");
 
   const [challenges, setChallenges] = useState([]);
   const [subscriptions, setSubscriptions] = useState({});
@@ -39,13 +41,11 @@ function ChallengesPage({ onRequireLogin }) {
 
   return (
     <div className="w-full max-w-5xl mx-auto px-5 py-10">
-      <h1 className="text-2xl sm:text-3xl font-extrabold text-text mb-2">Retos de la comunidad</h1>
-      <p className="text-text opacity-70 mb-8">
-        Únete a los desafíos creados por otros jugadores y gana insignias exclusivas.
-      </p>
+     <h1 className="text-2xl sm:text-3xl font-extrabold text-text mb-2">{t("title")}</h1>
+      <p className="text-text opacity-70 mb-8">{t("description")} </p>
 
       {loading ? (
-        <p className="text-text text-center py-10">Cargando retos...</p>
+        <p className="text-text text-center py-10">{t("loading")}</p>
       ) : error ? (
         <p className="text-text text-center py-10">{error}</p>
       ) : (

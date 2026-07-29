@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { acceptChallenge, cancelChallenge, reactivateChallenge } from "../services/challengesService";
+import { useTranslation } from "react-i18next";
 
 const STATUS_STYLES = {
   INICIADO: "bg-blue-100 text-blue-700",
@@ -19,10 +20,11 @@ function CardChallenge({ challenge, subscription, userId, isAuthenticated, onReq
   const [showModal, setShowModal] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
+  const { t } = useTranslation("challenges");
 
   const isSubscribed = Boolean(subscription) && subscription.status !== "CANCELADO";
   const statusStyle = isSubscribed ? STATUS_STYLES[subscription.status] : null;
-  const statusLabel = isSubscribed ? STATUS_LABELS[subscription.status] : null;
+  const statusLabel = isSubscribed ? STATUS_LABELS(t)[subscription.status] : null;
 
   const handleToggle = async (e) => {
     e.stopPropagation();
@@ -56,7 +58,7 @@ function CardChallenge({ challenge, subscription, userId, isAuthenticated, onReq
     ? "bg-red-500 hover:bg-red-600 text-white"
     : "bg-emerald-500 hover:bg-emerald-600 text-white";
 
-  const buttonLabel = isSubscribed ? "Cancelar reto" : "Acepto el reto";
+  const buttonLabel = isSubscribed ? t("cancel") : t("accept");
 
   const renderButton = (widthClass) => (
     <button
@@ -70,7 +72,7 @@ function CardChallenge({ challenge, subscription, userId, isAuthenticated, onReq
 
   const dateRow = (
     <p className="text-xs sm:text-sm text-text opacity-60 mt-1 flex items-center gap-2 flex-wrap">
-      <span>Inicio: {challenge.startDate} · Fin: {challenge.endDate}</span>
+      <span>{t("start")}: {challenge.startDate} · {t("end")}: {challenge.endDate}</span>
       {statusLabel && (
         <span className={`px-2 py-0.5 rounded-full text-xs font-bold ${statusStyle}`}>{statusLabel}</span>
       )}
@@ -88,7 +90,7 @@ function CardChallenge({ challenge, subscription, userId, isAuthenticated, onReq
                   <img src={challenge.image} alt={challenge.title} className="w-full h-full object-cover" />
                 ) : (
                   <div className="w-full h-full flex items-center justify-center text-text opacity-40 text-xs text-center">
-                    imagen
+                    {t("image")}
                   </div>
                 )}
               </div>

@@ -9,6 +9,7 @@ import authEs from "./locales/es/auth.json";
 import catalogEs from "./locales/es/catalog.json";
 import betaEs from "./locales/es/beta.json";
 import footerEs from "./locales/es/footer.json";
+import challengesEs from "./locales/es/challenges.json";
 
 // Inglés
 import commonEn from "./locales/en/common.json";
@@ -18,6 +19,7 @@ import authEn from "./locales/en/auth.json";
 import catalogEn from "./locales/en/catalog.json";
 import betaEn from "./locales/en/beta.json";
 import footerEn from "./locales/en/footer.json";
+import challengesEn from "./locales/en/challenges.json";
 
 // Francés
 import commonFr from "./locales/fr/common.json";
@@ -27,6 +29,7 @@ import authFr from "./locales/fr/auth.json";
 import catalogFr from "./locales/fr/catalog.json";
 import betaFr from "./locales/fr/beta.json";
 import footerFr from "./locales/fr/footer.json";
+import challengesFr from "./locales/fr/challenges.json";
 
 i18n
   .use(initReactI18next)
@@ -40,6 +43,7 @@ i18n
         catalog: catalogEs,
         beta: betaEs,
         footer: footerEs,
+        challenges: challengesEs,
       },
       en: {
         common: commonEn,
@@ -49,6 +53,7 @@ i18n
         catalog: catalogEn,
         beta: betaEn,
         footer: footerEn,
+        challenges: challengesEn,
       },
       fr: {
         common: commonFr,
@@ -58,6 +63,7 @@ i18n
         catalog: catalogFr,
         beta: betaFr,
         footer: footerFr,
+        challenges: challengesFr,
       },
     },
 
@@ -73,6 +79,7 @@ i18n
       "catalog",
       "beta",
       "footer",
+      "challenges"
     ],
 
     // Namespace por defecto
