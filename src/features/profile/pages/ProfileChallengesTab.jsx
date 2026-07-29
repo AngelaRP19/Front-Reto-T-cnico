@@ -1,14 +1,10 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "../../../context/AuthContext";
-import CardChallenge from "../components/CardChallenge";
-import { getChallenges, getUserChallengeSubscriptions } from "../services/challengesService";
-import { useTranslation } from "react-i18next";
+import CardChallenge from "../../challenges/components/CardChallenge";
+import { getChallenges, getUserChallengeSubscriptions } from "../../challenges/services/challengesService";
 
-function ChallengesPage() {
+function ProfileChallengesTab() {
   const { user } = useAuth();
-  const isAuthenticated = Boolean(user);
-  const { t } = useTranslation("challenges");
-
   const [challenges, setChallenges] = useState([]);
   const [subscriptions, setSubscriptions] = useState({});
   const [loading, setLoading] = useState(true);
@@ -17,13 +13,12 @@ function ChallengesPage() {
   useEffect(() => {
     async function load() {
       try {
-        const list = await getChallenges();
+        const [list, subs] = await Promise.all([
+          getChallenges(),
+          user?.id ? getUserChallengeSubscriptions(user.id) : Promise.resolve({}),
+        ]);
         setChallenges(list);
-
-        if (user?.id) {
-          const subs = await getUserChallengeSubscriptions(user.id);
-          setSubscriptions(subs);
-        }
+        setSubscriptions(subs);
       } catch (err) {
         setError(err.message);
       } finally {
@@ -39,24 +34,33 @@ function ChallengesPage() {
     setSubscriptions((prev) => ({ ...prev, [challengeId]: newSubscription }));
   };
 
+  const acceptedChallenges = challenges.filter((challenge) => {
+    const sub = subscriptions[challenge.id];
+    return Boolean(sub) && sub.status !== "CANCELADO";
+  });
+
   return (
-    <div className="w-full max-w-5xl mx-auto px-5 py-10">
-     <h1 className="text-2xl sm:text-3xl font-extrabold text-text mb-2">{t("title")}</h1>
-      <p className="text-text opacity-70 mb-8">{t("description")} </p>
+    <div>
+      <h1 className="text-2xl font-extrabold text-text mb-2">Mis retos</h1>
+      <p className="text-text opacity-70 mb-6">
+        Retos finalizados: <span className="font-bold text-accent">{user?.completedChallenges ?? 0}</span>
+      </p>
 
       {loading ? (
-        <p className="text-text text-center py-10">{t("loading")}</p>
+        <p className="text-text text-center py-10">Cargando retos...</p>
       ) : error ? (
         <p className="text-text text-center py-10">{error}</p>
+      ) : acceptedChallenges.length === 0 ? (
+        <p className="text-text opacity-70 text-center py-10">Todavía no aceptaste ningún reto.</p>
       ) : (
         <div className="flex flex-col gap-4">
-          {challenges.map((challenge) => (
+          {acceptedChallenges.map((challenge) => (
             <CardChallenge
               key={challenge.id}
               challenge={challenge}
               subscription={subscriptions[challenge.id] || null}
               userId={user?.id}
-              isAuthenticated={isAuthenticated}
+              isAuthenticated
               onSubscriptionChange={handleSubscriptionChange}
             />
           ))}
@@ -66,4 +70,4 @@ function ChallengesPage() {
   );
 }
 
-export default ChallengesPage;
+export default ProfileChallengesTab;

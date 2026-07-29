@@ -1,11 +1,10 @@
 import React from 'react';
 import { useTranslation } from "react-i18next";
 
-const ExpansionDetail = ({ data, onBack }) => {
-
+const ExpansionDetail = ({ data: expansion, onBack }) => {
   const { t } = useTranslation("catalog");
   // Datos por default //
-  const expansion = data || {
+  expansion = expansion || {
   title: "The Sims™ 4: Pack de Expansión",
   category: t("defaultCategory"),
   price: "$79.900 COP",

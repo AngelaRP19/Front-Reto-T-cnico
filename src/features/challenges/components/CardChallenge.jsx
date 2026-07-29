@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import { acceptChallenge, cancelChallenge, reactivateChallenge } from "../services/challengesService";
 import { useTranslation } from "react-i18next";
 
@@ -16,8 +17,11 @@ const STATUS_LABELS = {
   FALLIDO: "Fallido",
 };
 
-function CardChallenge({ challenge, subscription, userId, isAuthenticated, onRequireLogin, onSubscriptionChange }) {
+function CardChallenge({ challenge, subscription, userId, isAuthenticated, onSubscriptionChange }) {
+  const navigate = useNavigate();
+  const location = useLocation();
   const [showModal, setShowModal] = useState(false);
+  const [showCancelConfirm, setShowCancelConfirm] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
   const { t } = useTranslation("challenges");
@@ -30,23 +34,40 @@ function CardChallenge({ challenge, subscription, userId, isAuthenticated, onReq
     e.stopPropagation();
 
     if (!isAuthenticated) {
-      onRequireLogin?.();
+      navigate("/login", { state: { from: location.pathname } });
+      return;
+    }
+
+    if (isSubscribed) {
+      setShowCancelConfirm(true);
       return;
     }
 
     setSubmitting(true);
     setError("");
     try {
-      if (isSubscribed) {
-        await cancelChallenge(subscription.subscriptionId);
-        onSubscriptionChange(challenge.id, { subscriptionId: subscription.subscriptionId, status: "CANCELADO" });
-      } else if (subscription) {
+      if (subscription) {
         await reactivateChallenge(subscription.subscriptionId);
         onSubscriptionChange(challenge.id, { subscriptionId: subscription.subscriptionId, status: "INICIADO" });
       } else {
         const newId = await acceptChallenge(userId, challenge.id);
         onSubscriptionChange(challenge.id, { subscriptionId: newId, status: "INICIADO" });
       }
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const handleConfirmCancel = async (e) => {
+    e.stopPropagation();
+    setShowCancelConfirm(false);
+    setSubmitting(true);
+    setError("");
+    try {
+      await cancelChallenge(subscription.subscriptionId);
+      onSubscriptionChange(challenge.id, { subscriptionId: subscription.subscriptionId, status: "CANCELADO" });
     } catch (err) {
       setError(err.message);
     } finally {
@@ -139,6 +160,38 @@ function CardChallenge({ challenge, subscription, userId, isAuthenticated, onReq
             {error && <p className="text-red-400 text-sm mt-3 mb-1">{error}</p>}
 
             <div className="mt-4">{renderButton("w-full")}</div>
+          </div>
+        </div>
+      )}
+
+      {showCancelConfirm && (
+        <div
+          className="fixed inset-0 bg-black/60 flex justify-center items-center z-[60] animate-fadeIn"
+          onClick={(e) => { e.stopPropagation(); setShowCancelConfirm(false); }}
+        >
+          <div
+            className="bg-card-bg text-text rounded-2xl shadow-2xl w-[90%] max-w-sm p-6 transition-colors duration-300"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <h3 className="text-lg font-bold mb-2">¿Cancelar este reto?</h3>
+            <p className="text-sm opacity-80 mb-5">
+              Vas a perder el progreso que llevás en este reto y no vas a poder recuperarlo.
+            </p>
+            <div className="flex gap-3">
+              <button
+                onClick={(e) => { e.stopPropagation(); setShowCancelConfirm(false); }}
+                className="flex-1 bg-snd-bg text-text rounded-full py-2.5 text-sm font-bold cursor-pointer hover:opacity-80 transition"
+              >
+                Volver
+              </button>
+              <button
+                onClick={handleConfirmCancel}
+                disabled={submitting}
+                className="flex-1 bg-red-500 hover:bg-red-600 text-white rounded-full py-2.5 text-sm font-bold cursor-pointer disabled:opacity-60 transition"
+              >
+                {submitting ? "..." : "Cancelar reto"}
+              </button>
+            </div>
           </div>
         </div>
       )}

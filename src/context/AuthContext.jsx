@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect } from "react";
-import { getToken } from "../services/apiClient";
+import { getToken, isLoggedOut } from "../services/apiClient";
 import { checkOAuthSession, fetchCurrentUser } from "../features/auth/services/authService";
 
 const AuthContext = createContext();
@@ -24,7 +24,7 @@ export function AuthProvider({ children }) {
   const clearUser = () => setUser(null);
 
   useEffect(() => {
-    if (user || getToken()) return;
+    if (user || getToken() || isLoggedOut()) return;
 
     checkOAuthSession()
       .then(async (data) => {

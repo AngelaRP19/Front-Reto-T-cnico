@@ -1,10 +1,14 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Button from "../../../components/common/Button";
 import FormInput from "../../../components/common/FormInput";
+import FormSelect from "../../../components/common/FormSelect";
 import { register, fetchCurrentUser } from "../services/authService";
-import { API_BASE_URL } from "../../../services/apiClient";
+import { API_BASE_URL, clearLoggedOutMark } from "../../../services/apiClient";
 import { useAuth } from "../../../context/AuthContext";
 import { useTranslation } from "react-i18next";
+import COUNTRIES from "../data/countries";
+import { USERNAME_RE, PASSWORD_RE, NAME_RE, EMAIL_RE } from "../utils/validators";
 
 const USERNAME_RE = /^[a-zA-Z0-9_]{3,30}$/;
 const PASSWORD_RE = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,50}$/;
@@ -21,18 +25,7 @@ const INITIAL_FORM = {
   confirmPassword: "",
 };
 
-
-
-function RegisterPage({ onBack, onHomeClick, onRegistered }) {
-  const [form, setForm] = useState(INITIAL_FORM);
-  const [errors, setErrors] = useState({});
-  const [acceptedTerms, setAcceptedTerms] = useState(false);
-  const [submitting, setSubmitting] = useState(false);
-  const [serverError, setServerError] = useState("");
-  const { t } = useTranslation("auth");
-  const { setUser } = useAuth();  
-
-  function validate(form) {
+function validate(form){
   const errors = {};
 
   if (!NAME_RE.test(form.firstName.trim())) errors.firstName = t("register.errors.name");
@@ -48,6 +41,31 @@ function RegisterPage({ onBack, onHomeClick, onRegistered }) {
     errors.confirmPassword = t("register.errors.confirmPassword");
 
   return errors;
+  
+}
+
+function isFieldErrorMap(data) {
+  return (
+    data &&
+    typeof data === "object" &&
+    !Array.isArray(data) &&
+    typeof data.message !== "string" &&
+    typeof data.error !== "string"
+  );
+}
+
+function RegisterPage() {
+  const navigate = useNavigate();
+  const [form, setForm] = useState(INITIAL_FORM);
+  const [errors, setErrors] = useState({});
+  const [acceptedTerms, setAcceptedTerms] = useState(false);
+  const [betaConsent, setBetaConsent] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [serverError, setServerError] = useState("");
+  const { t } = useTranslation("auth");
+  const { setUser } = useAuth();  
+
+   
 }
 
   const updateField = (field) => (e) => {
@@ -59,7 +77,9 @@ function RegisterPage({ onBack, onHomeClick, onRegistered }) {
     setServerError("");
 
     if (!acceptedTerms) {
+
       setServerError(t("register.errors.terms"));
+
       return;
     }
 
@@ -69,13 +89,14 @@ function RegisterPage({ onBack, onHomeClick, onRegistered }) {
 
     setSubmitting(true);
     try {
-      const data = await register({
+      await register({
         firstName: form.firstName.trim(),
         lastName: form.lastName.trim(),
         username: form.username.trim(),
         email: form.email.trim(),
         country: form.country.trim(),
         password: form.password,
+        betaTester: betaConsent,
       });
 
       const me = await fetchCurrentUser();
@@ -85,15 +106,21 @@ function RegisterPage({ onBack, onHomeClick, onRegistered }) {
         lastName: form.lastName.trim(),
         ...me,
       });
-      onRegistered?.(data);
+      navigate("/");
     } catch (err) {
-      setServerError(err.message);
+      if (isFieldErrorMap(err.data)) {
+        setErrors((prev) => ({ ...prev, ...err.data }));
+        setServerError("Revisá los campos marcados en el formulario.");
+      } else {
+        setServerError(err.message);
+      }
     } finally {
       setSubmitting(false);
     }
   };
 
   const handleOAuthRegister = (provider) => {
+    clearLoggedOutMark();
     window.location.href = `${API_BASE_URL}/oauth2/authorization/${provider}`;
   };
 
@@ -102,14 +129,14 @@ function RegisterPage({ onBack, onHomeClick, onRegistered }) {
       <div className="w-full max-w-[380px] flex flex-col items-center text-center">
         <button
           type="button"
-          onClick={onHomeClick}
+          onClick={() => navigate("/")}
           title="Volver al inicio"
           className="cursor-pointer"
         >
-          <img 
-            src="https://res.cloudinary.com/w1jl4sa5/image/upload/v1784825556/Logo_of_The_Sims_4.svg_jagzsl.webp" 
-            alt="Logo" 
-            className="w-[120px] h-[120px] object-contain" 
+          <img
+            src="https://res.cloudinary.com/w1jl4sa5/image/upload/v1784825556/Logo_of_The_Sims_4.svg_jagzsl.webp"
+            alt="Logo"
+            className="w-[120px] h-[120px] object-contain"
           />
         </button>
 
@@ -138,6 +165,7 @@ function RegisterPage({ onBack, onHomeClick, onRegistered }) {
           </div>
 
           <FormInput
+
             id="register-username"
             label={t("register.username")}
             placeholder={t("register.usernamePlaceholder")}
@@ -148,6 +176,7 @@ function RegisterPage({ onBack, onHomeClick, onRegistered }) {
           />
 
           <FormInput
+
             id="register-email"
             label={t("register.email")}
             placeholder={t("register.emailPlaceholder")}
@@ -157,10 +186,11 @@ function RegisterPage({ onBack, onHomeClick, onRegistered }) {
             error={errors.email}
           />
 
-          <FormInput
+          <FormSelect
             id="register-country"
             label={t("register.country")}
             placeholder={t("register.countryPlaceholder")}
+            options={COUNTRIES}
             value={form.country}
             onChange={updateField("country")}
             error={errors.country}
@@ -186,6 +216,16 @@ function RegisterPage({ onBack, onHomeClick, onRegistered }) {
               error={errors.confirmPassword}
             />
           </div>
+
+          <label className="flex items-center gap-3 p-3 mb-4 rounded-xl border-2 border-accent bg-accent/10 cursor-pointer transition-colors duration-300">
+            <input
+              type="checkbox"
+              className="accent-accent w-5 h-5 cursor-pointer shrink-0"
+              checked={betaConsent}
+              onChange={(e) => setBetaConsent(e.target.checked)}
+            />
+            <span className="text-sm font-bold text-text">¡Acepto recibir correos para beta testing!</span>
+          </label>
 
           <label className="flex items-center gap-2 text-sm text-text mb-5 cursor-pointer transition-colors duration-400">
             <input
@@ -219,12 +259,13 @@ function RegisterPage({ onBack, onHomeClick, onRegistered }) {
           </Button>
         </div>
 
-        <Button variant="link" onClick={onBack}>
+        <Button variant="link" onClick={() => navigate("login")}>
           {t("register.login")}
         </Button>
       </div>
     </div>
+
   );
-}
+
 
 export default RegisterPage;

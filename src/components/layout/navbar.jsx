@@ -1,17 +1,22 @@
 import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { useTheme } from "../../context/ThemeContext";
 import { useAuth } from "../../context/AuthContext";
-import { logout } from "../../features/auth/services/authService";
+import { logout, setBetaTester } from "../../features/auth/services/authService";
 import LanguageSelector from "../common/LanguageSelector";
 import { useTranslation } from "react-i18next";
 
 
-function Navbar({ onLoginClick, abrirFormulario, onCommunityClick, onHomeClick }) {
+function Navbar() {
+  const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
+  const [showBetaConfirm, setShowBetaConfirm] = useState(false);
+  const [betaSubmitting, setBetaSubmitting] = useState(false);
+  const [betaError, setBetaError] = useState("");
   const { theme, toggleTheme } = useTheme();
   const { t } = useTranslation("navbar");
-  const { user, clearUser } = useAuth();
+  const { user, setUser, clearUser } = useAuth();
 
   const displayName = user?.firstName || user?.name || user?.username || "";
   const initial = displayName.charAt(0).toUpperCase() || "?";
@@ -22,14 +27,40 @@ function Navbar({ onLoginClick, abrirFormulario, onCommunityClick, onHomeClick }
     setShowUserMenu(false);
   };
 
+  const handleBetaButtonClick = () => {
+    if (!user) {
+      navigate("/register");
+      return;
+    }
+    setBetaError("");
+    setShowBetaConfirm((prev) => !prev);
+  };
+
+  const handleBetaConfirm = async (accept) => {
+    setShowBetaConfirm(false);
+    if (!accept) return;
+
+    setBetaSubmitting(true);
+    setBetaError("");
+    try {
+      const updated = await setBetaTester(true);
+      setUser({ ...user, ...updated });
+    } catch (err) {
+      if (err.sessionExpired) clearUser();
+      setBetaError(err.message || "No se pudo activar beta testing. Intentá de nuevo.");
+    } finally {
+      setBetaSubmitting(false);
+    }
+  };
+
   return (
     <header className="flex flex-col md:flex-row justify-between items-center w-full h-auto md:h-20 p-5 md:px-10 lg:px-[70px] lg:py-0 gap-5 md:gap-0 bg-bg shadow-[0_2px_10px_rgba(0,0,0,0.08)] mb-[30px] ml-auto transition-colors duration-[400ms]">
       <div className="flex items-center gap-[15px] justify-start">
         <div>
-          <img 
-            src="https://res.cloudinary.com/w1jl4sa5/image/upload/v1784825556/Logo_of_The_Sims_4.svg_jagzsl.webp" 
-            alt="Logo" 
-            className="w-[120px] h-[120px] m-4 object-contain" 
+          <img
+            src="https://res.cloudinary.com/w1jl4sa5/image/upload/v1784825556/Logo_of_The_Sims_4.svg_jagzsl.webp"
+            alt="Logo"
+            className="w-[120px] h-[120px] m-4 object-contain"
           />
           {/* <h1 className="font-nunito text-[42px] font-extrabold text-main cursor-pointer">The Sims  </h1> */}
         </div>
@@ -54,28 +85,33 @@ function Navbar({ onLoginClick, abrirFormulario, onCommunityClick, onHomeClick }
         }`}
       >
         <ul className="flex flex-col items-center gap-[15px] md:gap-5 lg:flex-row lg:gap-[30px] lg:mr-auto list-none">
-          <li>
-         <a href="#" onClick={(e) => { e.preventDefault(); onHomeClick?.(); }}
-            className="no-underline text-text text-lg font-semibold transition-colors duration-300 hover:text-[#7CFC00]"
-          >
-            {t("home")}
-          </a>
-          </li>
-          <li>
-          <a href="#" onClick={(e) => { e.preventDefault(); onCommunityClick?.(); }}
-            className="no-underline text-text text-lg font-semibold transition-colors duration-300 hover:text-[#7CFC00]"
-          >
-            {t("community")}
-          </a>
-          </li>
-          <li>
-           <a href="#" className="no-underline text-text text-lg font-semibold transition-colors duration-300 hover:text-[#7CFC00]"
-          >
-             {t("catalog")}
-           </a>
-          </li>
+  <li>
+    <Link
+      to="/"
+      className="no-underline text-text text-lg font-semibold transition-colors duration-300 hover:text-main"
+    >
+      {t("home")}
+    </Link>
+  </li>
 
-        </ul>
+  <li>
+    <Link
+      to="/#catalogo"
+      className="no-underline text-text text-lg font-semibold transition-colors duration-300 hover:text-main"
+    >
+      {t("catalog")}
+    </Link>
+  </li>
+
+  <li>
+    <Link
+      to="/comunidad"
+      className="no-underline text-text text-lg font-semibold transition-colors duration-300 hover:text-main"
+    >
+      {t("community")}
+    </Link>
+  </li>
+</ul>
 
         <div className="flex items-center gap-4 lg:ml-auto">
 
@@ -99,6 +135,51 @@ function Navbar({ onLoginClick, abrirFormulario, onCommunityClick, onHomeClick }
     {t("beta")}
 
   </button>
+    {user?.betaTester ? (
+  <span className="px-4 py-2 rounded-full text-sm font-bold text-accent border-2 border-accent bg-accent/10">
+    {t("betaTester")}
+  </span>
+) : (
+  <div className="relative">
+    <button
+      onClick={handleBetaButtonClick}
+      disabled={betaSubmitting}
+      className="..."
+    >
+      {t("beta")}
+    </button>
+
+    {showBetaConfirm && (
+      <div className="absolute right-0 top-full mt-2 w-64 bg-card-bg text-text rounded-xl shadow-lg p-4 z-50 transition-colors duration-300">
+        <p className="text-sm font-bold mb-3">
+          {t("betaQuestion")}
+        </p>
+
+        <div className="flex gap-2">
+          <button
+            onClick={() => handleBetaConfirm(true)}
+            className="flex-1 bg-accent text-black rounded-full py-2 text-sm font-bold"
+          >
+            {t("yes")}
+          </button>
+
+          <button
+            onClick={() => handleBetaConfirm(false)}
+            className="flex-1 bg-snd-bg text-text rounded-full py-2 text-sm font-bold"
+          >
+            {t("no")}
+          </button>
+        </div>
+      </div>
+    )}
+
+      {betaError && (
+        <div className="absolute right-0 top-full mt-2 w-64 bg-card-bg text-text rounded-xl shadow-lg p-3 z-50 transition-colors duration-300">
+          <p className="text-red-400 text-xs font-semibold">{betaError}</p>
+        </div>
+      )}
+    </div>
+  )}
 
   {user ? (
     <div className="relative">
@@ -122,6 +203,15 @@ function Navbar({ onLoginClick, abrirFormulario, onCommunityClick, onHomeClick }
             <p className="text-xs opacity-60 mb-3">Conectado con {user.provider}</p>
           )}
           <button
+            onClick={() => {
+              navigate("/perfil");
+              setShowUserMenu(false);
+            }}
+            className="w-full text-sm font-bold text-text hover:text-hover transition-colors text-left mb-2"
+          >
+            Ver perfil
+          </button>
+          <button
             onClick={handleLogout}
             className="w-full mt-2 text-sm font-bold text-main hover:text-hover transition-colors text-left"
           >
@@ -134,7 +224,7 @@ function Navbar({ onLoginClick, abrirFormulario, onCommunityClick, onHomeClick }
   ) : (
     <button
       className="bg-main text-white px-[28px] py-[12px] rounded-full font-bold hover:bg-hover transition"
-      onClick={onLoginClick}
+      onClick={() => navigate("/login")}
     >
     {t("login")}
 
