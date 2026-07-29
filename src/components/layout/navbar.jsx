@@ -10,7 +10,7 @@ function Navbar({ onLoginClick, abrirFormulario, onCommunityClick, onHomeClick }
   const [menuOpen, setMenuOpen] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
   const { theme, toggleTheme } = useTheme();
-  const { t } = useTranslation();
+  const { t } = useTranslation("navbar");
   const { user, clearUser } = useAuth();
 
   const displayName = user?.firstName || user?.name || user?.username || "";
@@ -58,20 +58,20 @@ function Navbar({ onLoginClick, abrirFormulario, onCommunityClick, onHomeClick }
          <a href="#" onClick={(e) => { e.preventDefault(); onHomeClick?.(); }}
             className="no-underline text-text text-lg font-semibold transition-colors duration-300 hover:text-[#7CFC00]"
           >
-            Inicio
+            {t("home")}
           </a>
           </li>
           <li>
           <a href="#" onClick={(e) => { e.preventDefault(); onCommunityClick?.(); }}
             className="no-underline text-text text-lg font-semibold transition-colors duration-300 hover:text-[#7CFC00]"
           >
-            Comunidad
+            {t("community")}
           </a>
           </li>
           <li>
            <a href="#" className="no-underline text-text text-lg font-semibold transition-colors duration-300 hover:text-[#7CFC00]"
           >
-             Catálogo
+             {t("catalog")}
            </a>
           </li>
 
@@ -96,7 +96,7 @@ function Navbar({ onLoginClick, abrirFormulario, onCommunityClick, onHomeClick }
       active:scale-95
       animate-pulse"
   >
-    {t("navbar.beta")}
+    {t("beta")}
 
   </button>
 
@@ -113,7 +113,7 @@ function Navbar({ onLoginClick, abrirFormulario, onCommunityClick, onHomeClick }
       {showUserMenu && (
         <div className="absolute right-0 top-full mt-2 w-64 bg-card-bg text-text rounded-xl shadow-lg p-4 z-50 transition-colors duration-300">
           <p className="font-bold text-base mb-1">
-            {displayName || t("navbar.user")}
+            {displayName || t("user")} {}
           </p>
           {user.email && (
             <p className="text-sm opacity-70 mb-1 break-all">{user.email}</p>
@@ -125,7 +125,7 @@ function Navbar({ onLoginClick, abrirFormulario, onCommunityClick, onHomeClick }
             onClick={handleLogout}
             className="w-full mt-2 text-sm font-bold text-main hover:text-hover transition-colors text-left"
           >
-          {t("navbar.logout")}
+           {t("logout")}
 
           </button>
         </div>
@@ -136,7 +136,7 @@ function Navbar({ onLoginClick, abrirFormulario, onCommunityClick, onHomeClick }
       className="bg-main text-white px-[28px] py-[12px] rounded-full font-bold hover:bg-hover transition"
       onClick={onLoginClick}
     >
-    {t("navbar.login")}
+    {t("login")}
 
       </button>
   )}

@@ -1,17 +1,24 @@
 import React from 'react';
+import { useTranslation } from "react-i18next";
 
 const ExpansionDetail = ({ data, onBack }) => {
+
+  const { t } = useTranslation("catalog");
   // Datos por default //
   const expansion = data || {
-    title: "The Sims™ 4: Pack de Expansión",
-    category: "PACK DE EXPANSIÓN",
-    price: "$79.900 COP",
-    platform: "PC / Mac / Consolas",
-    releaseDate: "Disponible ahora",
-    description: "Explora nuevas historias, mundos e interacciones con tus Sims.",
-    features: ["Nuevos objetos", "Nuevas mecánicas", "Mundo exclusivo"],
-    image: "https://res.cloudinary.com/w1jl4sa5/image/upload/v1784572920/TS4_Pack-Art_Enchanted-by-Nature_ES_iv5fev.avif"
-  };
+  title: "The Sims™ 4: Pack de Expansión",
+  category: t("defaultCategory"),
+  price: "$79.900 COP",
+  platform: t("defaultPlatform"),
+  releaseDate: t("defaultReleaseDate"),
+  description: t("defaultDescription"),
+  features: [
+    t("defaultFeature1"),
+    t("defaultFeature2"),
+    t("defaultFeature3")
+  ],
+  image: "https://res.cloudinary.com/w1jl4sa5/image/upload/v1784572920/TS4_Pack-Art_Enchanted-by-Nature_ES_iv5fev.avif"
+};
 
   return (
     <div className="min-h-screen bg-bg text-text py-10 px-4 sm:px-6 lg:px-8 transition-colors duration-400">
@@ -22,7 +29,7 @@ const ExpansionDetail = ({ data, onBack }) => {
           onClick={onBack}
           className="mb-6 flex items-center gap-2 text-sm font-bold text-main hover:text-hover transition duration-200 cursor-pointer"
         >
-          ← Volver al catálogo
+          ← {t("back")}
         </button>
 
         {/* Tarjeta de detalle */}
@@ -34,7 +41,7 @@ const ExpansionDetail = ({ data, onBack }) => {
 
               {/* Etiqueta / Recuadro con transición rápida de 200ms */}
               <span className="absolute top-4 left-4 bg-accent text-bg text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider z-10 transition-opacity duration-200 ease-in-out group-hover:opacity-0 pointer-events-none">
-                {expansion.category || "PACK DE EXPANSIÓN"}
+                {expansion.category || t("defaultCategory")}
               </span>
 
               <img
@@ -61,7 +68,7 @@ const ExpansionDetail = ({ data, onBack }) => {
                 </p>
 
                 <h3 className="text-base font-bold text-text mb-3 border-b border-snd-bg pb-2 transition-colors duration-400">
-                  ¿Qué incluye este pack?
+                  {t("includes")}
                 </h3>
                 <ul className="space-y-2 mb-6 text-sm text-text">
                   {expansion.features?.map((feature, idx) => (
@@ -76,12 +83,12 @@ const ExpansionDetail = ({ data, onBack }) => {
               {/* Botón de compra */}
               <div className="pt-4 border-t border-snd-bg flex items-center justify-between">
                 <div>
-                  <span className="text-xs text-text opacity-60 block">Precio total</span>
+                  <span className="text-xs text-text opacity-60 block">{t("totalPrice")}</span>
                   <span className="text-2xl font-black text-accent">{expansion.price}</span>
                 </div>
 
                 <button className="bg-main hover:bg-hover text-white font-bold py-3 px-6 rounded-2xl shadow-lg transition duration-300 cursor-pointer">
-                  Añadir al carrito 🛒
+                  {t("addCart")} 🛒
                 </button>
               </div>
 

@@ -1,27 +1,82 @@
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 
-import es from "./locales/es.json";
-import en from "./locales/en.json";
-import fr from "./locales/fr.json";
+// Español
+import commonEs from "./locales/es/common.json";
+import navbarEs from "./locales/es/navbar.json";
+import heroEs from "./locales/es/hero.json";
+import authEs from "./locales/es/auth.json";
+import catalogEs from "./locales/es/catalog.json";
+import betaEs from "./locales/es/beta.json";
+import footerEs from "./locales/es/footer.json";
+
+// Inglés
+import commonEn from "./locales/en/common.json";
+import navbarEn from "./locales/en/navbar.json";
+import heroEn from "./locales/en/hero.json";
+import authEn from "./locales/en/auth.json";
+import catalogEn from "./locales/en/catalog.json";
+import betaEn from "./locales/en/beta.json";
+import footerEn from "./locales/en/footer.json";
+
+// Francés
+import commonFr from "./locales/fr/common.json";
+import navbarFr from "./locales/fr/navbar.json";
+import heroFr from "./locales/fr/hero.json";
+import authFr from "./locales/fr/auth.json";
+import catalogFr from "./locales/fr/catalog.json";
+import betaFr from "./locales/fr/beta.json";
+import footerFr from "./locales/fr/footer.json";
 
 i18n
   .use(initReactI18next)
   .init({
     resources: {
       es: {
-        translation: es,
+        common: commonEs,
+        navbar: navbarEs,
+        hero: heroEs,
+        auth: authEs,
+        catalog: catalogEs,
+        beta: betaEs,
+        footer: footerEs,
       },
       en: {
-        translation: en,
+        common: commonEn,
+        navbar: navbarEn,
+        hero: heroEn,
+        auth: authEn,
+        catalog: catalogEn,
+        beta: betaEn,
+        footer: footerEn,
       },
       fr: {
-        translation: fr,
+        common: commonFr,
+        navbar: navbarFr,
+        hero: heroFr,
+        auth: authFr,
+        catalog: catalogFr,
+        beta: betaFr,
+        footer: footerFr,
       },
     },
 
-    lng: "es",
+    lng: localStorage.getItem("i18nextLng") || "es",
     fallbackLng: "es",
+
+    // Namespaces disponibles
+    ns: [
+      "common",
+      "navbar",
+      "hero",
+      "auth",
+      "catalog",
+      "beta",
+      "footer",
+    ],
+
+    // Namespace por defecto
+    defaultNS: "common",
 
     interpolation: {
       escapeValue: false,

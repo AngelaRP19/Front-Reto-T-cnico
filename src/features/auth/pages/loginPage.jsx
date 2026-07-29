@@ -13,7 +13,7 @@ function LoginPage({ onBack, onRegisterClick, onLoginSuccess }) {
   const [submitting, setSubmitting] = useState(false);
   const [serverError, setServerError] = useState("");
   const { setUser } = useAuth();
-  const { t } = useTranslation();
+  const { t } = useTranslation("auth");
 
   const handleSubmit = async (e) => {
     e.preventDefault();

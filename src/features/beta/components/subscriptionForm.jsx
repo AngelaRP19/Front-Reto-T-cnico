@@ -13,13 +13,16 @@ function SubscriptionForm({ cerrarFormulario }) {
     terminos: false,
     marketing: false,
   });
+
   const [submitting, setSubmitting] = useState(false);
   const [serverError, setServerError] = useState("");
   const [submitted, setSubmitted] = useState(false);
-  const {t} = useTranslation();
+
+  const { t } = useTranslation("beta");
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
+
     setFormData((prev) => ({
       ...prev,
       [name]: type === "checkbox" ? checked : value,
@@ -30,12 +33,13 @@ function SubscriptionForm({ cerrarFormulario }) {
     e.preventDefault();
 
     if (!formData.terminos) {
-      alert(t("subscription.alertTerms"));
+      alert(t("alertTerms"));
       return;
     }
 
     setServerError("");
     setSubmitting(true);
+
     try {
       await createSubscription({
         name: formData.nombre,
@@ -44,6 +48,7 @@ function SubscriptionForm({ cerrarFormulario }) {
         country: formData.pais,
         consentMarketing: formData.marketing,
       });
+
       setSubmitted(true);
     } catch (err) {
       setServerError(err.message);
@@ -71,22 +76,26 @@ function SubscriptionForm({ cerrarFormulario }) {
 
         {submitted ? (
           <div className="text-center py-8">
-            <p className="text-text text-lg font-semibold mb-6">{t("subscription.success")}</p>
-            <Button variant="primary" onClick={cerrarFormulario}>{t("subscription.close")}
+            <p className="text-text text-lg font-semibold mb-6">
+              {t("success")}
+            </p>
+
+            <Button variant="primary" onClick={cerrarFormulario}>
+              {t("close")}
             </Button>
           </div>
         ) : (
           <>
             <h2 className="text-3xl font-bold text-center mb-6">
-            {t("subscription.title")}
-          </h2>
+              {t("title")}
+            </h2>
 
             <form onSubmit={handleSubmit} className="space-y-4">
               <FormInput
                 id="subscription-nombre"
                 name="nombre"
-                label="Nombre completo"
-                placeholder={t("subscription.name")}
+                label={t("name")}
+                placeholder={t("namePlaceholder")}
                 value={formData.nombre}
                 onChange={handleChange}
               />
@@ -95,8 +104,8 @@ function SubscriptionForm({ cerrarFormulario }) {
                 id="subscription-email"
                 name="email"
                 type="email"
-                label="Correo electrónico"
-                placeholder={t("subscription.email")}
+                label={t("email")}
+                placeholder={t("emailPlaceholder")}
                 value={formData.email}
                 onChange={handleChange}
               />
@@ -107,16 +116,16 @@ function SubscriptionForm({ cerrarFormulario }) {
                 onChange={handleChange}
                 className="w-full px-4 py-3 rounded-[10px] border border-snd-bg bg-snd-bg text-text font-nunito focus:outline-none focus:border-main"
               >
-                <option value="">{t("subscription.select")}</option>
-                <option value="">{t("subscription.challenges")}</option>
-                <option value="">{t("subscription.beta")}</option>
+                <option value="">{t("select")}</option>
+                <option value="">{t("challenges")}</option>
+                <option value="">{t("beta")}</option>
               </select>
 
               <FormInput
                 id="subscription-pais"
                 name="pais"
-                label="País"
-                placeholder={t("subscription.country")}
+                label={t("country")}
+                placeholder={t("countryPlaceholder")}
                 value={formData.pais}
                 onChange={handleChange}
               />
@@ -129,7 +138,7 @@ function SubscriptionForm({ cerrarFormulario }) {
                   onChange={handleChange}
                   className="accent-main w-4 h-4 cursor-pointer"
                 />
-                <label>{t("subscription.terms")}</label>
+                <label>{t("terms")}</label>
               </div>
 
               <div className="flex items-start gap-2">
@@ -140,15 +149,21 @@ function SubscriptionForm({ cerrarFormulario }) {
                   onChange={handleChange}
                   className="accent-main w-4 h-4 cursor-pointer"
                 />
-                <label>{t("subscription.marketing")}</label>
+                <label>{t("marketing")}</label>
               </div>
 
               {serverError ? (
-                <p className="text-red-400 text-sm text-center">{serverError}</p>
+                <p className="text-red-400 text-sm text-center">
+                  {serverError}
+                </p>
               ) : null}
 
-              <Button type="submit" variant="primary" disabled={submitting}>
-                {submitting ? "Enviando..." : t("subscription.send")}
+              <Button
+                type="submit"
+                variant="primary"
+                disabled={submitting}
+              >
+                {submitting ? t("sending") : t("send")}
               </Button>
             </form>
           </>

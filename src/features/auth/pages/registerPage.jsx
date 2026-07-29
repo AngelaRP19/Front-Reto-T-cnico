@@ -29,7 +29,7 @@ function RegisterPage({ onBack, onHomeClick, onRegistered }) {
   const [acceptedTerms, setAcceptedTerms] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [serverError, setServerError] = useState("");
-  const { t } = useTranslation();
+  const { t } = useTranslation("auth");
   const { setUser } = useAuth();  
 
   function validate(form) {
