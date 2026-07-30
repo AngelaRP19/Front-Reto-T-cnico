@@ -1,13 +1,15 @@
 import { useEffect, useState } from "react";
+import { useLingui } from "@lingui/react";
 import { useAuth } from "../../../context/AuthContext";
 import CardChallenge from "../components/CardChallenge";
 import { getChallenges, getUserChallengeSubscriptions } from "../services/challengesService";
-import { useTranslation } from "react-i18next";
+import { translateErrorMessage } from "../../../utils/errorMessages";
 
 function ChallengesPage() {
   const { user } = useAuth();
   const isAuthenticated = Boolean(user);
-  const { t } = useTranslation("challenges");
+  const { i18n } = useLingui();
+  const t = (id, message) => i18n._({ id, message });
 
   const [challenges, setChallenges] = useState([]);
   const [subscriptions, setSubscriptions] = useState({});
@@ -25,7 +27,7 @@ function ChallengesPage() {
           setSubscriptions(subs);
         }
       } catch (err) {
-        setError(err.message);
+        setError(translateErrorMessage(err, t("errors.generic", "Ocurrió un error"), i18n));
       } finally {
         setLoading(false);
       }
@@ -41,11 +43,11 @@ function ChallengesPage() {
 
   return (
     <div className="w-full max-w-5xl mx-auto px-5 py-10">
-     <h1 className="text-2xl sm:text-3xl font-extrabold text-text mb-2">{t("title")}</h1>
-      <p className="text-text opacity-70 mb-8">{t("description")} </p>
+     <h1 className="text-2xl sm:text-3xl font-extrabold text-text mb-2">{t("challenges.title", "Retos")}</h1>
+      <p className="text-text opacity-70 mb-8">{t("challenges.description", "Descubrí los desafíos disponibles para tu cuenta.")} </p>
 
       {loading ? (
-        <p className="text-text text-center py-10">{t("loading")}</p>
+        <p className="text-text text-center py-10">{t("challenges.loading", "Cargando retos...")}</p>
       ) : error ? (
         <p className="text-text text-center py-10">{error}</p>
       ) : (

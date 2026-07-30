@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { useLingui } from "@lingui/react";
 import Button from "../../../components/common/Button";
 import FormInput from "../../../components/common/FormInput";
 import { resetPassword } from "../services/authService";
-import { useTranslation } from "react-i18next";
+import { translateErrorMessage } from "../../../utils/errorMessages";
 
 function ResetPasswordPage() {
   const { token } = useParams(); // token viene de la URL
@@ -12,22 +13,23 @@ function ResetPasswordPage() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [message, setMessage] = useState("");
-  const { t } = useTranslation("auth");
+  const { i18n } = useLingui();
+  const t = (id, message) => i18n._({ id, message });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (newPassword !== confirmPassword) {
-      setMessage(t("reset.mismatch")); // "Las contraseñas no coinciden"
+      setMessage(t("auth.reset.mismatch", "Las contraseñas no coinciden"));
       return;
     }
     setSubmitting(true);
     setMessage("");
     try {
       await resetPassword(token, newPassword);
-      setMessage(t("reset.success")); // "Contraseña actualizada correctamente"
+      setMessage(t("auth.reset.success", "Contraseña actualizada correctamente"));
       setTimeout(() => navigate("/login"), 2000);
     } catch (err) {
-      setMessage(err.message || t("reset.error"));
+      setMessage(translateErrorMessage(err, t("auth.reset.error", "No se pudo restablecer la contraseña"), i18n));
     } finally {
       setSubmitting(false);
     }
@@ -37,13 +39,13 @@ function ResetPasswordPage() {
     <div className="min-h-screen flex items-center justify-center bg-bg px-5 py-10">
       <div className="w-full max-w-[380px] text-center">
         <h1 className="font-nunito text-2xl font-extrabold text-text mb-7">
-          {t("reset.title")}
+          {t("auth.reset.title", "Restablecer contraseña")}
         </h1>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-5">
           <FormInput
             id="new-password"
-            label={t("reset.newPassword")}
+            label={t("auth.reset.newPassword", "Nueva contraseña")}
             type="password"
             placeholder="••••••••"
             value={newPassword}
@@ -52,7 +54,7 @@ function ResetPasswordPage() {
 
           <FormInput
             id="confirm-password"
-            label={t("reset.confirmPassword")}
+            label={t("auth.reset.confirmPassword", "Confirmar contraseña")}
             type="password"
             placeholder="••••••••"
             value={confirmPassword}
@@ -64,7 +66,7 @@ function ResetPasswordPage() {
           )}
 
           <Button type="submit" variant="primary" disabled={submitting}>
-            {submitting ? t("reset.loading") : t("reset.button")}
+            {submitting ? t("auth.reset.loading", "Actualizando...") : t("auth.reset.button", "Guardar nueva contraseña")}
           </Button>
         </form>
       </div>

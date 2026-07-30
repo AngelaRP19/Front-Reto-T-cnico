@@ -1,22 +1,20 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useLingui } from "@lingui/react";
 import { useTheme } from "../../context/ThemeContext";
 import { useAuth } from "../../context/AuthContext";
-import { logout, setBetaTester } from "../../features/auth/services/authService";
+import { logout } from "../../features/auth/services/authService";
 import LanguageSelector from "../common/LanguageSelector";
-import { useTranslation } from "react-i18next";
 
 function Navbar({ abrirFormulario = () => {} }) {
   const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
-  const [showBetaConfirm, setShowBetaConfirm] = useState(false);
-  const [betaSubmitting, setBetaSubmitting] = useState(false);
-  const [betaError, setBetaError] = useState("");
   const { theme, toggleTheme } = useTheme();
-  const { t } = useTranslation("navbar");
-  const { user, setUser, clearUser } = useAuth();
+  const { i18n } = useLingui();
+  const { user, clearUser } = useAuth();
 
+  const t = (id, message, values) => i18n._({ id, message }, values);
   const displayName = user?.firstName || user?.name || user?.username || "";
   const initial = displayName.charAt(0).toUpperCase() || "?";
 
@@ -24,32 +22,6 @@ function Navbar({ abrirFormulario = () => {} }) {
     await logout();
     clearUser();
     setShowUserMenu(false);
-  };
-
-  const handleBetaButtonClick = () => {
-    if (!user) {
-      navigate("/register");
-      return;
-    }
-    setBetaError("");
-    setShowBetaConfirm((prev) => !prev);
-  };
-
-  const handleBetaConfirm = async (accept) => {
-    setShowBetaConfirm(false);
-    if (!accept) return;
-
-    setBetaSubmitting(true);
-    setBetaError("");
-    try {
-      const updated = await setBetaTester(true);
-      setUser({ ...user, ...updated });
-    } catch (err) {
-      if (err.sessionExpired) clearUser();
-      setBetaError(err.message || "No se pudo activar beta testing. Intentá de nuevo.");
-    } finally {
-      setBetaSubmitting(false);
-    }
   };
 
   return (
@@ -66,7 +38,7 @@ function Navbar({ abrirFormulario = () => {} }) {
         type="button"
         className="block lg:hidden text-[2rem] cursor-pointer text-text absolute top-[25px] right-[30px] z-[1200]"
         onClick={() => setMenuOpen(!menuOpen)}
-        aria-label="Abrir menú"
+        aria-label={t("navbar.openMenu", "Abrir menú")}
         aria-expanded={menuOpen}
       >
         ☰
@@ -82,17 +54,17 @@ function Navbar({ abrirFormulario = () => {} }) {
         <ul className="flex flex-col items-center gap-[15px] md:gap-5 lg:flex-row lg:gap-[30px] lg:mr-auto list-none">
           <li>
             <Link to="/" className="no-underline text-text text-lg font-semibold transition-colors duration-300 hover:text-main">
-              {t("home")}
+              {t("navbar.home", "Inicio")}
             </Link>
           </li>
           <li>
             <Link to="/#catalogo" className="no-underline text-text text-lg font-semibold transition-colors duration-300 hover:text-main">
-              {t("catalog")}
+              {t("navbar.catalog", "Catálogo")}
             </Link>
           </li>
           <li>
             <Link to="/comunidad" className="no-underline text-text text-lg font-semibold transition-colors duration-300 hover:text-main">
-              {t("community")}
+              {t("navbar.community", "Comunidad")}
             </Link>
           </li>
         </ul>
@@ -102,7 +74,7 @@ function Navbar({ abrirFormulario = () => {} }) {
             onClick={abrirFormulario}
             className="bg-[#7CFC00] text-black font-semibold px-5 py-3 rounded-full transition-all duration-300 hover:scale-110 hover:shadow-[0_0_20px_#7CFC00] hover:-translate-y-1 active:scale-95 animate-pulse"
           >
-            {t("beta")}
+            {t("navbar.beta", "Beta")}
           </button>
 
           {user ? (
@@ -110,16 +82,16 @@ function Navbar({ abrirFormulario = () => {} }) {
               <button
                 onClick={() => setShowUserMenu((prev) => !prev)}
                 className="w-10 h-10 rounded-full bg-main text-white font-bold flex items-center justify-center hover:bg-hover transition-colors"
-                aria-label="Menú de perfil"
+                aria-label={t("navbar.profileMenu", "Menú de perfil")}
               >
                 {initial}
               </button>
 
               {showUserMenu && (
                 <div className="absolute right-0 top-full mt-2 w-64 bg-card-bg text-text rounded-xl shadow-lg p-4 z-50 transition-colors duration-300">
-                  <p className="font-bold text-base mb-1">{displayName || t("user")}</p>
+                  <p className="font-bold text-base mb-1">{displayName || t("navbar.user", "Usuario")}</p>
                   {user.email && <p className="text-sm opacity-70 mb-1 break-all">{user.email}</p>}
-                  {user.provider && <p className="text-xs opacity-60 mb-3">Conectado con {user.provider}</p>}
+                  {user.provider && <p className="text-xs opacity-60 mb-3">{t("navbar.connectedWith", "Conectado con {provider}", { provider: user.provider })}</p>}
                   <button
                     onClick={() => {
                       navigate("/perfil");
@@ -127,13 +99,13 @@ function Navbar({ abrirFormulario = () => {} }) {
                     }}
                     className="w-full text-sm font-bold text-text hover:text-hover transition-colors text-left mb-2"
                   >
-                    Ver perfil
+                    {t("navbar.profile", "Ver perfil")}
                   </button>
                   <button
                     onClick={handleLogout}
                     className="w-full mt-2 text-sm font-bold text-main hover:text-hover transition-colors text-left"
                   >
-                    {t("logout")}
+                    {t("navbar.logout", "Cerrar sesión")}
                   </button>
                 </div>
               )}
@@ -143,7 +115,7 @@ function Navbar({ abrirFormulario = () => {} }) {
               className="bg-main text-white px-[28px] py-[12px] rounded-full font-bold hover:bg-hover transition"
               onClick={() => navigate("/login")}
             >
-              {t("login")}
+              {t("navbar.login", "Iniciar sesión")}
             </button>
           )}
           

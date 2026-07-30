@@ -1,17 +1,33 @@
 import { i18n } from "@lingui/core";
 
+const SUPPORTED_LOCALES = ["es", "en", "fr"];
+
+export function normalizeLocale(locale) {
+  const normalizedLocale = (locale || "").toLowerCase();
+  return SUPPORTED_LOCALES.includes(normalizedLocale)
+    ? normalizedLocale
+    : "es";
+}
+
 export async function activateLocale(locale) {
-  switch (locale) {
-    case "es":
-      const { messages: esMessages } = await import("./locales/es/messages.js");
-      i18n.load("es", esMessages);
-      i18n.activate("es");
-      break;
-    case "en":
-    default:
-      const { messages: enMessages } = await import("./locales/en/messages.js");
-      i18n.load("en", enMessages);
-      i18n.activate("en");
-      break;
+  const normalizedLocale = normalizeLocale(locale);
+  const { messages } = await import(`./locales/${normalizedLocale}/messages.js`);
+
+  i18n.load(normalizedLocale, messages);
+  i18n.activate(normalizedLocale);
+
+  if (typeof window !== "undefined") {
+    window.localStorage.setItem("app-locale", normalizedLocale);
   }
+
+  return normalizedLocale;
+}
+
+export function getInitialLocale() {
+  if (typeof window === "undefined") {
+    return "es";
+  }
+
+  const storedLocale = window.localStorage.getItem("app-locale");
+  return normalizeLocale(storedLocale || navigator.language?.split("-")[0] || "es");
 }

@@ -1,13 +1,14 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useLingui } from "@lingui/react";
 import Button from "../../../components/common/Button";
 import FormInput from "../../../components/common/FormInput";
 import FormSelect from "../../../components/common/FormSelect";
 import { register, fetchCurrentUser } from "../services/authService";
 import { API_BASE_URL, clearLoggedOutMark } from "../../../services/apiClient";
 import { useAuth } from "../../../context/AuthContext";
-import { useTranslation } from "react-i18next";
 import COUNTRIES from "../data/countries";
+import { translateErrorMessage } from "../../../utils/errorMessages";
 import { USERNAME_RE, PASSWORD_RE, NAME_RE, EMAIL_RE } from "../utils/validators";
 
 const INITIAL_FORM = {
@@ -38,21 +39,21 @@ function RegisterPage() {
   const [betaConsent, setBetaConsent] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [serverError, setServerError] = useState("");
-  const { t } = useTranslation("auth");
+  const { i18n } = useLingui();
+  const t = (id, message) => i18n._({ id, message });
   const { setUser } = useAuth();
 
-  // ✅ validate ahora recibe t desde el hook
   const validate = (form) => {
     const errors = {};
-    if (!NAME_RE.test(form.firstName.trim())) errors.firstName = t("register.errors.name");
-    if (!NAME_RE.test(form.lastName.trim())) errors.lastName = t("register.errors.name");
-    if (!USERNAME_RE.test(form.username.trim())) errors.username = t("register.errors.username");
-    if (!EMAIL_RE.test(form.email.trim())) errors.email = t("register.errors.email");
+    if (!NAME_RE.test(form.firstName.trim())) errors.firstName = t("register.errors.name", "Solo letras y espacios");
+    if (!NAME_RE.test(form.lastName.trim())) errors.lastName = t("register.errors.name", "Solo letras y espacios");
+    if (!USERNAME_RE.test(form.username.trim())) errors.username = t("register.errors.username", "Usuario inválido");
+    if (!EMAIL_RE.test(form.email.trim())) errors.email = t("register.errors.email", "Correo inválido");
     if (form.country.trim().length < 2 || form.country.trim().length > 56)
-      errors.country = t("register.errors.country");
-    if (!PASSWORD_RE.test(form.password)) errors.password = t("register.errors.password");
+      errors.country = t("register.errors.country", "Seleccioná un país válido");
+    if (!PASSWORD_RE.test(form.password)) errors.password = t("register.errors.password", "La contraseña no cumple los requisitos");
     if (form.password !== form.confirmPassword)
-      errors.confirmPassword = t("register.errors.confirmPassword");
+      errors.confirmPassword = t("register.errors.confirmPassword", "Las contraseñas no coinciden");
     return errors;
   };
 
@@ -65,7 +66,7 @@ function RegisterPage() {
     setServerError("");
 
     if (!acceptedTerms) {
-      setServerError(t("register.errors.terms"));
+      setServerError(t("register.errors.terms", "Debes aceptar los términos"));
       return;
     }
 
@@ -96,9 +97,9 @@ function RegisterPage() {
     } catch (err) {
       if (isFieldErrorMap(err.data)) {
         setErrors((prev) => ({ ...prev, ...err.data }));
-        setServerError("Revisá los campos marcados en el formulario.");
+        setServerError(t("register.formReview", "Revisá los campos marcados en el formulario."));
       } else {
-        setServerError(err.message);
+        setServerError(translateErrorMessage(err, t("errors.generic", "Ocurrió un error"), i18n));
       }
     } finally {
       setSubmitting(false);
@@ -116,7 +117,7 @@ function RegisterPage() {
         <button
           type="button"
           onClick={() => navigate("/")}
-          title="Volver al inicio"
+          title={t("auth.backToHome", "Volver al inicio")}
           className="cursor-pointer"
         >
           <img
@@ -127,23 +128,23 @@ function RegisterPage() {
         </button>
 
         <h1 className="font-nunito text-2xl font-extrabold text-text mb-7 transition-colors duration-400">
-          {t("register.title")}
+          {t("register.title", "Crear cuenta")}
         </h1>
 
         <form className="w-full flex flex-col text-left" onSubmit={handleSubmit}>
           <div className="grid grid-cols-2 gap-3">
             <FormInput
               id="register-firstName"
-              label={t("register.firstName")}
-              placeholder={t("register.firstNamePlaceholder")}
+              label={t("register.firstName", "Nombre")}
+              placeholder={t("register.firstNamePlaceholder", "Tu nombre")}
               value={form.firstName}
               onChange={updateField("firstName")}
               error={errors.firstName}
             />
             <FormInput
               id="register-lastName"
-              label={t("register.lastName")}
-              placeholder={t("register.lastNamePlaceholder")}
+              label={t("register.lastName", "Apellido")}
+              placeholder={t("register.lastNamePlaceholder", "Tu apellido")}
               value={form.lastName}
               onChange={updateField("lastName")}
               error={errors.lastName}
@@ -152,18 +153,18 @@ function RegisterPage() {
 
           <FormInput
             id="register-username"
-            label={t("register.username")}
-            placeholder={t("register.usernamePlaceholder")}
+            label={t("register.username", "Usuario")}
+            placeholder={t("register.usernamePlaceholder", "Elige un usuario")}
             value={form.username}
             onChange={updateField("username")}
             error={errors.username}
-            hint={!errors.username ? t("register.usernameHint") : undefined}
+            hint={!errors.username ? t("register.usernameHint", "Mínimo 4 caracteres") : undefined}
           />
 
           <FormInput
             id="register-email"
-            label={t("register.email")}
-            placeholder={t("register.emailPlaceholder")}
+            label={t("register.email", "Correo electrónico")}
+            placeholder={t("register.emailPlaceholder", "tu@email.com")}
             type="email"
             value={form.email}
             onChange={updateField("email")}
@@ -172,8 +173,8 @@ function RegisterPage() {
 
           <FormSelect
             id="register-country"
-            label={t("register.country")}
-            placeholder={t("register.countryPlaceholder")}
+            label={t("register.country", "País")}
+            placeholder={t("register.countryPlaceholder", "Seleccioná tu país")}
             options={COUNTRIES}
             value={form.country}
             onChange={updateField("country")}
@@ -183,18 +184,18 @@ function RegisterPage() {
           <div className="grid grid-cols-2 gap-3">
             <FormInput
               id="register-password"
-              label={t("register.password")}
+              label={t("register.password", "Contraseña")}
               type="password"
-              placeholder={t("register.passwordPlaceholder")}
+              placeholder={t("register.passwordPlaceholder", "Mínimo 8 caracteres")}
               value={form.password}
               onChange={updateField("password")}
               error={errors.password}
             />
             <FormInput
               id="register-confirmPassword"
-              label={t("register.confirmPassword")}
+              label={t("register.confirmPassword", "Confirmar contraseña")}
               type="password"
-              placeholder={t("register.passwordPlaceholder")}
+              placeholder={t("register.passwordPlaceholder", "Mínimo 8 caracteres")}
               value={form.confirmPassword}
               onChange={updateField("confirmPassword")}
               error={errors.confirmPassword}
@@ -209,7 +210,7 @@ function RegisterPage() {
               onChange={(e) => setBetaConsent(e.target.checked)}
             />
             <span className="text-sm font-bold text-text">
-              ¡Acepto recibir correos para beta testing!
+              {t("register.betaConsent", "Acepto recibir correos para beta testing")}
             </span>
           </label>
 
@@ -220,7 +221,7 @@ function RegisterPage() {
               checked={acceptedTerms}
               onChange={(e) => setAcceptedTerms(e.target.checked)}
             />
-            {t("register.terms")}
+            {t("register.terms", "Acepto los términos y condiciones")}
           </label>
 
           {serverError ? (
@@ -228,12 +229,12 @@ function RegisterPage() {
           ) : null}
 
           <Button type="submit" variant="primary" disabled={submitting}>
-            {submitting ? t("register.loading") : t("register.button")}
+            {submitting ? t("register.loading", "Creando cuenta...") : t("register.button", "Crear cuenta")}
           </Button>
         </form>
 
         <div className="flex items-center w-full mb-6 text-text opacity-60 text-[13px] before:content-[''] before:flex-1 before:h-px before:bg-snd-bg after:content-[''] after:flex-1 after:h-px after:bg-snd-bg">
-          <span className="px-3">{t("register.or")}</span>
+          <span className="px-3">{t("register.or", "o")}</span>
         </div>
 
         <div className="flex gap-3 w-full mb-6">
@@ -246,7 +247,7 @@ function RegisterPage() {
         </div>
 
         <Button variant="link" onClick={() => navigate("login")}>
-          {t("register.login")}
+          {t("register.login", "Ya tengo cuenta")}
         </Button>
       </div>
     </div>

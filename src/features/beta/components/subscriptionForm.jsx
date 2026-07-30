@@ -1,8 +1,9 @@
 import { useState } from "react";
+import { useLingui } from "@lingui/react";
 import Button from "../../../components/common/Button";
 import FormInput from "../../../components/common/FormInput";
 import { createSubscription } from "../services/subscriptionService";
-import { useTranslation } from "react-i18next";
+import { translateErrorMessage } from "../../../utils/errorMessages";
 
 function SubscriptionForm({ cerrarFormulario }) {
   const [formData, setFormData] = useState({
@@ -18,7 +19,8 @@ function SubscriptionForm({ cerrarFormulario }) {
   const [serverError, setServerError] = useState("");
   const [submitted, setSubmitted] = useState(false);
 
-  const { t } = useTranslation("beta");
+  const { i18n } = useLingui();
+  const t = (id, message) => i18n._({ id, message });
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -51,7 +53,7 @@ function SubscriptionForm({ cerrarFormulario }) {
 
       setSubmitted(true);
     } catch (err) {
-      setServerError(err.message);
+      setServerError(translateErrorMessage(err, t("errors.generic", "Ocurrió un error"), i18n));
     } finally {
       setSubmitting(false);
     }
@@ -77,25 +79,25 @@ function SubscriptionForm({ cerrarFormulario }) {
         {submitted ? (
           <div className="text-center py-8">
             <p className="text-text text-lg font-semibold mb-6">
-              {t("success")}
+              {t("beta.success", "¡Gracias por inscribirte!")}
             </p>
 
             <Button variant="primary" onClick={cerrarFormulario}>
-              {t("close")}
+              {t("beta.close", "Cerrar")}
             </Button>
           </div>
         ) : (
           <>
             <h2 className="text-3xl font-bold text-center mb-6">
-              {t("title")}
+              {t("beta.title", "Quiero probar beta")}
             </h2>
 
             <form onSubmit={handleSubmit} className="space-y-4">
               <FormInput
                 id="subscription-nombre"
                 name="nombre"
-                label={t("name")}
-                placeholder={t("namePlaceholder")}
+                label={t("beta.name", "Nombre")}
+                placeholder={t("beta.namePlaceholder", "Tu nombre")}
                 value={formData.nombre}
                 onChange={handleChange}
               />
@@ -104,8 +106,8 @@ function SubscriptionForm({ cerrarFormulario }) {
                 id="subscription-email"
                 name="email"
                 type="email"
-                label={t("email")}
-                placeholder={t("emailPlaceholder")}
+                label={t("beta.email", "Correo electrónico")}
+                placeholder={t("beta.emailPlaceholder", "tu@email.com")}
                 value={formData.email}
                 onChange={handleChange}
               />
@@ -116,16 +118,16 @@ function SubscriptionForm({ cerrarFormulario }) {
                 onChange={handleChange}
                 className="w-full px-4 py-3 rounded-[10px] border border-snd-bg bg-snd-bg text-text font-nunito focus:outline-none focus:border-main"
               >
-                <option value="">{t("select")}</option>
-                <option value="">{t("challenges")}</option>
-                <option value="">{t("beta")}</option>
+                <option value="">{t("beta.select", "Seleccioná una opción")}</option>
+                <option value="challenges">{t("beta.challenges", "Desafíos")}</option>
+                <option value="beta">{t("beta.beta", "Beta")}</option>
               </select>
 
               <FormInput
                 id="subscription-pais"
                 name="pais"
-                label={t("country")}
-                placeholder={t("countryPlaceholder")}
+                label={t("beta.country", "País")}
+                placeholder={t("beta.countryPlaceholder", "Tu país")}
                 value={formData.pais}
                 onChange={handleChange}
               />
@@ -138,7 +140,7 @@ function SubscriptionForm({ cerrarFormulario }) {
                   onChange={handleChange}
                   className="accent-main w-4 h-4 cursor-pointer"
                 />
-                <label>{t("terms")}</label>
+                <label>{t("beta.terms", "Acepto los términos")}</label>
               </div>
 
               <div className="flex items-start gap-2">
@@ -149,7 +151,7 @@ function SubscriptionForm({ cerrarFormulario }) {
                   onChange={handleChange}
                   className="accent-main w-4 h-4 cursor-pointer"
                 />
-                <label>{t("marketing")}</label>
+                <label>{t("beta.marketing", "Quiero recibir novedades")}</label>
               </div>
 
               {serverError ? (
@@ -163,7 +165,7 @@ function SubscriptionForm({ cerrarFormulario }) {
                 variant="primary"
                 disabled={submitting}
               >
-                {submitting ? t("sending") : t("send")}
+                {submitting ? t("beta.sending", "Enviando...") : t("beta.send", "Enviar")}
               </Button>
             </form>
           </>

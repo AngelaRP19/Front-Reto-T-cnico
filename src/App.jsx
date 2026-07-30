@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
-import { I18nProvider } from "@lingui/react";
+import { I18nProvider, useLingui } from "@lingui/react";
 import { i18n } from "@lingui/core";
 import { activateLocale } from "./i18n"; // tu configuración de Lingui
 
@@ -27,17 +27,19 @@ import NotFoundPage from "./pages/NotFoundPage";
 import Footer from "./components/layout/Footer";
 
 import { getExpansionPacks } from "./features/catalog/services/expansionsService";
+import { translateErrorMessage } from "./utils/errorMessages";
 
 function App() {
   const [showForm, setShowForm] = useState(false);
   const [packs, setPacks] = useState([]);
   const [loadingPacks, setLoadingPacks] = useState(true);
   const [packsError, setPacksError] = useState("");
+  const { i18n } = useLingui();
 
   useEffect(() => {
     getExpansionPacks()
       .then(setPacks)
-      .catch((err) => setPacksError(err.message))
+      .catch((err) => setPacksError(translateErrorMessage(err, i18n._({ id: "errors.generic", message: "Ocurrió un error" }), i18n)))
       .finally(() => setLoadingPacks(false));
   }, []);
 
