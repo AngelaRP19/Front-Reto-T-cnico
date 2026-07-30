@@ -36,13 +36,13 @@ function ResetPasswordPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-bg px-5 py-10">
-      <div className="w-full max-w-[380px] text-center">
-        <h1 className="font-nunito text-2xl font-extrabold text-text mb-7">
+    <div className="min-h-screen flex items-center justify-center bg-bg px-[1.25rem] py-[2.5rem]">
+      <div className="w-full max-w-[23.75rem] text-center">
+        <h1 className="font-nunito text-[1.5rem] font-extrabold text-text mb-[1.75rem]">
           {t("auth.reset.title", "Restablecer contraseña")}
         </h1>
 
-        <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+        <form onSubmit={handleSubmit} className="flex flex-col gap-[1.25rem]">
           <FormInput
             id="new-password"
             label={t("auth.reset.newPassword", "Nueva contraseña")}
