@@ -146,6 +146,7 @@ function Navbar({ abrirFormulario = () => {} }) {
               {t("login")}
             </button>
           )}
+          
 
           <button
             onClick={toggleTheme}

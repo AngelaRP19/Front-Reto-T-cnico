@@ -5,7 +5,7 @@ import FormInput from "../../../components/common/FormInput";
 import { login, fetchCurrentUser } from "../services/authService";
 import { API_BASE_URL, clearLoggedOutMark } from "../../../services/apiClient";
 import { useAuth } from "../../../context/AuthContext";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 
 function LoginPage() {
   const navigate = useNavigate();
@@ -58,21 +58,21 @@ function LoginPage() {
         </div>
 
         <h1 className="font-nunito text-2xl font-extrabold text-text mb-7 transition-colors duration-400">
-          {t("login.title")}
+          {Trans("login.title")}
         </h1>
 
         <form className="w-full flex flex-col text-left" onSubmit={handleSubmit}>
           <FormInput
             id="login-email"
-            label={t("login.username")}
-            placeholder={t("login.usernamePlaceholder")}
+            label={Trans("login.username")}
+            placeholder={Trans("login.usernamePlaceholder")}
             value={username}
             onChange={(e) => setUsername(e.target.value)}
           />
 
           <FormInput
             id="login-password"
-            label={t("login.password")}
+            label={Trans("login.password")}
             type="password"
             placeholder="••••••••"
             value={password}
@@ -80,7 +80,7 @@ function LoginPage() {
           />
 
           <div className="flex items-center w-full mb-6 text-text opacity-60 text-[13px] before:content-[''] before:flex-1 before:h-px before:bg-snd-bg after:content-[''] after:flex-1 after:h-px after:bg-snd-bg">
-            <span className="px-3">{t("login.or")}</span>
+            <span className="px-3">{Trans("login.or")}</span>
           </div>
 
           <div className="flex gap-3 w-full mb-6">
@@ -99,7 +99,7 @@ function LoginPage() {
               checked={remember}
               onChange={(e) => setRemember(e.target.checked)}
             />
-            {t("login.remember")}
+            {Trans("login.remember")}
           </label>
 
           {serverError ? (
@@ -107,16 +107,16 @@ function LoginPage() {
           ) : null}
 
           <Button type="submit" variant="primary" disabled={submitting}>
-            {submitting ? t("login.loading") : t("login.button")}
+            {submitting ? Trans("login.loading") : Trans("login.button")}
           </Button>
         </form>
 
         <Button variant="link" onClick={() => navigate("/forgot-password")}>
-           {t("login.forgot")}
+           {Trans("login.forgot")}
         </Button>
 
         <Button variant="outline" onClick={() => navigate("/register")}>
-          {t("login.register")}
+          {Trans("login.register")}
 
         </Button>
       </div>
