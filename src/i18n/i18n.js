@@ -32,7 +32,15 @@ import footerFr from "./locales/fr/footer.json";
 import challengesFr from "./locales/fr/challenges.json";
 
 import LanguageDetector from "i18next-browser-languagedetector";
-
+i18n.init({
+  fallbackLng: "en",
+  debug: false,
+  interpolation: { escapeValue: false },
+  returnNull: false,
+  returnEmptyString: false,
+  saveMissing: false,
+  missingKeyHandler: (lng, ns, key) => key, // muestra el texto original
+});
 i18n
   .use(LanguageDetector)
   .use(initReactI18next)

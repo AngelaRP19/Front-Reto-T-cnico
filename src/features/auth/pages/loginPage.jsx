@@ -111,8 +111,8 @@ function LoginPage() {
           </Button>
         </form>
 
-        <Button variant="link" onClick={handleForgotPassword}>
-          {t("login.forgot")}
+        <Button variant="link" onClick={() => navigate("/forgot-password")}>
+           {t("login.forgot")}
         </Button>
 
         <Button variant="outline" onClick={() => navigate("/register")}>

@@ -7,6 +7,8 @@ import { AuthProvider } from "./context/AuthContext.jsx";
 import "./i18n/i18n";
 import "./styles/index.css";
 import App from "./App.jsx";
+import { i18n } from "@lingui/core";
+import { I18nProvider } from "@lingui/react";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
