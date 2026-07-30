@@ -45,13 +45,18 @@ function RegisterPage() {
 
   const validate = (form) => {
     const errors = {};
-    if (!NAME_RE.test(form.firstName.trim())) errors.firstName = t("register.errors.name", "Solo letras y espacios");
-    if (!NAME_RE.test(form.lastName.trim())) errors.lastName = t("register.errors.name", "Solo letras y espacios");
-    if (!USERNAME_RE.test(form.username.trim())) errors.username = t("register.errors.username", "Usuario inválido");
-    if (!EMAIL_RE.test(form.email.trim())) errors.email = t("register.errors.email", "Correo inválido");
+    if (!NAME_RE.test(form.firstName.trim()))
+      errors.firstName = t("register.errors.name", "Solo letras y espacios");
+    if (!NAME_RE.test(form.lastName.trim()))
+      errors.lastName = t("register.errors.name", "Solo letras y espacios");
+    if (!USERNAME_RE.test(form.username.trim()))
+      errors.username = t("register.errors.username", "Usuario inválido");
+    if (!EMAIL_RE.test(form.email.trim()))
+      errors.email = t("register.errors.email", "Correo inválido");
     if (form.country.trim().length < 2 || form.country.trim().length > 56)
       errors.country = t("register.errors.country", "Seleccioná un país válido");
-    if (!PASSWORD_RE.test(form.password)) errors.password = t("register.errors.password", "La contraseña no cumple los requisitos");
+    if (!PASSWORD_RE.test(form.password))
+      errors.password = t("register.errors.password", "La contraseña no cumple los requisitos");
     if (form.password !== form.confirmPassword)
       errors.confirmPassword = t("register.errors.confirmPassword", "Las contraseñas no coinciden");
     return errors;
@@ -113,7 +118,7 @@ function RegisterPage() {
 
   return (
     <div className="min-h-screen w-full flex items-center justify-center bg-bg px-5 py-10 transition-colors duration-400">
-      <div className="w-full max-w-[380px] flex flex-col items-center text-center">
+      <div className="w-full max-w-[23.75rem] flex flex-col items-center text-center">
         <button
           type="button"
           onClick={() => navigate("/")}
@@ -123,7 +128,7 @@ function RegisterPage() {
           <img
             src="https://res.cloudinary.com/w1jl4sa5/image/upload/v1784825556/Logo_of_The_Sims_4.svg_jagzsl.webp"
             alt="Logo"
-            className="w-[120px] h-[120px] object-contain"
+            className="w-[7.5rem] h-[7.5rem] object-contain"
           />
         </button>
 
@@ -233,8 +238,8 @@ function RegisterPage() {
           </Button>
         </form>
 
-        <div className="flex items-center w-full mb-6 text-text opacity-60 text-[13px] before:content-[''] before:flex-1 before:h-px before:bg-snd-bg after:content-[''] after:flex-1 after:h-px after:bg-snd-bg">
-          <span className="px-3">{t("register.or", "o")}</span>
+        <div className="flex items-center w-full mb-6 text-text opacity-60 text-[0.8125rem] before:content-[''] before:flex-1 before:h-px before:bg-snd-bg after:content-[''] after:flex-1 after:h-px after:bg-snd-bg">
+          <span className="px-3">o regístrate con</span>
         </div>
 
         <div className="flex gap-3 w-full mb-6">
