@@ -137,11 +137,11 @@ function CardChallenge({ challenge, subscription, userId, isAuthenticated, onSub
 
       {showModal && (
         <div
-          className="fixed inset-0 bg-black/60 flex justify-center items-center z-50 animate-fadeIn"
+          className="fixed inset-0 bg-black/60 flex justify-center items-center p-4 sm:p-6 z-[1300] animate-fadeIn"
           onClick={() => setShowModal(false)}
         >
           <div
-            className="bg-card-bg text-text rounded-2xl shadow-2xl w-[90%] max-w-[32rem] p-8 relative animate-[zoomIn_.35s_ease] transition-colors duration-300"
+            className="bg-card-bg text-text rounded-2xl shadow-2xl w-full max-w-[32rem] max-h-[calc(100vh-2rem)] overflow-y-auto p-5 sm:p-8 relative animate-[zoomIn_.35s_ease] transition-colors duration-300"
             onClick={(e) => e.stopPropagation()}
           >
             <button
@@ -170,11 +170,11 @@ function CardChallenge({ challenge, subscription, userId, isAuthenticated, onSub
 
       {showCancelConfirm && (
         <div
-          className="fixed inset-0 bg-black/60 flex justify-center items-center z-[60] animate-fadeIn"
+          className="fixed inset-0 bg-black/60 flex justify-center items-center p-4 sm:p-6 z-[1300] animate-fadeIn"
           onClick={(e) => { e.stopPropagation(); setShowCancelConfirm(false); }}
         >
           <div
-            className="bg-card-bg text-text rounded-2xl shadow-2xl w-[90%] max-w-sm p-6 transition-colors duration-300"
+            className="bg-card-bg text-text rounded-2xl shadow-2xl w-full max-w-sm max-h-[calc(100vh-2rem)] overflow-y-auto p-5 sm:p-6 transition-colors duration-300"
             onClick={(e) => e.stopPropagation()}
           >
             <h3 className="text-lg font-bold mb-2">{t("challenges.cancelTitle", "¿Cancelar este reto?")}</h3>

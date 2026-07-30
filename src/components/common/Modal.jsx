@@ -1,11 +1,11 @@
 function Modal({ onClose, children, maxWidthClass = "max-w-sm" }) {
   return (
     <div
-      className="fixed inset-0 bg-black/60 flex justify-center items-center z-[70] animate-fadeIn"
+      className="fixed inset-0 bg-black/60 flex justify-center items-center p-4 sm:p-6 z-[1300] animate-fadeIn"
       onClick={onClose}
     >
       <div
-        className={`bg-card-bg text-text rounded-2xl shadow-2xl w-[90%] ${maxWidthClass} p-6 relative transition-colors duration-300`}
+        className={`bg-card-bg text-text rounded-2xl shadow-2xl w-full ${maxWidthClass} max-h-[calc(100vh-2rem)] overflow-y-auto p-5 sm:p-6 relative transition-colors duration-300`}
         onClick={(e) => e.stopPropagation()}
       >
         <button
