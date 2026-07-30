@@ -3,23 +3,20 @@ import { Link, useNavigate } from "react-router-dom";
 import { useLingui } from "@lingui/react";
 import { useTheme } from "../../context/ThemeContext";
 import { useAuth } from "../../context/AuthContext";
-import {
-  logout,
-  setBetaTester,
-} from "../../features/auth/services/authService";
+import { logout } from "../../features/auth/services/authService";
+import LanguageSelector from "../common/LanguageSelector";
 
-function Navbar() {
+function Navbar({ abrirFormulario }) {
   const navigate = useNavigate();
 
   const [menuOpen, setMenuOpen] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
-  const [showBetaConfirm, setShowBetaConfirm] = useState(false);
-  const [betaSubmitting, setBetaSubmitting] = useState(false);
   const [betaError, setBetaError] = useState("");
 
   const { theme, toggleTheme } = useTheme();
+  const { user, clearUser } = useAuth();
   const { i18n } = useLingui();
-  const { user, clearUser, setUser } = useAuth();
+  const t = (id, message) => i18n._({ id, message });
 
   const displayName = user?.firstName || user?.name || user?.username || "";
   const initial = displayName ? displayName.charAt(0).toUpperCase() : "?";
@@ -35,43 +32,14 @@ function Navbar() {
   };
 
   const handleBetaButtonClick = () => {
-    if (!user) {
-      navigate("/register");
+    if (typeof abrirFormulario === "function") {
+      abrirFormulario();
       setMenuOpen(false);
       return;
     }
 
     setBetaError("");
-    setShowBetaConfirm((prev) => !prev);
-  };
-
-  const handleBetaConfirm = async (accept) => {
-    setShowBetaConfirm(false);
-
-    if (!accept) {
-      return;
-    }
-
-    setBetaSubmitting(true);
-    setBetaError("");
-
-    try {
-      const updated = await setBetaTester(true);
-      setUser({
-        ...user,
-        ...updated,
-      });
-    } catch (err) {
-      if (err?.sessionExpired) {
-        clearUser();
-      }
-
-      setBetaError(
-        err?.message || "No se pudo activar beta testing. Intenta de nuevo."
-      );
-    } finally {
-      setBetaSubmitting(false);
-    }
+    setMenuOpen(false);
   };
 
   return (
@@ -90,7 +58,7 @@ function Navbar() {
         type="button"
         className="block lg:hidden text-[2rem] cursor-pointer text-text absolute top-[1.5625rem] right-[1.875rem] z-[1200]"
         onClick={() => setMenuOpen(!menuOpen)}
-        aria-label="Abrir menú"
+        aria-label={t("navbar.openMenu", "Abrir menú")}
         aria-expanded={menuOpen}
       >
         ☰
@@ -106,17 +74,17 @@ function Navbar() {
         <ul className="flex flex-col items-center gap-[0.9375rem] md:gap-5 lg:flex-row lg:gap-[1.875rem] lg:mr-auto list-none">
           <li>
             <Link to="/" className="no-underline text-text text-lg font-semibold transition-colors duration-300 hover:text-main">
-              Inicio
+              {t("navbar.home", "Inicio")}
             </Link>
           </li>
           <li>
             <Link to="/#catalogo" className="no-underline text-text text-lg font-semibold transition-colors duration-300 hover:text-main">
-              Catálogo
+              {t("navbar.catalog", "Catálogo")}
             </Link>
           </li>
           <li>
             <Link to="/comunidad" className="no-underline text-text text-lg font-semibold transition-colors duration-300 hover:text-main">
-              Comunidad
+              {t("navbar.community", "Comunidad")}
             </Link>
           </li>
         </ul>
@@ -124,41 +92,16 @@ function Navbar() {
         <div className="flex flex-col w-full justify-center items-center gap-4 px-5 sm:px-8 mt-6 lg:mt-0 lg:flex-row lg:w-auto lg:items-center lg:px-0 lg:ml-auto">
           {user?.betaTester ? (
             <span className="w-full max-w-sm lg:w-auto text-center px-4 py-2 rounded-full text-sm font-bold text-accent border-2 border-accent bg-accent/10">
-              Beta tester
+              {t("profile.info.betaTester", "Beta tester")}
             </span>
           ) : (
             <div className="relative w-full max-w-sm lg:w-auto">
               <button
                 onClick={handleBetaButtonClick}
-                disabled={betaSubmitting}
                 className="bg-accent text-black font-semibold w-full lg:w-auto px-4 sm:px-5 py-2.5 rounded-full transition-all duration-300 hover:scale-105 hover:shadow-[0_0_20px_var(--accent-color)] active:scale-95 disabled:opacity-60 text-sm sm:text-base"
               >
-                ¿Quieres ser beta tester?
+                {t("beta.title", "¿Quieres ser beta tester?")}
               </button>
-
-              {showBetaConfirm && (
-                <div className="absolute left-1/2 -translate-x-1/2 lg:left-auto lg:right-0 lg:translate-x-0 top-full mt-2 w-72 max-w-[90vw] bg-card-bg text-text rounded-xl shadow-xl p-4 z-[1300]">
-                  <p className="text-sm font-bold mb-3">
-                    ¿Quieres suscribirte a beta testing?
-                  </p>
-
-                  <div className="flex gap-2">
-                    <button
-                      onClick={() => handleBetaConfirm(true)}
-                      className="flex-1 bg-accent text-black rounded-full py-2 text-sm font-bold cursor-pointer"
-                    >
-                      Sí, quiero
-                    </button>
-
-                    <button
-                      onClick={() => handleBetaConfirm(false)}
-                      className="flex-1 bg-snd-bg text-text rounded-full py-2 text-sm font-bold cursor-pointer"
-                    >
-                      No, gracias
-                    </button>
-                  </div>
-                </div>
-              )}
 
               {betaError && (
                 <div className="absolute left-1/2 -translate-x-1/2 lg:left-auto lg:right-0 lg:translate-x-0 top-full mt-2 w-72 max-w-[90vw] bg-card-bg text-text rounded-xl shadow-xl p-3 z-[1300]">
@@ -176,7 +119,7 @@ function Navbar() {
                 setMenuOpen(false);
               }}
             >
-              Iniciar sesión
+              {t("navbar.login", "Iniciar sesión")}
             </button>
           ) : (
             <div className="relative hidden lg:flex">
@@ -190,23 +133,25 @@ function Navbar() {
 
               {showUserMenu && (
                 <div className="absolute right-0 top-full mt-2 w-64 bg-card-bg text-text rounded-xl shadow-lg p-4 z-50 transition-colors duration-300">
-                  <p className="font-bold text-base mb-1">{displayName || "Usuario"}</p>
+                  <p className="font-bold text-base mb-1">{displayName || t("navbar.user", "Usuario")}</p>
                   {user.email && (
                     <p className="text-sm opacity-70 mb-1 break-all">{user.email}</p>
                   )}
                   {user.provider && (
-                    <p className="text-xs opacity-60 mb-3">Conectado con {user.provider}</p>
+                    <p className="text-xs opacity-60 mb-3">{t("navbar.connectedWith", "Conectado con {provider}").replace("{provider}", user.provider)}</p>
                   )}
                   <button
                     onClick={handleLogout}
                     className="w-full mt-2 text-sm font-bold text-main hover:text-hover transition-colors text-left"
                   >
-                    Cerrar sesión
+                    {t("navbar.logout", "Cerrar sesión")}
                   </button>
                 </div>
               )}
             </div>
           )}
+
+          <LanguageSelector />
 
           <button
             onClick={toggleTheme}

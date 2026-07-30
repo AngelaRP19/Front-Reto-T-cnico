@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
 import { I18nProvider, useLingui } from "@lingui/react";
 import { i18n } from "@lingui/core";
-import { activateLocale } from "./i18n"; // tu configuración de Lingui
 
 // importa tus componentes
 import Navbar from "./components/layout/Navbar";
@@ -43,10 +42,24 @@ function App() {
       .finally(() => setLoadingPacks(false));
   }, []);
 
-  // activar idioma inicial (ejemplo: inglés)
-  useEffect(() => {
-    activateLocale("es");
-  }, []);
+  let content;
+
+  if (loadingPacks) {
+    content = <p className="text-text w-full text-center py-10">Loading...</p>;
+  } else if (packsError) {
+    content = <p className="text-text w-full text-center py-10">{packsError}</p>;
+  } else {
+    content = packs.map((pack) => (
+      <div key={pack.id} className="cursor-pointer">
+        <Card
+          plataforma={pack.platform}
+          titulo={pack.title}
+          precio={pack.price}
+          image={pack.image}
+        />
+      </div>
+    ));
+  }
 
   return (
     <I18nProvider i18n={i18n}>
@@ -65,22 +78,7 @@ function App() {
         id="catalogo"
         className="w-[90%] mx-auto my-[60px] flex justify-center flex-wrap gap-[30px] px-5 py-[30px] md:p-[70px] bg-bg transition-colors duration-400"
       >
-        {loadingPacks ? (
-          <p className="text-text w-full text-center py-10">Loading...</p>
-        ) : packsError ? (
-          <p className="text-text w-full text-center py-10">{packsError || "Error"}</p>
-        ) : (
-          packs.map((pack) => (
-            <div key={pack.id} className="cursor-pointer">
-              <Card
-                plataforma={pack.platform}
-                titulo={pack.title}
-                precio={pack.price}
-                image={pack.image}
-              />
-            </div>
-          ))
-        )}
+        {content}
       </section>
 
       {showForm && <SubscriptionForm cerrarFormulario={() => setShowForm(false)} />}

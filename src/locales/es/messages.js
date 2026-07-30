@@ -74,6 +74,8 @@ export const messages = {
   "beta.success": "¡Gracias por inscribirte!",
   "beta.close": "Cerrar",
   "beta.title": "Quiero probar beta",
+  "beta.accept": "Sí, quiero",
+  "beta.reject": "No, gracias",
   "beta.name": "Nombre",
   "beta.namePlaceholder": "Tu nombre",
   "beta.email": "Correo electrónico",
