@@ -10,11 +10,6 @@ import { useTranslation } from "react-i18next";
 import COUNTRIES from "../data/countries";
 import { USERNAME_RE, PASSWORD_RE, NAME_RE, EMAIL_RE } from "../utils/validators";
 
-const USERNAME_RE = /^[a-zA-Z0-9_]{3,30}$/;
-const PASSWORD_RE = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,50}$/;
-const NAME_RE = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{1,50}$/;
-const EMAIL_RE = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-
 const INITIAL_FORM = {
   firstName: "",
   lastName: "",
@@ -24,25 +19,6 @@ const INITIAL_FORM = {
   password: "",
   confirmPassword: "",
 };
-
-function validate(form){
-  const errors = {};
-
-  if (!NAME_RE.test(form.firstName.trim())) errors.firstName = t("register.errors.name");
-  if (!NAME_RE.test(form.lastName.trim())) errors.lastName = t("register.errors.name");
-  if (!USERNAME_RE.test(form.username.trim()))
-    errors.username = t("register.errors.username");
-  if (!EMAIL_RE.test(form.email.trim())) errors.email = t("register.errors.email");
-  if (form.country.trim().length < 2 || form.country.trim().length > 56)
-    errors.country = t("register.errors.country");
-  if (!PASSWORD_RE.test(form.password))
-    errors.password = t("register.errors.password");
-  if (form.password !== form.confirmPassword)
-    errors.confirmPassword = t("register.errors.confirmPassword");
-
-  return errors;
-  
-}
 
 function isFieldErrorMap(data) {
   return (
@@ -63,10 +39,22 @@ function RegisterPage() {
   const [submitting, setSubmitting] = useState(false);
   const [serverError, setServerError] = useState("");
   const { t } = useTranslation("auth");
-  const { setUser } = useAuth();  
+  const { setUser } = useAuth();
 
-   
-}
+  // ✅ validate ahora recibe t desde el hook
+  const validate = (form) => {
+    const errors = {};
+    if (!NAME_RE.test(form.firstName.trim())) errors.firstName = t("register.errors.name");
+    if (!NAME_RE.test(form.lastName.trim())) errors.lastName = t("register.errors.name");
+    if (!USERNAME_RE.test(form.username.trim())) errors.username = t("register.errors.username");
+    if (!EMAIL_RE.test(form.email.trim())) errors.email = t("register.errors.email");
+    if (form.country.trim().length < 2 || form.country.trim().length > 56)
+      errors.country = t("register.errors.country");
+    if (!PASSWORD_RE.test(form.password)) errors.password = t("register.errors.password");
+    if (form.password !== form.confirmPassword)
+      errors.confirmPassword = t("register.errors.confirmPassword");
+    return errors;
+  };
 
   const updateField = (field) => (e) => {
     setForm((prev) => ({ ...prev, [field]: e.target.value }));
@@ -77,9 +65,7 @@ function RegisterPage() {
     setServerError("");
 
     if (!acceptedTerms) {
-
       setServerError(t("register.errors.terms"));
-
       return;
     }
 
@@ -141,7 +127,7 @@ function RegisterPage() {
         </button>
 
         <h1 className="font-nunito text-2xl font-extrabold text-text mb-7 transition-colors duration-400">
-            {t("register.title")}
+          {t("register.title")}
         </h1>
 
         <form className="w-full flex flex-col text-left" onSubmit={handleSubmit}>
@@ -165,7 +151,6 @@ function RegisterPage() {
           </div>
 
           <FormInput
-
             id="register-username"
             label={t("register.username")}
             placeholder={t("register.usernamePlaceholder")}
@@ -176,7 +161,6 @@ function RegisterPage() {
           />
 
           <FormInput
-
             id="register-email"
             label={t("register.email")}
             placeholder={t("register.emailPlaceholder")}
@@ -224,7 +208,9 @@ function RegisterPage() {
               checked={betaConsent}
               onChange={(e) => setBetaConsent(e.target.checked)}
             />
-            <span className="text-sm font-bold text-text">¡Acepto recibir correos para beta testing!</span>
+            <span className="text-sm font-bold text-text">
+              ¡Acepto recibir correos para beta testing!
+            </span>
           </label>
 
           <label className="flex items-center gap-2 text-sm text-text mb-5 cursor-pointer transition-colors duration-400">
@@ -264,8 +250,8 @@ function RegisterPage() {
         </Button>
       </div>
     </div>
-
   );
-
+}
 
 export default RegisterPage;
+``

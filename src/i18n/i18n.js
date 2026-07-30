@@ -31,7 +31,10 @@ import betaFr from "./locales/fr/beta.json";
 import footerFr from "./locales/fr/footer.json";
 import challengesFr from "./locales/fr/challenges.json";
 
+import LanguageDetector from "i18next-browser-languagedetector";
+
 i18n
+  .use(LanguageDetector)
   .use(initReactI18next)
   .init({
     resources: {
@@ -70,6 +73,11 @@ i18n
     lng: localStorage.getItem("i18nextLng") || "es",
     fallbackLng: "es",
 
+    detection: {
+      order: ["localStorage", "navigator", "htmlTag"],
+      caches: ["localStorage"],
+    },
+
     // Namespaces disponibles
     ns: [
       "common",
@@ -79,7 +87,7 @@ i18n
       "catalog",
       "beta",
       "footer",
-      "challenges"
+      "challenges",
     ],
 
     // Namespace por defecto
