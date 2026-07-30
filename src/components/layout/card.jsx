@@ -1,6 +1,6 @@
 function Card(props) {
   return (
-    <div className="group bg-card-bg text-text rounded-[20px] shadow-[0_6px_18px_rgba(0,0,0,0.6)] overflow-hidden w-full max-w-[350px] md:w-[300px] md:max-w-none flex flex-col justify-between [transition:background-color_0.4s_ease,color_0.4s_ease,transform_0.3s_ease] hover:-translate-y-[6px]">
+    <div className="group bg-card-bg text-text rounded-[20px] shadow-[0_6px_18px_rgba(0,0,0,0.6)] overflow-hidden w-full max-w-[380px] flex flex-col justify-between [transition:background-color_0.4s_ease,color_0.4s_ease,transform_0.3s_ease] hover:-translate-y-[6px]">
       
       {/* Cambiamos h-[220px] por aspect-square para que la imagen se vea COMPLETA */}
       <div className="w-full aspect-square overflow-hidden relative">

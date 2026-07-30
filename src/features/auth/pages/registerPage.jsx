@@ -131,7 +131,7 @@ function RegisterPage() {
         </h1>
 
         <form className="w-full flex flex-col text-left" onSubmit={handleSubmit}>
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <FormInput
               id="register-firstName"
               label="Nombre"
@@ -180,7 +180,7 @@ function RegisterPage() {
             hint={!errors.username ? "Letras, números y guion bajo" : undefined}
           />
 
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <FormInput
               id="register-password"
               label="Contraseña"

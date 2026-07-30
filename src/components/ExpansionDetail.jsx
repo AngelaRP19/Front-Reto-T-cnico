@@ -2,7 +2,7 @@ import React from 'react';
 
 const ExpansionDetail = ({ data: expansion, onBack }) => {
   return (
-    <div className="min-h-screen bg-bg text-text py-10 px-4 sm:px-6 lg:px-8 transition-colors duration-400">
+    <div className="min-h-screen bg-bg text-text py-6 sm:py-10 px-4 sm:px-6 lg:px-8 transition-colors duration-400">
       <div className="max-w-5xl mx-auto">
 
         {/* Botón para regresar al catálogo */}
@@ -18,7 +18,7 @@ const ExpansionDetail = ({ data: expansion, onBack }) => {
           <div className="md:flex">
 
             {/* Contenedor de la Imagen con la clase 'group' para detectar el hover */}
-            <div className="md:w-1/2 bg-slate-900 p-6 flex items-center justify-center relative group overflow-hidden">
+            <div className="md:w-1/2 bg-slate-900 p-4 sm:p-6 flex items-center justify-center relative group overflow-hidden">
 
               {/* Etiqueta / Recuadro con transición rápida de 200ms */}
               <span className="absolute top-4 left-4 bg-accent text-bg text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider z-10 transition-opacity duration-200 ease-in-out group-hover:opacity-0 pointer-events-none">
@@ -28,12 +28,12 @@ const ExpansionDetail = ({ data: expansion, onBack }) => {
               <img
                 src={expansion.image}
                 alt={expansion.title}
-                className="rounded-2xl shadow-md w-full h-80 md:h-full object-cover transform group-hover:scale-105 transition duration-300"
+                className="rounded-2xl shadow-md w-full aspect-[4/3] md:aspect-auto md:h-full object-cover transform group-hover:scale-105 transition duration-300"
               />
             </div>
 
             {/* Información */}
-            <div className="md:w-1/2 p-8 flex flex-col justify-between">
+            <div className="md:w-1/2 p-5 sm:p-8 flex flex-col justify-between">
               <div>
                 <h1 className="text-3xl font-extrabold text-text mb-2 transition-colors duration-400">
                   {expansion.title}
@@ -62,13 +62,13 @@ const ExpansionDetail = ({ data: expansion, onBack }) => {
               </div>
 
               {/* Botón de compra */}
-              <div className="pt-4 border-t border-snd-bg flex items-center justify-between">
+              <div className="pt-4 border-t border-snd-bg flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:justify-between">
                 <div>
                   <span className="text-xs text-text opacity-60 block">Precio total</span>
                   <span className="text-2xl font-black text-accent">{expansion.price}</span>
                 </div>
 
-                <button className="bg-main hover:bg-hover text-white font-bold py-3 px-6 rounded-2xl shadow-lg transition duration-300 cursor-pointer">
+                <button className="w-full sm:w-auto bg-main hover:bg-hover text-white font-bold py-3 px-6 rounded-2xl shadow-lg transition duration-300 cursor-pointer">
                   Añadir al carrito 🛒
                 </button>
               </div>
