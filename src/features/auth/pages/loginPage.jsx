@@ -54,7 +54,7 @@ function LoginPage() {
             alt="Logo" 
             className="w-[7.5rem] h-[7.5rem] object-contain" 
           />
-        </button>
+        </div>
 
         <h1 className="font-nunito text-2xl font-extrabold text-text mb-7 transition-colors duration-400">
           {t("login.title", "Iniciar sesión")}
