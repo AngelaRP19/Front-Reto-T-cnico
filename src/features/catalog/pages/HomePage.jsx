@@ -27,15 +27,16 @@ function HomePage() {
 
       <section
         id="catalogo"
-        className="w-[90%] mx-auto my-[60px] flex justify-center flex-wrap gap-[30px] px-5 py-[30px] md:p-[70px] bg-bg transition-colors duration-400"
+        className="w-full max-w-7xl mx-auto my-10 sm:my-14 px-4 sm:px-6 lg:px-8 py-6 sm:py-8 bg-bg transition-colors duration-400"
       >
         {loading ? (
           <p className="text-text w-full text-center py-10">Cargando catálogo...</p>
         ) : error ? (
           <p className="text-text w-full text-center py-10">{error}</p>
         ) : (
-          packs.map((pack) => (
-            <Link key={pack.id} to={`/catalogo/${pack.id}`} className="cursor-pointer">
+          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5 sm:gap-6 lg:gap-8 justify-items-center">
+          {packs.map((pack) => (
+            <Link key={pack.id} to={`/catalogo/${pack.id}`} className="w-full cursor-pointer">
               <Card
                 plataforma={pack.platform}
                 titulo={pack.title}
@@ -43,7 +44,8 @@ function HomePage() {
                 image={pack.image}
               />
             </Link>
-          ))
+          ))}
+          </div>
         )}
       </section>
     </>
