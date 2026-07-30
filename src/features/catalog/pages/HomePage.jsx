@@ -34,8 +34,9 @@ function HomePage() {
         ) : error ? (
           <p className="text-text w-full text-center py-10">{error}</p>
         ) : (
-          packs.map((pack) => (
-            <Link key={pack.id} to={`/catalogo/${pack.id}`} className="cursor-pointer">
+          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5 sm:gap-6 lg:gap-8 justify-items-center">
+          {packs.map((pack) => (
+            <Link key={pack.id} to={`/catalogo/${pack.id}`} className="w-full cursor-pointer">
               <Card
                 plataforma={pack.platform}
                 titulo={pack.title}
@@ -43,7 +44,8 @@ function HomePage() {
                 image={pack.image}
               />
             </Link>
-          ))
+          ))}
+          </div>
         )}
       </section>
     </>

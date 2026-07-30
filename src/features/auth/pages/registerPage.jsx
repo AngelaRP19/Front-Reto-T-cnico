@@ -7,11 +7,7 @@ import { register, fetchCurrentUser } from "../services/authService";
 import { API_BASE_URL, clearLoggedOutMark } from "../../../services/apiClient";
 import { useAuth } from "../../../context/AuthContext";
 import COUNTRIES from "../data/countries";
-
-const USERNAME_RE = /^[a-zA-Z0-9_]{3,30}$/;
-const PASSWORD_RE = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,50}$/;
-const NAME_RE = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{1,50}$/;
-const EMAIL_RE = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+import { USERNAME_RE, PASSWORD_RE, NAME_RE, EMAIL_RE } from "../utils/validators";
 
 const INITIAL_FORM = {
   firstName: "",
@@ -135,7 +131,7 @@ function RegisterPage() {
         </h1>
 
         <form className="w-full flex flex-col text-left" onSubmit={handleSubmit}>
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <FormInput
               id="register-firstName"
               label="Nombre"
@@ -184,7 +180,7 @@ function RegisterPage() {
             hint={!errors.username ? "Letras, números y guion bajo" : undefined}
           />
 
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <FormInput
               id="register-password"
               label="Contraseña"
