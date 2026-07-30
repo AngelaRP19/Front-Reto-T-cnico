@@ -51,22 +51,22 @@ function Navbar() {
   };
 
   return (
-    <header className="flex flex-col md:flex-row justify-between items-center w-full h-auto md:h-20 p-5 md:px-10 lg:px-[70px] lg:py-0 gap-5 md:gap-0 bg-bg shadow-[0_2px_10px_rgba(0,0,0,0.08)] mb-[30px] ml-auto transition-colors duration-[400ms]">
-      <div className="flex items-center gap-[15px] justify-start">
+    <header className="flex flex-col md:flex-row justify-between items-center w-full h-auto md:h-20 p-5 md:px-10 lg:px-[4.375rem] lg:py-0 gap-5 md:gap-0 bg-bg shadow-[0_2px_10px_rgba(0,0,0,0.08)] mb-[1.875rem] ml-auto transition-colors duration-[400ms]">
+      <div className="flex items-center gap-[0.9375rem] justify-start">
         <div>
           <img
             src="https://res.cloudinary.com/w1jl4sa5/image/upload/v1784825556/Logo_of_The_Sims_4.svg_jagzsl.webp"
             alt="Logo"
-            className="w-[120px] h-[120px] m-4 object-contain"
+            className="w-[7.5rem] h-[7.5rem] m-4 object-contain"
           />
-          {/* <h1 className="font-nunito text-[42px] font-extrabold text-main cursor-pointer">The Sims  </h1> */}
+          {/* <h1 className="font-nunito text-[2.625rem] font-extrabold text-main cursor-pointer">The Sims  </h1> */}
         </div>
 
         </div>
 
       <button
         type="button"
-        className="block lg:hidden text-[2rem] cursor-pointer text-text absolute top-[25px] right-[30px] z-[1200]"
+        className="block lg:hidden text-[2rem] cursor-pointer text-text absolute top-[1.5625rem] right-[1.875rem] z-[1200]"
         onClick={() => setMenuOpen(!menuOpen)}
         aria-label="Abrir menú"
         aria-expanded={menuOpen}
@@ -77,11 +77,11 @@ function Navbar() {
           <nav
         className={`absolute lg:static top-20 left-0 w-full lg:w-auto bg-snd-bg lg:bg-transparent shadow-[0_6px_18px_rgba(0,0,0,0.25)] lg:shadow-none overflow-hidden lg:overflow-visible transition-[max-height,opacity] duration-[400ms] ease-in-out lg:flex lg:items-center lg:gap-10 lg:grow lg:max-h-none lg:opacity-100 lg:pointer-events-auto lg:py-0 lg:transition-none ${
           menuOpen
-            ? "max-h-[400px] opacity-100 pointer-events-auto py-[30px]"
+            ? "max-h-[25rem] opacity-100 pointer-events-auto py-[1.875rem]"
             : "max-h-0 opacity-0 pointer-events-none"
         }`}
       >
-        <ul className="flex flex-col items-center gap-[15px] md:gap-5 lg:flex-row lg:gap-[30px] lg:mr-auto list-none">
+        <ul className="flex flex-col items-center gap-[0.9375rem] md:gap-5 lg:flex-row lg:gap-[1.875rem] lg:mr-auto list-none">
           <li><Link to="/" className="no-underline text-text text-lg font-semibold transition-colors duration-300 hover:text-main">Inicio</Link></li>
           <li><Link to="/#catalogo" className="no-underline text-text text-lg font-semibold transition-colors duration-300 hover:text-main">Catálogo</Link></li>
           <li><Link to="/comunidad" className="no-underline text-text text-lg font-semibold transition-colors duration-300 hover:text-main">Comunidad</Link></li>
@@ -177,7 +177,7 @@ function Navbar() {
     </div>
   ) : (
     <button
-      className="bg-main text-white px-[28px] py-[12px] rounded-full font-bold hover:bg-hover transition"
+      className="bg-main text-white px-[1.75rem] py-[0.75rem] rounded-full font-bold hover:bg-hover transition"
       onClick={() => navigate("/login")}
     >
       Iniciar sesión
