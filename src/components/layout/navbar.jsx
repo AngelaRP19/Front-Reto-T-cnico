@@ -3,8 +3,10 @@ import { Link, useNavigate } from "react-router-dom";
 import { useLingui } from "@lingui/react";
 import { useTheme } from "../../context/ThemeContext";
 import { useAuth } from "../../context/AuthContext";
-import { logout, setBetaTester } from "../../features/auth/services/authService";
-
+import {
+  logout,
+  setBetaTester,
+} from "../../features/auth/services/authService";
 
 function Navbar() {
   const navigate = useNavigate();
@@ -14,12 +16,28 @@ function Navbar() {
   const [showBetaConfirm, setShowBetaConfirm] = useState(false);
   const [betaSubmitting, setBetaSubmitting] = useState(false);
   const [betaError, setBetaError] = useState("");
+
   const { theme, toggleTheme } = useTheme();
   const { i18n } = useLingui();
   const { user, clearUser } = useAuth();
 
-  const displayName = user?.firstName || user?.name || user?.username || "";
-  const initial = displayName.charAt(0).toUpperCase() || "?";
+  // ==========================================
+  // INFORMACIÓN DEL USUARIO
+  // ==========================================
+
+  const displayName =
+    user?.firstName ||
+    user?.name ||
+    user?.username ||
+    "";
+
+  const initial =
+    displayName.charAt(0).toUpperCase() || "?";
+
+
+  // ==========================================
+  // CERRAR SESIÓN
+  // ==========================================
 
   const handleLogout = async () => {
     try {
@@ -31,45 +49,116 @@ function Navbar() {
     }
   };
 
+
+  // ==========================================
+  // BOTÓN BETA TESTER
+  // ==========================================
+
   const handleBetaButtonClick = () => {
+    // Si no hay sesión, ir al registro
     if (!user) {
       navigate("/register");
+      setMenuOpen(false);
       return;
     }
+
     setBetaError("");
     setShowBetaConfirm((prev) => !prev);
   };
 
+
+  // ==========================================
+  // CONFIRMAR BETA TESTER
+  // ==========================================
+
   const handleBetaConfirm = async (accept) => {
     setShowBetaConfirm(false);
-    if (!accept) return;
+
+    if (!accept) {
+      return;
+    }
 
     setBetaSubmitting(true);
     setBetaError("");
+
     try {
       const updated = await setBetaTester(true);
-      setUser({ ...user, ...updated });
+
+      setUser({
+        ...user,
+        ...updated,
+      });
+
     } catch (err) {
-      if (err.sessionExpired) clearUser();
-      setBetaError(err.message || "No se pudo activar beta testing. Intentá de nuevo.");
+
+      if (err.sessionExpired) {
+        clearUser();
+      }
+
+      setBetaError(
+        err.message ||
+          "No se pudo activar beta testing. Intenta de nuevo."
+      );
+
     } finally {
       setBetaSubmitting(false);
     }
   };
 
-  return (
-    <header className="flex flex-col md:flex-row justify-between items-center w-full h-auto md:h-20 p-5 md:px-10 lg:px-[70px] lg:py-0 gap-5 md:gap-0 bg-bg shadow-[0_2px_10px_rgba(0,0,0,0.08)] mb-[30px] ml-auto transition-colors duration-[400ms]">
-      <div className="flex items-center gap-[15px] justify-start">
-        <div>
-          <img
-            src="https://res.cloudinary.com/w1jl4sa5/image/upload/v1784825556/Logo_of_The_Sims_4.svg_jagzsl.webp"
-            alt="Logo"
-            className="w-[120px] h-[120px] m-4 object-contain"
-          />
-          {/* <h1 className="font-nunito text-[42px] font-extrabold text-main cursor-pointer">The Sims  </h1> */}
-        </div>
 
-        </div>
+  return (
+
+    <header
+      className="
+        relative
+        z-[1000]
+
+        flex
+        items-center
+        justify-between
+
+        w-full
+        min-h-20
+
+        px-4
+        py-2
+
+        sm:px-6
+        lg:px-12
+
+        bg-bg
+
+        shadow-[0_2px_10px_rgba(0,0,0,0.08)]
+
+        mb-5
+        sm:mb-8
+
+        transition-colors
+        duration-[400ms]
+      "
+    >
+
+      {/* ==================================================
+          LOGO
+      ================================================== */}
+
+      <div className="flex items-center flex-shrink-0">
+
+        <img
+          src="https://res.cloudinary.com/w1jl4sa5/image/upload/v1784825556/Logo_of_The_Sims_4.svg_jagzsl.webp"
+          alt="Logo The Sims 4"
+          className="
+            w-20
+            h-16
+
+            sm:w-24
+            sm:h-18
+
+            object-contain
+          "
+        />
+
+      </div>
 
       <button
         type="button"
@@ -88,126 +177,716 @@ function Navbar() {
             : "max-h-0 opacity-0 pointer-events-none"
         }`}
       >
-        <ul className="flex flex-col items-center gap-[15px] md:gap-5 lg:flex-row lg:gap-[30px] lg:mr-auto list-none">
-          <li><Link to="/" className="no-underline text-text text-lg font-semibold transition-colors duration-300 hover:text-main">Inicio</Link></li>
-          <li><Link to="/#catalogo" className="no-underline text-text text-lg font-semibold transition-colors duration-300 hover:text-main">Catálogo</Link></li>
-          <li><Link to="/comunidad" className="no-underline text-text text-lg font-semibold transition-colors duration-300 hover:text-main">Comunidad</Link></li>
+
+
+        {/* ==================================================
+            ENLACES DEL MENÚ
+        ================================================== */}
+
+        <ul
+          className="
+            flex
+            flex-col
+
+            items-center
+
+            gap-5
+            md:gap-6
+
+            lg:flex-row
+            lg:gap-[30px]
+
+            lg:mr-auto
+
+            list-none
+
+            w-full
+            lg:w-auto
+
+            px-4
+            sm:px-6
+            lg:px-0
+          "
+        >
+
+          {/* INICIO */}
+
+          <li>
+
+            <Link
+              to="/"
+
+              onClick={() => {
+                setMenuOpen(false);
+              }}
+
+              className="
+                no-underline
+
+                text-text
+
+                text-lg
+
+                font-semibold
+
+                transition-colors
+                duration-300
+
+                hover:text-main
+              "
+            >
+              Inicio
+            </Link>
+
+          </li>
+
+
+          {/* CATÁLOGO */}
+
+          <li>
+
+            <Link
+              to="/#catalogo"
+
+              onClick={() => {
+                setMenuOpen(false);
+              }}
+
+              className="
+                no-underline
+
+                text-text
+
+                text-lg
+
+                font-semibold
+
+                transition-colors
+                duration-300
+
+                hover:text-main
+              "
+            >
+              Catálogo
+            </Link>
+
+          </li>
+
+
+          {/* COMUNIDAD */}
+
+          <li>
+
+            <Link
+              to="/comunidad"
+
+              onClick={() => {
+                setMenuOpen(false);
+              }}
+
+              className="
+                no-underline
+
+                text-text
+
+                text-lg
+
+                font-semibold
+
+                transition-colors
+                duration-300
+
+                hover:text-main
+              "
+            >
+              Comunidad
+            </Link>
+
+          </li>
+
         </ul>
 
-        <div className="flex items-center gap-4 lg:ml-auto">
 
-  {user?.betaTester ? (
-    <span className="px-4 py-2 rounded-full text-sm font-bold text-accent border-2 border-accent bg-accent/10">
-      Beta tester
-    </span>
-  ) : (
-    <div className="relative">
-      <button
-        onClick={handleBetaButtonClick}
-        disabled={betaSubmitting}
-        className="
-          bg-accent
-          text-black
-          font-semibold
-          px-5
-          py-3
-          rounded-full
-          transition-all
-          duration-300
-          hover:scale-110
-          hover:shadow-[0_0_20px_var(--accent-color)]
-          hover:-translate-y-1
-          active:scale-95
-          disabled:opacity-60
-          animate-pulse"
-      >
-        ¿Quieres ser beta tester?
-      </button>
+        {/* ==================================================
+            ACCIONES
 
-      {showBetaConfirm && (
-        <div className="absolute right-0 top-full mt-2 w-64 bg-card-bg text-text rounded-xl shadow-lg p-4 z-50 transition-colors duration-300">
-          <p className="text-sm font-bold mb-3">¿Quieres suscribirte a beta testing?</p>
-          <div className="flex gap-2">
-            <button
-              onClick={() => handleBetaConfirm(true)}
-              className="flex-1 bg-accent text-black rounded-full py-2 text-sm font-bold cursor-pointer"
+            CELULAR / TABLET:
+
+            [ Beta tester ]
+
+            [ Iniciar sesión ]
+
+            🌙
+
+            PC:
+
+            [ Beta tester ] [ Iniciar sesión ] 🌙
+        ================================================== */}
+
+        <div
+          className="
+            flex
+            flex-col
+
+            w-full
+
+            justify-center
+            items-center
+
+            gap-4
+
+            px-5
+            sm:px-8
+
+            mt-6
+            lg:mt-0
+
+            lg:flex-row
+
+            lg:w-auto
+
+            lg:items-center
+
+            lg:px-0
+
+            lg:ml-auto
+          "
+        >
+
+
+          {/* ==================================================
+              BETA TESTER
+          ================================================== */}
+
+          {user?.betaTester ? (
+
+            <span
+              className="
+                w-full
+                max-w-sm
+
+                lg:w-auto
+
+                text-center
+
+                px-4
+                py-2
+
+                rounded-full
+
+                text-sm
+                font-bold
+
+                text-accent
+
+                border-2
+                border-accent
+
+                bg-accent/10
+              "
             >
-              Sí, quiero
-            </button>
-            <button
-              onClick={() => handleBetaConfirm(false)}
-              className="flex-1 bg-snd-bg text-text rounded-full py-2 text-sm font-bold cursor-pointer"
+              Beta tester
+            </span>
+
+          ) : (
+
+            <div
+              className="
+                relative
+
+                w-full
+                max-w-sm
+
+                lg:w-auto
+              "
             >
-              No, gracias
+
+              <button
+                onClick={handleBetaButtonClick}
+
+                disabled={betaSubmitting}
+
+                className="
+                  bg-accent
+
+                  text-black
+
+                  font-semibold
+
+                  w-full
+                  lg:w-auto
+
+                  px-4
+                  sm:px-5
+
+                  py-2.5
+
+                  rounded-full
+
+                  transition-all
+                  duration-300
+
+                  hover:scale-105
+
+                  hover:shadow-[0_0_20px_var(--accent-color)]
+
+                  active:scale-95
+
+                  disabled:opacity-60
+
+                  text-sm
+                  sm:text-base
+                "
+              >
+                ¿Quieres ser beta tester?
+              </button>
+
+
+              {/* ==================================================
+                  CONFIRMACIÓN BETA TESTER
+              ================================================== */}
+
+              {showBetaConfirm && (
+
+                <div
+                  className="
+                    absolute
+
+                    left-1/2
+                    -translate-x-1/2
+
+                    lg:left-auto
+                    lg:right-0
+                    lg:translate-x-0
+
+                    top-full
+
+                    mt-2
+
+                    w-72
+                    max-w-[90vw]
+
+                    bg-card-bg
+                    text-text
+
+                    rounded-xl
+
+                    shadow-xl
+
+                    p-4
+
+                    z-[1300]
+                  "
+                >
+
+                  <p
+                    className="
+                      text-sm
+                      font-bold
+                      mb-3
+                    "
+                  >
+                    ¿Quieres suscribirte a beta testing?
+                  </p>
+
+
+                  <div
+                    className="
+                      flex
+                      gap-2
+                    "
+                  >
+
+                    <button
+                      onClick={() =>
+                        handleBetaConfirm(true)
+                      }
+
+                      className="
+                        flex-1
+
+                        bg-accent
+                        text-black
+
+                        rounded-full
+
+                        py-2
+
+                        text-sm
+
+                        font-bold
+
+                        cursor-pointer
+                      "
+                    >
+                      Sí, quiero
+                    </button>
+
+
+                    <button
+                      onClick={() =>
+                        handleBetaConfirm(false)
+                      }
+
+                      className="
+                        flex-1
+
+                        bg-snd-bg
+                        text-text
+
+                        rounded-full
+
+                        py-2
+
+                        text-sm
+
+                        font-bold
+
+                        cursor-pointer
+                      "
+                    >
+                      No, gracias
+                    </button>
+
+                  </div>
+
+                </div>
+
+              )}
+
+
+              {/* ==================================================
+                  ERROR BETA TESTER
+              ================================================== */}
+
+              {betaError && (
+
+                <div
+                  className="
+                    absolute
+
+                    left-1/2
+                    -translate-x-1/2
+
+                    lg:left-auto
+                    lg:right-0
+                    lg:translate-x-0
+
+                    top-full
+
+                    mt-2
+
+                    w-72
+                    max-w-[90vw]
+
+                    bg-card-bg
+                    text-text
+
+                    rounded-xl
+
+                    shadow-xl
+
+                    p-3
+
+                    z-[1300]
+                  "
+                >
+
+                  <p
+                    className="
+                      text-red-400
+
+                      text-xs
+
+                      font-semibold
+                    "
+                  >
+                    {betaError}
+                  </p>
+
+                </div>
+
+              )}
+
+            </div>
+
+          )}
+
+
+          {/* ==================================================
+              INICIAR SESIÓN
+
+              IMPORTANTE:
+
+              - Si NO hay usuario:
+                aparece el botón.
+
+              - Si hay usuario:
+                NO aparece aquí.
+
+                El avatar está ARRIBA,
+                junto al menú hamburguesa
+                en celular/tablet.
+
+                En PC el avatar aparece aquí.
+          ================================================== */}
+
+          {!user && (
+
+            <button
+              className="
+                w-full
+                max-w-sm
+
+                lg:w-auto
+
+                bg-main
+
+                text-white
+
+                px-5
+                py-2.5
+
+                rounded-full
+
+                font-bold
+
+                text-sm
+                sm:text-base
+
+                hover:bg-hover
+
+                transition
+              "
+
+              onClick={() => {
+
+                navigate("/login");
+
+                setMenuOpen(false);
+
+              }}
+            >
+              Iniciar sesión
             </button>
-          </div>
-        </div>
-      )}
 
-      {betaError && (
-        <div className="absolute right-0 top-full mt-2 w-64 bg-card-bg text-text rounded-xl shadow-lg p-3 z-50 transition-colors duration-300">
-          <p className="text-red-400 text-xs font-semibold">{betaError}</p>
-        </div>
-      )}
-    </div>
-  )}
-
-  {user ? (
-    <div className="relative">
-      <button
-        onClick={() => setShowUserMenu((prev) => !prev)}
-        className="w-10 h-10 rounded-full bg-main text-white font-bold flex items-center justify-center hover:bg-hover transition-colors"
-        aria-label="Menú de perfil"
-      >
-        {initial}
-      </button>
-
-      {showUserMenu && (
-        <div className="absolute right-0 top-full mt-2 w-64 bg-card-bg text-text rounded-xl shadow-lg p-4 z-50 transition-colors duration-300">
-          <p className="font-bold text-base mb-1">
-            {displayName || "Usuario"}
-          </p>
-          {user.email && (
-            <p className="text-sm opacity-70 mb-1 break-all">{user.email}</p>
           )}
-          {user.provider && (
-            <p className="text-xs opacity-60 mb-3">Conectado con {user.provider}</p>
+
+
+          {/* ==================================================
+              AVATAR PARA PC
+
+              IMPORTANTE:
+
+              En celular/tablet NO aparece aquí.
+
+              Ya existe arriba junto al menú.
+
+              Por eso usamos hidden lg:flex.
+          ================================================== */}
+
+          {user && (
+
+            <div
+              className="
+                relative
+
+                hidden
+                lg:flex
+              "
+            >
+
+              <button
+                onClick={() =>
+                  setShowUserMenu(
+                    (prev) => !prev
+                  )
+                }
+
+                className="
+                  w-10
+                  h-10
+
+                  rounded-full
+
+                  bg-main
+
+                  text-white
+
+                  font-bold
+
+                  flex
+                  items-center
+                  justify-center
+
+                  hover:bg-hover
+
+                  transition-colors
+
+                  shadow-md
+                "
+
+                aria-label="Menú de perfil"
+              >
+
+                {initial}
+
+              </button>
+
+
+              {/* MENÚ DEL PERFIL EN PC */}
+
+              {showUserMenu && (
+
+                <div
+                  className="
+                    absolute
+
+                    right-0
+                    top-full
+
+                    mt-2
+
+                    w-64
+
+                    bg-card-bg
+                    text-text
+
+                    rounded-xl
+
+                    shadow-xl
+
+                    p-4
+
+                    z-[1300]
+                  "
+                >
+
+                  <p
+                    className="
+                      font-bold
+                      text-base
+                      mb-1
+                    "
+                  >
+                    {displayName || "Usuario"}
+                  </p>
+
+
+                  {user.email && (
+
+                    <p
+                      className="
+                        text-sm
+
+                        opacity-70
+
+                        mb-3
+
+                        break-all
+                      "
+                    >
+                      {user.email}
+                    </p>
+
+                  )}
+
+
+                  <button
+                    onClick={() => {
+
+                      navigate("/perfil");
+
+                      setShowUserMenu(false);
+
+                    }}
+
+                    className="
+                      w-full
+
+                      text-sm
+
+                      font-bold
+
+                      text-text
+
+                      hover:text-hover
+
+                      transition-colors
+
+                      text-left
+
+                      mb-2
+                    "
+                  >
+                    Ver perfil
+                  </button>
+
+
+                  <button
+                    onClick={handleLogout}
+
+                    className="
+                      w-full
+
+                      text-sm
+
+                      font-bold
+
+                      text-main
+
+                      hover:text-hover
+
+                      transition-colors
+
+                      text-left
+                    "
+                  >
+                    Cerrar sesión
+                  </button>
+
+                </div>
+
+              )}
+
+            </div>
+
           )}
+
+
+          {/* ==================================================
+              CAMBIAR TEMA
+          ================================================== */}
+
           <button
-            onClick={() => {
-              navigate("/perfil");
-              setShowUserMenu(false);
-            }}
-            className="w-full text-sm font-bold text-text hover:text-hover transition-colors text-left mb-2"
+            onClick={toggleTheme}
+
+            className="
+              self-center
+
+              text-xl
+              sm:text-2xl
+
+              text-accent
+
+              hover:rotate-12
+
+              transition
+
+              cursor-pointer
+            "
+
+            aria-label="Cambiar tema"
           >
-            Ver perfil
+
+            {theme === "light"
+              ? "🌙"
+              : "☀️"}
+
           </button>
-          <button
-            onClick={handleLogout}
-            className="w-full mt-2 text-sm font-bold text-main hover:text-hover transition-colors text-left"
-          >
-            Cerrar sesión
-          </button>
+
         </div>
-      )}
-    </div>
-  ) : (
-    <button
-      className="bg-main text-white px-[28px] py-[12px] rounded-full font-bold hover:bg-hover transition"
-      onClick={() => navigate("/login")}
-    >
-      Iniciar sesión
-    </button>
-  )}
 
-  <button
-    onClick={toggleTheme}
-    className="text-2xl text-accent hover:rotate-12 transition"
-  >
-    {theme === "light" ? "🌙" : "☀️"}
-  </button>
-
- </div>
       </nav>
 
     </header>
