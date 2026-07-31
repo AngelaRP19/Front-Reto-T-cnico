@@ -1,69 +1,43 @@
-import { useState } from "react";
-import Navbar from "./components/layout/navbar";
-import Hero from "./components/layout/hero";
-import Card from "./components/layout/card";
-import Footer from "./components/layout/footer";
-import Login from "./pages/Login";
+import { Routes, Route } from "react-router-dom";
+import MainLayout from "./components/layout/MainLayout";
+import RequireAuth from "./components/common/RequireAuth";
+import HomePage from "./features/catalog/pages/HomePage";
+import ExpansionDetailPage from "./features/catalog/pages/ExpansionDetailPage";
+import ChallengesPage from "./features/challenges/pages/ChallengesPage";
+import LoginPage from "./features/auth/pages/loginPage";
+import RegisterPage from "./features/auth/pages/registerPage";
+import ProfileLayout from "./features/profile/pages/ProfileLayout";
+import ProfileInfoTab from "./features/profile/pages/ProfileInfoTab";
+import ProfileChallengesTab from "./features/profile/pages/ProfileChallengesTab";
+import ProfilePurchasesTab from "./features/profile/pages/ProfilePurchasesTab";
+import ProfileSettingsTab from "./features/profile/pages/ProfileSettingsTab";
+import NotFoundPage from "./pages/NotFoundPage";
 
 function App() {
-  const [view, setView] = useState("home");
-
-  if (view === "login") {
-    return <Login onBack={() => setView("home")} />;
-  }
-
   return (
-    <>
-      <Navbar onLoginClick={() => setView("login")} />
-
-      <Hero />
-
-      <section className="w-[90%] mx-auto my-[60px] flex justify-center flex-wrap gap-[30px] px-5 py-[30px] md:p-[70px] bg-bg transition-colors duration-400">
-
-        <Card
-          plataforma="PC"
-          titulo="Naturaleza Encantada"
-          precio="$79.900 COP"
-          image="https://res.cloudinary.com/w1jl4sa5/image/upload/v1784572920/TS4_Pack-Art_Enchanted-by-Nature_ES_iv5fev.avif"
-        />
-
-        <Card
-          plataforma="PC"
-          titulo="Dinastías y Linajes"
-          precio="$79.900 COP"
-          image="https://res.cloudinary.com/w1jl4sa5/image/upload/v1784574803/TS4_Pack-Art_Royalty-and-Legacy_ES_zggtwv.avif"
-        />
-
-        <Card
-          plataforma="PC"
-          titulo="Rancho de Caballos"
-          precio="$89.900 COP"
-          image="https://res.cloudinary.com/w1jl4sa5/image/upload/v1784574889/TS4_Pack-Art_HorseRanch_ES_r2ddxj.avif"
-        />
-
-        <Card
-          plataforma="PC"
-          titulo="Vida en el Pueblo"
-          precio="$69.900 COP"
-          image="https://res.cloudinary.com/w1jl4sa5/image/upload/v1784574983/ES_Sims4-cottage-living-1x1-Loc_rp5yll.avif"
-        />
-        <Card
-          plataforma="PC"
-          titulo="Perros y Gatos"
-          precio="$69.900 COP"
-          image="https://res.cloudinary.com/w1jl4sa5/image/upload/v1784575067/ES_Sims4-cats-and-dogs-1x1-Loc_rw592n.avif"
-        />
-
-        <Card
-          plataforma="PC"
-          titulo="iA Trabajar"
-          precio="$74.900 COP"
-          image="https://res.cloudinary.com/w1jl4sa5/image/upload/v1784575123/ES_Sims4-get-to-work-1x1-Loc_saiuva.avif"
-        />
-      </section>
-
-      <Footer />
-    </>
+    <Routes>
+      <Route element={<MainLayout />}>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/catalogo/:packId" element={<ExpansionDetailPage />} />
+        <Route path="/comunidad" element={<ChallengesPage />} />
+        <Route
+          path="/perfil"
+          element={
+            <RequireAuth>
+              <ProfileLayout />
+            </RequireAuth>
+          }
+        >
+          <Route index element={<ProfileInfoTab />} />
+          <Route path="retos" element={<ProfileChallengesTab />} />
+          <Route path="compras" element={<ProfilePurchasesTab />} />
+          <Route path="configuracion" element={<ProfileSettingsTab />} />
+        </Route>
+      </Route>
+      <Route path="/login" element={<LoginPage />} />
+      <Route path="/register" element={<RegisterPage />} />
+      <Route path="*" element={<NotFoundPage />} />
+    </Routes>
   );
 }
 
