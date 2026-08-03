@@ -3,18 +3,20 @@ import { Link, useNavigate } from "react-router-dom";
 import { useLingui } from "@lingui/react";
 import { useTheme } from "../../context/ThemeContext";
 import { useAuth } from "../../context/AuthContext";
-import { logout } from "../../features/auth/services/authService";
+import { logout, setBetaTester } from "../../features/auth/services/authService";
 import LanguageSelector from "../common/LanguageSelector";
 
-function Navbar({ abrirFormulario }) {
+function Navbar() {
   const navigate = useNavigate();
 
   const [menuOpen, setMenuOpen] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
+  const [showBetaConfirm, setShowBetaConfirm] = useState(false);
+  const [betaSubmitting, setBetaSubmitting] = useState(false);
   const [betaError, setBetaError] = useState("");
 
   const { theme, toggleTheme } = useTheme();
-  const { user, clearUser } = useAuth();
+  const { user, setUser, clearUser } = useAuth();
   const { i18n } = useLingui();
   const t = (id, message) => i18n._({ id, message });
 
@@ -32,14 +34,31 @@ function Navbar({ abrirFormulario }) {
   };
 
   const handleBetaButtonClick = () => {
-    if (typeof abrirFormulario === "function") {
-      abrirFormulario();
+    if (!user) {
+      navigate("/register");
       setMenuOpen(false);
       return;
     }
 
     setBetaError("");
-    setMenuOpen(false);
+    setShowBetaConfirm((prev) => !prev);
+  };
+
+  const handleBetaConfirm = async (accept) => {
+    setShowBetaConfirm(false);
+    if (!accept) return;
+
+    setBetaSubmitting(true);
+    setBetaError("");
+    try {
+      const updated = await setBetaTester(true);
+      setUser({ ...user, ...updated });
+    } catch (err) {
+      if (err.sessionExpired) clearUser();
+      setBetaError(err.message || t("beta.error", "No se pudo activar beta testing. Intentá de nuevo."));
+    } finally {
+      setBetaSubmitting(false);
+    }
   };
 
   return (
@@ -98,10 +117,31 @@ function Navbar({ abrirFormulario }) {
             <div className="relative w-full max-w-sm lg:w-auto">
               <button
                 onClick={handleBetaButtonClick}
+                disabled={betaSubmitting}
                 className="bg-accent text-black font-semibold w-full lg:w-auto px-4 sm:px-5 py-2.5 rounded-full transition-all duration-300 hover:scale-105 hover:shadow-[0_0_20px_var(--accent-color)] active:scale-95 disabled:opacity-60 text-sm sm:text-base"
               >
                 {t("beta.title", "¿Quieres ser beta tester?")}
               </button>
+
+              {showBetaConfirm && (
+                <div className="absolute left-1/2 -translate-x-1/2 lg:left-auto lg:right-0 lg:translate-x-0 top-full mt-2 w-72 max-w-[90vw] bg-card-bg text-text rounded-xl shadow-xl p-4 z-[1300] transition-colors duration-300">
+                  <p className="text-sm font-bold mb-3">{t("beta.confirmTitle", "¿Quieres suscribirte a beta testing?")}</p>
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => handleBetaConfirm(true)}
+                      className="flex-1 bg-accent text-black rounded-full py-2 text-sm font-bold cursor-pointer"
+                    >
+                      {t("beta.yes", "Sí, quiero")}
+                    </button>
+                    <button
+                      onClick={() => handleBetaConfirm(false)}
+                      className="flex-1 bg-snd-bg text-text rounded-full py-2 text-sm font-bold cursor-pointer"
+                    >
+                      {t("beta.no", "No, gracias")}
+                    </button>
+                  </div>
+                </div>
+              )}
 
               {betaError && (
                 <div className="absolute left-1/2 -translate-x-1/2 lg:left-auto lg:right-0 lg:translate-x-0 top-full mt-2 w-72 max-w-[90vw] bg-card-bg text-text rounded-xl shadow-xl p-3 z-[1300]">
@@ -140,6 +180,15 @@ function Navbar({ abrirFormulario }) {
                   {user.provider && (
                     <p className="text-xs opacity-60 mb-3">{t("navbar.connectedWith", "Conectado con {provider}").replace("{provider}", user.provider)}</p>
                   )}
+                  <button
+                    onClick={() => {
+                      navigate("/perfil");
+                      setShowUserMenu(false);
+                    }}
+                    className="w-full text-sm font-bold text-text hover:text-hover transition-colors text-left mb-2"
+                  >
+                    {t("navbar.viewProfile", "Ver perfil")}
+                  </button>
                   <button
                     onClick={handleLogout}
                     className="w-full mt-2 text-sm font-bold text-main hover:text-hover transition-colors text-left"

@@ -251,7 +251,7 @@ function RegisterPage() {
           </Button>
         </div>
 
-        <Button variant="link" onClick={() => navigate("login")}>
+        <Button variant="link" onClick={() => navigate("/login")}>
           {t("register.login", "Ya tengo cuenta")}
         </Button>
       </div>
@@ -260,4 +260,3 @@ function RegisterPage() {
 }
 
 export default RegisterPage;
-``

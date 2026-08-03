@@ -4,7 +4,6 @@ import { BrowserRouter } from "react-router-dom";
 import { I18nProvider } from "@lingui/react";
 import { ThemeProvider } from "./context/ThemeContext.jsx";
 import { AuthProvider } from "./context/AuthContext.jsx";
-import "./i18n/i18n";
 import "./styles/index.css";
 import App from "./App.jsx";
 import { i18n } from "@lingui/core";

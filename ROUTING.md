@@ -17,6 +17,8 @@ Se migró a [`react-router-dom`](https://reactrouter.com/) (v7.x, declarativo �
 | `/perfil/configuracion` | `ProfileLayout` → `ProfileSettingsTab` | Sí | **Sí** |
 | `/login` | `LoginPage` | No | No |
 | `/register` | `RegisterPage` | No | No |
+| `/forgot-password` | `ForgotPasswordPage` | No | No |
+| `/reset-password/:token` | `ResetPasswordPage` | No | No |
 | `*` (cualquier otra) | `NotFoundPage` | No | No |
 
 `/login` y `/register` quedan fuera del layout compartido a propósito — son pantallas completas, igual que antes de la migración.
