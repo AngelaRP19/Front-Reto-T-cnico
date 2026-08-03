@@ -1,0 +1,15 @@
+{
+  "title": "Retos de la comunidad",
+  "description": "Únete a los desafíos creados por otros jugadores y gana insignias exclusivas.",
+  "loading": "Cargando retos...",
+  "accept": "Acepto el reto",
+  "cancel": "Cancelar reto",
+  "started": "Iniciado",
+  "inProgress": "En progreso",
+  "finished": "Finalizado",
+  "failed": "Fallido",
+  "start": "Inicio",
+  "end": "Fin",
+  "image": "Imagen",
+  "loginRequired": "Debes iniciar sesión para participar."
+}

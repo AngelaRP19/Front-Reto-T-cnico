@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import { useLingui } from "@lingui/react";
 import { acceptChallenge, cancelChallenge, reactivateChallenge } from "../services/challengesService";
+import { translateErrorMessage } from "../../../utils/errorMessages";
 
 const STATUS_STYLES = {
   INICIADO: "bg-blue-100 text-blue-700",
@@ -23,10 +25,14 @@ function CardChallenge({ challenge, subscription, userId, isAuthenticated, onSub
   const [showCancelConfirm, setShowCancelConfirm] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
+  const { i18n } = useLingui();
+  const t = (id, message) => i18n._({ id, message });
 
   const isSubscribed = Boolean(subscription) && subscription.status !== "CANCELADO";
   const statusStyle = isSubscribed ? STATUS_STYLES[subscription.status] : null;
-  const statusLabel = isSubscribed ? STATUS_LABELS[subscription.status] : null;
+  const statusLabel = isSubscribed
+    ? t(`challenges.status.${subscription.status}`, STATUS_LABELS[subscription.status] || subscription.status)
+    : null;
 
   const handleToggle = async (e) => {
     e.stopPropagation();
@@ -52,7 +58,7 @@ function CardChallenge({ challenge, subscription, userId, isAuthenticated, onSub
         onSubscriptionChange(challenge.id, { subscriptionId: newId, status: "INICIADO" });
       }
     } catch (err) {
-      setError(err.message);
+      setError(translateErrorMessage(err, t("errors.generic", "Ocurrió un error"), i18n));
     } finally {
       setSubmitting(false);
     }
@@ -67,7 +73,7 @@ function CardChallenge({ challenge, subscription, userId, isAuthenticated, onSub
       await cancelChallenge(subscription.subscriptionId);
       onSubscriptionChange(challenge.id, { subscriptionId: subscription.subscriptionId, status: "CANCELADO" });
     } catch (err) {
-      setError(err.message);
+      setError(translateErrorMessage(err, t("errors.generic", "Ocurrió un error"), i18n));
     } finally {
       setSubmitting(false);
     }
@@ -77,7 +83,7 @@ function CardChallenge({ challenge, subscription, userId, isAuthenticated, onSub
     ? "bg-red-500 hover:bg-red-600 text-white"
     : "bg-emerald-500 hover:bg-emerald-600 text-white";
 
-  const buttonLabel = isSubscribed ? "Cancelar reto" : "Acepto el reto";
+  const buttonLabel = isSubscribed ? t("challenges.cancel", "Cancelar") : t("challenges.accept", "Aceptar");
 
   const renderButton = (widthClass) => (
     <button
@@ -91,7 +97,7 @@ function CardChallenge({ challenge, subscription, userId, isAuthenticated, onSub
 
   const dateRow = (
     <p className="text-xs sm:text-sm text-text opacity-60 mt-1 flex items-center gap-2 flex-wrap">
-      <span>Inicio: {challenge.startDate} · Fin: {challenge.endDate}</span>
+      <span>{t("challenges.start", "Inicio")}: {challenge.startDate} · {t("challenges.end", "Fin")}: {challenge.endDate}</span>
       {statusLabel && (
         <span className={`px-2 py-0.5 rounded-full text-xs font-bold ${statusStyle}`}>{statusLabel}</span>
       )}
@@ -109,7 +115,7 @@ function CardChallenge({ challenge, subscription, userId, isAuthenticated, onSub
                   <img src={challenge.image} alt={challenge.title} className="w-full h-full object-cover" />
                 ) : (
                   <div className="w-full h-full flex items-center justify-center text-text opacity-40 text-xs text-center">
-                    imagen
+                    {t("challenges.image", "Imagen")}
                   </div>
                 )}
               </div>
@@ -171,23 +177,23 @@ function CardChallenge({ challenge, subscription, userId, isAuthenticated, onSub
             className="bg-card-bg text-text rounded-2xl shadow-2xl w-full max-w-sm max-h-[calc(100vh-2rem)] overflow-y-auto p-5 sm:p-6 transition-colors duration-300"
             onClick={(e) => e.stopPropagation()}
           >
-            <h3 className="text-lg font-bold mb-2">¿Cancelar este reto?</h3>
+            <h3 className="text-lg font-bold mb-2">{t("challenges.cancelTitle", "¿Cancelar este reto?")}</h3>
             <p className="text-sm opacity-80 mb-5">
-              Vas a perder el progreso que llevás en este reto y no vas a poder recuperarlo.
+              {t("challenges.cancelBody", "Vas a perder el progreso que llevás en este reto y no vas a poder recuperarlo.")}
             </p>
             <div className="flex gap-3">
               <button
                 onClick={(e) => { e.stopPropagation(); setShowCancelConfirm(false); }}
                 className="flex-1 bg-snd-bg text-text rounded-full py-2.5 text-sm font-bold cursor-pointer hover:opacity-80 transition"
               >
-                Volver
+                {t("challenges.back", "Volver")}
               </button>
               <button
                 onClick={handleConfirmCancel}
                 disabled={submitting}
                 className="flex-1 bg-red-500 hover:bg-red-600 text-white rounded-full py-2.5 text-sm font-bold cursor-pointer disabled:opacity-60 transition"
               >
-                {submitting ? "..." : "Cancelar reto"}
+                {submitting ? "..." : t("challenges.cancelAction", "Cancelar reto")}
               </button>
             </div>
           </div>

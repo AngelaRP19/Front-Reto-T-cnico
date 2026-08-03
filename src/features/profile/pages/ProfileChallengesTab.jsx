@@ -1,10 +1,14 @@
 import { useEffect, useState } from "react";
+import { useLingui } from "@lingui/react";
 import { useAuth } from "../../../context/AuthContext";
 import CardChallenge from "../../challenges/components/CardChallenge";
 import { getChallenges, getUserChallengeSubscriptions } from "../../challenges/services/challengesService";
+import { translateErrorMessage } from "../../../utils/errorMessages";
 
 function ProfileChallengesTab() {
   const { user } = useAuth();
+  const { i18n } = useLingui();
+  const t = (id, message) => i18n._({ id, message });
   const [challenges, setChallenges] = useState([]);
   const [subscriptions, setSubscriptions] = useState({});
   const [loading, setLoading] = useState(true);
@@ -20,7 +24,7 @@ function ProfileChallengesTab() {
         setChallenges(list);
         setSubscriptions(subs);
       } catch (err) {
-        setError(err.message);
+        setError(translateErrorMessage(err, t("errors.generic", "Ocurrió un error"), i18n));
       } finally {
         setLoading(false);
       }
@@ -41,17 +45,17 @@ function ProfileChallengesTab() {
 
   return (
     <div>
-      <h1 className="text-2xl font-extrabold text-text mb-2">Mis retos</h1>
+      <h1 className="text-2xl font-extrabold text-text mb-2">{t("profile.challenges.title", "Mis retos")}</h1>
       <p className="text-text opacity-70 mb-6">
-        Retos finalizados: <span className="font-bold text-accent">{user?.completedChallenges ?? 0}</span>
+        {t("profile.challenges.completed", "Retos finalizados")}: <span className="font-bold text-accent">{user?.completedChallenges ?? 0}</span>
       </p>
 
       {loading ? (
-        <p className="text-text text-center py-10">Cargando retos...</p>
+        <p className="text-text text-center py-10">{t("profile.challenges.loading", "Cargando retos...")}</p>
       ) : error ? (
         <p className="text-text text-center py-10">{error}</p>
       ) : acceptedChallenges.length === 0 ? (
-        <p className="text-text opacity-70 text-center py-10">Todavía no aceptaste ningún reto.</p>
+        <p className="text-text opacity-70 text-center py-10">{t("profile.challenges.empty", "Todavía no aceptaste ningún reto.")}</p>
       ) : (
         <div className="flex flex-col gap-4">
           {acceptedChallenges.map((challenge) => (

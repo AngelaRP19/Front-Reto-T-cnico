@@ -1,0 +1,15 @@
+{
+  "title": "Community Challenges",
+  "description": "Join challenges created by other players and earn exclusive badges.",
+  "loading": "Loading challenges...",
+  "accept": "Accept Challenge",
+  "cancel": "Cancel Challenge",
+  "started": "Started",
+  "inProgress": "In Progress",
+  "finished": "Completed",
+  "failed": "Failed",
+  "start": "Start",
+  "end": "End",
+  "image": "Image",
+  "loginRequired": "You must log in to participate."
+}

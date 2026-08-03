@@ -27,7 +27,7 @@ function HomePage() {
 
       <section
         id="catalogo"
-        className="w-full max-w-7xl mx-auto my-10 sm:my-14 px-4 sm:px-6 lg:px-8 py-6 sm:py-8 bg-bg transition-colors duration-400"
+        className="w-[90%] mx-auto my-[3.75rem] flex justify-center flex-wrap gap-[1.875rem] px-5 py-[1.875rem] md:p-[4.375rem] bg-bg transition-colors duration-400"
       >
         {loading ? (
           <p className="text-text w-full text-center py-10">Cargando catálogo...</p>
@@ -53,3 +53,4 @@ function HomePage() {
 }
 
 export default HomePage;
+

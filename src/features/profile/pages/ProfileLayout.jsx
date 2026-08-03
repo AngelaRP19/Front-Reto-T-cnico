@@ -1,17 +1,20 @@
 import { useEffect } from "react";
+import { useLingui } from "@lingui/react";
 import { NavLink, Outlet } from "react-router-dom";
 import { useAuth } from "../../../context/AuthContext";
 import { fetchCurrentUser } from "../../auth/services/authService";
 
 const NAV_ITEMS = [
-  { to: "/perfil", label: "Mi perfil", end: true },
-  { to: "/perfil/retos", label: "Mis retos" },
-  { to: "/perfil/compras", label: "Historial de compras" },
-  { to: "/perfil/configuracion", label: "Configuración" },
+  { to: "/perfil", labelKey: "profile.nav.profile", end: true },
+  { to: "/perfil/retos", labelKey: "profile.nav.challenges" },
+  { to: "/perfil/compras", labelKey: "profile.nav.purchases" },
+  { to: "/perfil/configuracion", labelKey: "profile.nav.settings" },
 ];
 
 function ProfileLayout() {
   const { user, setUser } = useAuth();
+  const { i18n } = useLingui();
+  const t = (id, message) => i18n._({ id, message });
 
   useEffect(() => {
     let cancelled = false;
@@ -39,7 +42,7 @@ function ProfileLayout() {
                 }`
               }
             >
-              {item.label}
+              {t(item.labelKey, item.labelKey === "profile.nav.profile" ? "Mi perfil" : item.labelKey === "profile.nav.challenges" ? "Mis retos" : item.labelKey === "profile.nav.purchases" ? "Historial de compras" : "Configuración")}
             </NavLink>
           ))}
         </nav>

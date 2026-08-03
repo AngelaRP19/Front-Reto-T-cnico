@@ -1,0 +1,19 @@
+{
+  "title": "Join our Beta Program",
+  "name": "Full name",
+  "namePlaceholder": "Enter your full name",
+  "email": "Email",
+  "emailPlaceholder": "email@example.com",
+  "country": "Country",
+  "countryPlaceholder": "United States",
+  "select": "Select a subscription",
+  "challenges": "Simmer Challenge",
+  "beta": "Beta Testing",
+  "terms": "I accept the terms and conditions.",
+  "marketing": "I want to receive news and updates.",
+  "send": "Submit",
+  "sending": "Submitting...",
+  "success": "Thank you! Your subscription has been successfully registered.",
+  "close": "Close",
+  "alertTerms": "You must accept the terms and conditions."
+}
