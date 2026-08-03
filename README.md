@@ -12,6 +12,7 @@ Proyecto React + Vite (Tailwind CSS v4 para estilos) organizado por responsabili
 - `README.md`: este archivo.
 - `API.md`: cómo funciona la capa de conexión al API y cómo conectar una funcionalidad nueva.
 - `ROUTING.md`: cómo funciona el enrutamiento con `react-router-dom` (rutas, layout, deep-linking).
+- `LINGUI.md`: cómo funciona la internacionalización con lingui (catálogos, `useLingui()`, cómo agregar una traducción o un idioma nuevo).
 - `.env.example`: plantilla de variables de entorno (copiar a `.env`).
 
 ### `public/`

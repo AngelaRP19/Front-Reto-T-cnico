@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import { useLingui } from "@lingui/react";
 import Button from "../../../components/common/Button";
 import FormInput from "../../../components/common/FormInput";
 import { login, fetchCurrentUser } from "../services/authService";
 import { API_BASE_URL, clearLoggedOutMark } from "../../../services/apiClient";
 import { useAuth } from "../../../context/AuthContext";
+import { translateErrorMessage } from "../../../utils/errorMessages";
 
 function LoginPage() {
   const navigate = useNavigate();
@@ -15,6 +17,8 @@ function LoginPage() {
   const [submitting, setSubmitting] = useState(false);
   const [serverError, setServerError] = useState("");
   const { setUser } = useAuth();
+  const { i18n } = useLingui();
+  const t = (id, message) => i18n._({ id, message });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -26,7 +30,7 @@ function LoginPage() {
       setUser({ username: username.trim(), ...me });
       navigate(location.state?.from ?? "/", { replace: true });
     } catch (err) {
-      setServerError(err.message);
+      setServerError(translateErrorMessage(err, t("errors.generic", "Ocurrió un error"), i18n));
     } finally {
       setSubmitting(false);
     }
@@ -37,45 +41,44 @@ function LoginPage() {
     window.location.href = `${API_BASE_URL}/oauth2/authorization/${provider}`;
   };
 
-  const handleForgotPassword = () => {
-    console.log("¿Olvidaste tu contraseña?");
-  };
-
   return (
     <div className="min-h-screen w-full flex items-center justify-center bg-bg px-5 py-10 transition-colors duration-400">
-      <div className="w-full max-w-[380px] flex flex-col items-center text-center">
+      <div className="w-full max-w-[23.75rem] flex flex-col items-center text-center">
         <div
           onClick={() => navigate("/")}
-          title="Volver al inicio"
+          title={t("auth.backToHome", "Volver al inicio")}
+          className="cursor-pointer"
         >
           <img 
             src="https://res.cloudinary.com/w1jl4sa5/image/upload/v1784825556/Logo_of_The_Sims_4.svg_jagzsl.webp" 
             alt="Logo" 
-            className="w-[120px] h-[120px] object-contain" 
+            className="w-[7.5rem] h-[7.5rem] object-contain" 
           />
         </div>
 
-        <h1 className="font-nunito text-2xl font-extrabold text-text mb-7 transition-colors duration-400">Inicia sesión en tu cuenta The Sims</h1>
+        <h1 className="font-nunito text-2xl font-extrabold text-text mb-7 transition-colors duration-400">
+          {t("login.title", "Iniciar sesión")}
+        </h1>
 
         <form className="w-full flex flex-col text-left" onSubmit={handleSubmit}>
           <FormInput
             id="login-email"
-            label="Nombre de usuario"
-            placeholder="panda7"
+            label={t("login.username", "Usuario")}
+            placeholder={t("login.usernamePlaceholder", "Ingresá tu usuario")}
             value={username}
             onChange={(e) => setUsername(e.target.value)}
           />
 
           <FormInput
             id="login-password"
-            label="Contraseña"
+            label={t("login.password", "Contraseña")}
             type="password"
             placeholder="••••••••"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
 
-          <div className="flex items-center w-full mb-6 text-text opacity-60 text-[13px] before:content-[''] before:flex-1 before:h-px before:bg-snd-bg after:content-[''] after:flex-1 after:h-px after:bg-snd-bg">
+          <div className="flex items-center w-full mb-6 text-text opacity-60 text-[0.8125rem] before:content-[''] before:flex-1 before:h-px before:bg-snd-bg after:content-[''] after:flex-1 after:h-px after:bg-snd-bg">
             <span className="px-3">o</span>
           </div>
 
@@ -95,7 +98,7 @@ function LoginPage() {
               checked={remember}
               onChange={(e) => setRemember(e.target.checked)}
             />
-            No cerrar sesión
+            {t("login.remember", "Recordarme")}
           </label>
 
           {serverError ? (
@@ -103,16 +106,16 @@ function LoginPage() {
           ) : null}
 
           <Button type="submit" variant="primary" disabled={submitting}>
-            {submitting ? "Iniciando sesión..." : "Iniciar sesión"}
+            {submitting ? t("login.loading", "Ingresando...") : t("login.button", "Ingresar")}
           </Button>
         </form>
 
-        <Button variant="link" onClick={handleForgotPassword}>
-          ¿Olvidaste tu contraseña?
+        <Button variant="link" onClick={() => navigate("/forgot-password")}>
+          {t("login.forgot", "¿Olvidaste tu contraseña?")}
         </Button>
 
         <Button variant="outline" onClick={() => navigate("/register")}>
-          Crear cuenta
+          {t("login.register", "Crear cuenta")}
         </Button>
       </div>
     </div>

@@ -1,6 +1,9 @@
-import React from 'react';
+import { useLingui } from "@lingui/react";
 
 const ExpansionDetail = ({ data: expansion, onBack }) => {
+  const { i18n } = useLingui();
+  const t = (id, message) => i18n._({ id, message });
+
   return (
     <div className="min-h-screen bg-bg text-text py-6 sm:py-10 px-4 sm:px-6 lg:px-8 transition-colors duration-400">
       <div className="max-w-5xl mx-auto">
@@ -10,7 +13,7 @@ const ExpansionDetail = ({ data: expansion, onBack }) => {
           onClick={onBack}
           className="mb-6 flex items-center gap-2 text-sm font-bold text-main hover:text-hover transition duration-200 cursor-pointer"
         >
-          ← Volver al catálogo
+          ← {t("catalog.back", "Volver al catálogo")}
         </button>
 
         {/* Tarjeta de detalle */}
@@ -22,7 +25,7 @@ const ExpansionDetail = ({ data: expansion, onBack }) => {
 
               {/* Etiqueta / Recuadro con transición rápida de 200ms */}
               <span className="absolute top-4 left-4 bg-accent text-bg text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider z-10 transition-opacity duration-200 ease-in-out group-hover:opacity-0 pointer-events-none">
-                {expansion.category || "PACK DE EXPANSIÓN"}
+                {expansion.category}
               </span>
 
               <img
@@ -49,7 +52,7 @@ const ExpansionDetail = ({ data: expansion, onBack }) => {
                 </p>
 
                 <h3 className="text-base font-bold text-text mb-3 border-b border-snd-bg pb-2 transition-colors duration-400">
-                  ¿Qué incluye este pack?
+                  {t("catalog.includes", "¿Qué incluye este pack?")}
                 </h3>
                 <ul className="space-y-2 mb-6 text-sm text-text">
                   {expansion.features?.map((feature, idx) => (
@@ -64,11 +67,11 @@ const ExpansionDetail = ({ data: expansion, onBack }) => {
               {/* Botón de compra */}
               <div className="pt-4 border-t border-snd-bg flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:justify-between">
                 <div>
-                  <span className="text-xs text-text opacity-60 block">Precio total</span>
+                  <span className="text-xs text-text opacity-60 block">{t("catalog.totalPrice", "Precio total")}</span>
                   <span className="text-2xl font-black text-accent">{expansion.price}</span>
                 </div>
 
-                <button className="w-full sm:w-auto bg-main hover:bg-hover text-white font-bold py-3 px-6 rounded-2xl shadow-lg transition duration-300 cursor-pointer">
+                <button className="bg-main hover:bg-hover text-white font-bold py-3 px-6 rounded-2xl shadow-lg transition duration-300 cursor-pointer">
                   Añadir al carrito 🛒
                 </button>
               </div>

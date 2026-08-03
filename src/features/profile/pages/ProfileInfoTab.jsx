@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useLingui } from "@lingui/react";
 import { useAuth } from "../../../context/AuthContext";
 import FormInput from "../../../components/common/FormInput";
 import FormSelect from "../../../components/common/FormSelect";
@@ -8,6 +9,7 @@ import COUNTRIES from "../../auth/data/countries";
 import { NAME_RE, EMAIL_RE } from "../../auth/utils/validators";
 import { setBetaTester } from "../../auth/services/authService";
 import { updateProfile } from "../services/profileService";
+import { translateErrorMessage } from "../../../utils/errorMessages";
 
 function buildForm(user) {
   return {
@@ -34,6 +36,8 @@ function ProfileInfoTab() {
   const [showPasswordModal, setShowPasswordModal] = useState(false);
   const [passwordSuccess, setPasswordSuccess] = useState(false);
 
+  const { i18n } = useLingui();
+  const t = (id, message) => i18n._({ id, message });
   const hasProvider = Boolean(user?.provider);
 
   const updateField = (field) => (e) => {
@@ -56,10 +60,10 @@ function ProfileInfoTab() {
 
   const validate = () => {
     const fieldErrors = {};
-    if (!NAME_RE.test(form.firstName.trim())) fieldErrors.firstName = "Solo letras y espacios";
-    if (!NAME_RE.test(form.lastName.trim())) fieldErrors.lastName = "Solo letras y espacios";
-    if (!EMAIL_RE.test(form.email.trim())) fieldErrors.email = "Ingresá un correo electrónico válido";
-    if (!form.country) fieldErrors.country = "Selecciona tu país";
+    if (!NAME_RE.test(form.firstName.trim())) fieldErrors.firstName = t("profile.info.errors.name", "Solo letras y espacios");
+    if (!NAME_RE.test(form.lastName.trim())) fieldErrors.lastName = t("profile.info.errors.name", "Solo letras y espacios");
+    if (!EMAIL_RE.test(form.email.trim())) fieldErrors.email = t("profile.info.errors.email", "Ingresá un correo electrónico válido");
+    if (!form.country) fieldErrors.country = t("profile.info.errors.country", "Selecciona tu país");
     return fieldErrors;
   };
 
@@ -85,7 +89,7 @@ function ProfileInfoTab() {
       setIsEditing(false);
     } catch (err) {
       if (err.sessionExpired) clearUser();
-      setServerError(err.message || "No se pudo guardar. Intentá de nuevo.");
+      setServerError(translateErrorMessage(err, t("profile.info.saveError", "No se pudo guardar. Intentá de nuevo."), i18n));
     } finally {
       setSubmitting(false);
     }
@@ -100,7 +104,7 @@ function ProfileInfoTab() {
       setUser({ ...user, ...updated });
     } catch (err) {
       if (err.sessionExpired) clearUser();
-      setBetaError(err.message || "No se pudo cancelar. Intentá de nuevo.");
+      setBetaError(translateErrorMessage(err, t("profile.info.betaCancelError", "No se pudo cancelar. Intentá de nuevo."), i18n));
     } finally {
       setBetaSubmitting(false);
     }
@@ -109,7 +113,7 @@ function ProfileInfoTab() {
   return (
     <div className="bg-card-bg rounded-2xl shadow-sm border border-snd-bg p-6 sm:p-8 transition-colors duration-300">
       <div className="flex items-start justify-between gap-4 mb-6 flex-wrap">
-        <h1 className="text-2xl font-extrabold text-text">Mi perfil</h1>
+        <h1 className="text-2xl font-extrabold text-text">{t("profile.info.title", "Mi perfil")}</h1>
         <div className="flex items-center gap-3">
           {user?.betaTester && (
             <button
@@ -117,7 +121,7 @@ function ProfileInfoTab() {
               disabled={betaSubmitting}
               className="px-4 py-2 rounded-full text-sm font-bold text-accent border-2 border-accent bg-accent/10 hover:bg-accent/20 transition cursor-pointer disabled:opacity-60"
             >
-              Beta tester
+              {t("profile.info.betaTester", "Beta tester")}
             </button>
           )}
           {!isEditing && (
@@ -125,7 +129,7 @@ function ProfileInfoTab() {
               onClick={handleEditClick}
               className="bg-main text-white px-5 py-2 rounded-full font-bold hover:bg-hover transition"
             >
-              Editar
+              {t("profile.info.edit", "Editar")}
             </button>
           )}
         </div>
@@ -136,7 +140,7 @@ function ProfileInfoTab() {
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4">
         <FormInput
           id="profile-firstName"
-          label="Nombre"
+          label={t("profile.info.firstName", "Nombre")}
           value={form.firstName}
           onChange={updateField("firstName")}
           error={errors.firstName}
@@ -144,7 +148,7 @@ function ProfileInfoTab() {
         />
         <FormInput
           id="profile-lastName"
-          label="Apellido"
+          label={t("profile.info.lastName", "Apellido")}
           value={form.lastName}
           onChange={updateField("lastName")}
           error={errors.lastName}
@@ -154,16 +158,16 @@ function ProfileInfoTab() {
 
       <FormInput
         id="profile-username"
-        label="Nombre de usuario"
+        label={t("profile.info.username", "Nombre de usuario")}
         value={user?.username || ""}
         onChange={() => {}}
         disabled
-        hint="El nombre de usuario no se puede cambiar."
+        hint={t("profile.info.usernameHint", "El nombre de usuario no se puede cambiar.")}
       />
 
       <FormInput
         id="profile-email"
-        label="Correo electrónico"
+        label={t("profile.info.email", "Correo electrónico")}
         type="email"
         value={form.email}
         onChange={updateField("email")}
@@ -173,8 +177,8 @@ function ProfileInfoTab() {
 
       <FormSelect
         id="profile-country"
-        label="País"
-        placeholder="Selecciona tu país"
+        label={t("profile.info.country", "País")}
+        placeholder={t("profile.info.countryPlaceholder", "Selecciona tu país")}
         options={COUNTRIES}
         value={form.country}
         onChange={updateField("country")}
@@ -184,7 +188,7 @@ function ProfileInfoTab() {
 
       <div className="w-full mb-4">
         <label className="block text-xs font-bold tracking-[0.5px] uppercase text-text opacity-70 mb-2">
-          Contraseña
+          {t("profile.info.password", "Contraseña")}
         </label>
         <div className="flex items-center gap-3">
           <input
@@ -197,13 +201,13 @@ function ProfileInfoTab() {
             onClick={() => setShowPasswordModal(true)}
             className="text-sm font-bold text-main hover:text-hover transition whitespace-nowrap"
           >
-            {hasProvider ? "Agregar" : "Cambiar"}
+            {hasProvider ? t("profile.info.addPassword", "Agregar") : t("profile.info.changePassword", "Cambiar")}
           </button>
         </div>
       </div>
 
       {passwordSuccess && (
-        <p className="text-accent text-sm font-bold mb-4">Contraseña actualizada correctamente.</p>
+        <p className="text-accent text-sm font-bold mb-4">{t("profile.info.passwordUpdated", "Contraseña actualizada correctamente.")}</p>
       )}
 
       {serverError && <p className="text-red-400 text-sm mb-4">{serverError}</p>}
@@ -214,23 +218,23 @@ function ProfileInfoTab() {
             onClick={handleCancelEdit}
             className="flex-1 bg-snd-bg text-text rounded-full py-3 text-sm font-bold cursor-pointer hover:opacity-80 transition"
           >
-            Cancelar
+            {t("profile.info.cancel", "Cancelar")}
           </button>
           <button
             onClick={handleSaveClick}
             disabled={submitting}
             className="flex-1 bg-main hover:bg-hover text-white rounded-full py-3 text-sm font-bold cursor-pointer disabled:opacity-60 transition"
           >
-            {submitting ? "Guardando..." : "Guardar cambios"}
+            {submitting ? t("profile.info.saving", "Guardando...") : t("profile.info.save", "Guardar cambios")}
           </button>
         </div>
       )}
 
       {showSaveConfirm && (
         <ConfirmDialog
-          title="¿Guardar los cambios?"
-          body="Se van a actualizar los datos de tu perfil."
-          confirmLabel="Guardar"
+          title={t("profile.info.confirmTitle", "¿Guardar los cambios?")}
+          body={t("profile.info.confirmBody", "Se van a actualizar los datos de tu perfil.")}
+          confirmLabel={t("profile.info.confirmButton", "Guardar")}
           onConfirm={handleConfirmSave}
           onCancel={() => setShowSaveConfirm(false)}
         />
@@ -238,10 +242,10 @@ function ProfileInfoTab() {
 
       {showBetaCancelConfirm && (
         <ConfirmDialog
-          title="¿Quieres cancelar tu suscripción a Beta Testing?"
-          body="Perderás el acceso anticipado a nuevos expansion packs y contenido experimental."
-          confirmLabel="Sí, cancelar"
-          cancelLabel="Mantener suscripción"
+          title={t("profile.info.betaConfirmTitle", "¿Quieres cancelar tu suscripción a Beta Testing?")}
+          body={t("profile.info.betaConfirmBody", "Perderás el acceso anticipado a nuevos expansion packs y contenido experimental.")}
+          confirmLabel={t("profile.info.betaConfirmOk", "Sí, cancelar")}
+          cancelLabel={t("profile.info.betaConfirmCancel", "Mantener suscripción")}
           danger
           confirmDisabled={betaSubmitting}
           onConfirm={handleBetaCancelConfirm}

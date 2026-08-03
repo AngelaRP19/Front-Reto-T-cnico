@@ -3,6 +3,8 @@ import Modal from "../../../components/common/Modal";
 import FormInput from "../../../components/common/FormInput";
 import { PASSWORD_RE } from "../../auth/utils/validators";
 import { changePassword } from "../services/profileService";
+import { useLingui } from "@lingui/react";
+import { translateErrorMessage } from "../../../utils/errorMessages";
 
 function PasswordModal({ hasProvider, onClose, onSuccess }) {
   const [currentPassword, setCurrentPassword] = useState("");
@@ -11,6 +13,8 @@ function PasswordModal({ hasProvider, onClose, onSuccess }) {
   const [errors, setErrors] = useState({});
   const [submitting, setSubmitting] = useState(false);
   const [serverError, setServerError] = useState("");
+  const { i18n } = useLingui();
+  const t = (id, message) => i18n._({ id, message });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -37,7 +41,7 @@ function PasswordModal({ hasProvider, onClose, onSuccess }) {
       onSuccess?.();
       onClose();
     } catch (err) {
-      setServerError(err.message);
+      setServerError(translateErrorMessage(err, t("errors.generic", "Ocurrió un error"), i18n));
     } finally {
       setSubmitting(false);
     }

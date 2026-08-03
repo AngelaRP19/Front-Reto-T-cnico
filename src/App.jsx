@@ -1,16 +1,19 @@
 import { Routes, Route } from "react-router-dom";
+
 import MainLayout from "./components/layout/MainLayout";
 import RequireAuth from "./components/common/RequireAuth";
 import HomePage from "./features/catalog/pages/HomePage";
 import ExpansionDetailPage from "./features/catalog/pages/ExpansionDetailPage";
 import ChallengesPage from "./features/challenges/pages/ChallengesPage";
-import LoginPage from "./features/auth/pages/loginPage";
-import RegisterPage from "./features/auth/pages/registerPage";
 import ProfileLayout from "./features/profile/pages/ProfileLayout";
 import ProfileInfoTab from "./features/profile/pages/ProfileInfoTab";
 import ProfileChallengesTab from "./features/profile/pages/ProfileChallengesTab";
 import ProfilePurchasesTab from "./features/profile/pages/ProfilePurchasesTab";
 import ProfileSettingsTab from "./features/profile/pages/ProfileSettingsTab";
+import LoginPage from "./features/auth/pages/loginPage";
+import RegisterPage from "./features/auth/pages/registerPage";
+import ForgotPasswordPage from "./features/auth/pages/ForgotPasswordPage";
+import ResetPasswordPage from "./features/auth/pages/ResetPasswordPage";
 import NotFoundPage from "./pages/NotFoundPage";
 
 function App() {
@@ -36,6 +39,8 @@ function App() {
       </Route>
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<RegisterPage />} />
+      <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+      <Route path="/reset-password/:token" element={<ResetPasswordPage />} />
       <Route path="*" element={<NotFoundPage />} />
     </Routes>
   );
