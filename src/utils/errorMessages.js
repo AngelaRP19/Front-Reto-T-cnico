@@ -73,6 +73,18 @@ const ERROR_PATTERNS = [
   },
 ];
 
+// Distingue el mapa de errores por campo ({"campo":"mensaje"}) que devuelve el backend
+// en validaciones 400, de los demás formatos de error (string plano, {message:...}).
+export function isFieldErrorMap(data) {
+  return (
+    data &&
+    typeof data === "object" &&
+    !Array.isArray(data) &&
+    typeof data.message !== "string" &&
+    typeof data.error !== "string"
+  );
+}
+
 export function translateErrorMessage(err, fallback, i18n) {
   const raw = err?.message || err?.response?.data?.message || err?.data?.message || "";
   const value = String(raw).trim();

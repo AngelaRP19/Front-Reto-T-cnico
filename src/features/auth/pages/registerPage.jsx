@@ -8,7 +8,7 @@ import { register, fetchCurrentUser } from "../services/authService";
 import { API_BASE_URL, clearLoggedOutMark } from "../../../services/apiClient";
 import { useAuth } from "../../../context/AuthContext";
 import COUNTRIES from "../data/countries";
-import { translateErrorMessage } from "../../../utils/errorMessages";
+import { translateErrorMessage, isFieldErrorMap } from "../../../utils/errorMessages";
 import { USERNAME_RE, PASSWORD_RE, NAME_RE, EMAIL_RE } from "../utils/validators";
 
 const INITIAL_FORM = {
@@ -21,14 +21,16 @@ const INITIAL_FORM = {
   confirmPassword: "",
 };
 
-function isFieldErrorMap(data) {
-  return (
-    data &&
-    typeof data === "object" &&
-    !Array.isArray(data) &&
-    typeof data.message !== "string" &&
-    typeof data.error !== "string"
-  );
+// Paliativo mientras el backend no devuelve un mapa de errores para username/email
+// duplicados (ver ROUTING.md/plan de trabajo): hoy responde con un string plano,
+// así que lo interpretamos para al menos marcar el campo correcto.
+function parseDuplicateFieldError(message) {
+  if (!message) return null;
+  const lower = message.toLowerCase();
+  const fieldErrors = {};
+  if (lower.includes("usuario")) fieldErrors.username = message;
+  if (lower.includes("correo")) fieldErrors.email = message;
+  return Object.keys(fieldErrors).length > 0 ? fieldErrors : null;
 }
 
 function RegisterPage() {
@@ -64,6 +66,12 @@ function RegisterPage() {
 
   const updateField = (field) => (e) => {
     setForm((prev) => ({ ...prev, [field]: e.target.value }));
+    setErrors((prev) => {
+      if (!prev[field]) return prev;
+      const next = { ...prev };
+      delete next[field];
+      return next;
+    });
   };
 
   const handleSubmit = async (e) => {
@@ -100,8 +108,12 @@ function RegisterPage() {
       });
       navigate("/");
     } catch (err) {
+      const duplicateFieldErrors = !isFieldErrorMap(err.data) && parseDuplicateFieldError(err.message);
       if (isFieldErrorMap(err.data)) {
         setErrors((prev) => ({ ...prev, ...err.data }));
+        setServerError(t("register.formReview", "Revisá los campos marcados en el formulario."));
+      } else if (duplicateFieldErrors) {
+        setErrors((prev) => ({ ...prev, ...duplicateFieldErrors }));
         setServerError(t("register.formReview", "Revisá los campos marcados en el formulario."));
       } else {
         setServerError(translateErrorMessage(err, t("errors.generic", "Ocurrió un error"), i18n));
@@ -145,6 +157,7 @@ function RegisterPage() {
               value={form.firstName}
               onChange={updateField("firstName")}
               error={errors.firstName}
+              autoComplete="off"
             />
             <FormInput
               id="register-lastName"
@@ -153,6 +166,7 @@ function RegisterPage() {
               value={form.lastName}
               onChange={updateField("lastName")}
               error={errors.lastName}
+              autoComplete="off"
             />
           </div>
 
@@ -164,6 +178,7 @@ function RegisterPage() {
             onChange={updateField("username")}
             error={errors.username}
             hint={!errors.username ? t("register.usernameHint", "Mínimo 4 caracteres") : undefined}
+            autoComplete="off"
           />
 
           <FormInput
@@ -174,6 +189,7 @@ function RegisterPage() {
             value={form.email}
             onChange={updateField("email")}
             error={errors.email}
+            autoComplete="off"
           />
 
           <FormSelect
@@ -184,6 +200,7 @@ function RegisterPage() {
             value={form.country}
             onChange={updateField("country")}
             error={errors.country}
+            autoComplete="off"
           />
 
           <div className="grid grid-cols-2 gap-3">
@@ -195,6 +212,7 @@ function RegisterPage() {
               value={form.password}
               onChange={updateField("password")}
               error={errors.password}
+              autoComplete="new-password"
             />
             <FormInput
               id="register-confirmPassword"
@@ -204,6 +222,7 @@ function RegisterPage() {
               value={form.confirmPassword}
               onChange={updateField("confirmPassword")}
               error={errors.confirmPassword}
+              autoComplete="new-password"
             />
           </div>
 
@@ -238,7 +257,7 @@ function RegisterPage() {
           </Button>
         </form>
 
-        <div className="flex items-center w-full mb-6 text-text opacity-60 text-[0.8125rem] before:content-[''] before:flex-1 before:h-px before:bg-snd-bg after:content-[''] after:flex-1 after:h-px after:bg-snd-bg">
+        <div className="flex items-center w-full mb-6 text-text opacity-60 text-[0.8125rem] before:content-[''] before:flex-1 before:h-[0.0625rem] before:bg-snd-bg after:content-[''] after:flex-1 after:h-[0.0625rem] after:bg-snd-bg">
           <span className="px-3">o regístrate con</span>
         </div>
 

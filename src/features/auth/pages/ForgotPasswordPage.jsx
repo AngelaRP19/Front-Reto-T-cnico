@@ -43,6 +43,7 @@ function ForgotPasswordPage() {
             placeholder={t("auth.forgot.emailPlaceholder", "usuario@correo.com")}
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            autoComplete="off"
           />
 
           {message && (

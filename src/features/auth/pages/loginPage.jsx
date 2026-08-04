@@ -67,6 +67,7 @@ function LoginPage() {
             placeholder={t("login.usernamePlaceholder", "Ingresá tu usuario")}
             value={username}
             onChange={(e) => setUsername(e.target.value)}
+            autoComplete="username"
           />
 
           <FormInput
@@ -76,9 +77,10 @@ function LoginPage() {
             placeholder="••••••••"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            autoComplete="current-password"
           />
 
-          <div className="flex items-center w-full mb-6 text-text opacity-60 text-[0.8125rem] before:content-[''] before:flex-1 before:h-px before:bg-snd-bg after:content-[''] after:flex-1 after:h-px after:bg-snd-bg">
+          <div className="flex items-center w-full mb-6 text-text opacity-60 text-[0.8125rem] before:content-[''] before:flex-1 before:h-[0.0625rem] before:bg-snd-bg after:content-[''] after:flex-1 after:h-[0.0625rem] after:bg-snd-bg">
             <span className="px-3">o</span>
           </div>
 
