@@ -21,7 +21,7 @@ const ExpansionDetail = ({ data: expansion, onBack }) => {
           <div className="md:flex">
 
             {/* Contenedor de la Imagen con la clase 'group' para detectar el hover */}
-            <div className="md:w-1/2 bg-slate-900 p-4 sm:p-6 flex items-center justify-center relative group overflow-hidden">
+            <div className="md:w-1/2 bg-card-bg p-4 sm:p-6 flex items-center justify-center relative group overflow-hidden transition-colors duration-400">
 
               {/* Etiqueta / Recuadro con transición rápida de 200ms */}
               <span className="absolute top-4 left-4 bg-accent text-bg text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider z-10 transition-opacity duration-200 ease-in-out group-hover:opacity-0 pointer-events-none">
