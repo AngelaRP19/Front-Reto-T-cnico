@@ -31,7 +31,7 @@ const ExpansionDetail = ({ data: expansion, onBack }) => {
               <img
                 src={expansion.image}
                 alt={expansion.title}
-                className="rounded-2xl shadow-md w-full aspect-[4/3] md:aspect-auto md:h-full object-cover transform group-hover:scale-105 transition duration-300"
+                className="rounded-3xl shadow-md w-full aspect-[4/3] md:max-h-[20rem] object-cover transform group-hover:scale-105 transition duration-300"
               />
             </div>
 
@@ -78,6 +78,63 @@ const ExpansionDetail = ({ data: expansion, onBack }) => {
 
             </div>
           </div>
+
+          {/* Capturas de pantalla */}
+          {expansion.screenshots?.length > 0 && (
+            <div className="p-5 sm:p-8 pt-6 sm:pt-8">
+              <h3 className="text-base font-bold text-text mb-4 border-b border-snd-bg pb-2 transition-colors duration-400">
+                {t("catalog.screenshots", "Capturas de pantalla")}
+              </h3>
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4">
+                {expansion.screenshots.map((url, idx) => (
+                  <div key={idx} className="overflow-hidden rounded-2xl group">
+                    <img
+                      src={url}
+                      alt={`${expansion.title} - ${idx + 1}`}
+                      className="w-full aspect-video object-cover transform group-hover:scale-105 transition duration-300"
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Requisitos del sistema */}
+          {(expansion.minRequirements?.length > 0 || expansion.recommendedRequirements?.length > 0) && (
+            <div className="p-5 sm:p-8 pt-0 sm:pt-0">
+              <h3 className="text-base font-bold text-text mb-4 border-b border-snd-bg pb-2 transition-colors duration-400">
+                {t("catalog.requirements", "Requisitos del sistema")}
+              </h3>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div>
+                  <h4 className="text-sm font-bold text-text opacity-80 mb-3">
+                    {t("catalog.minRequirements", "Requisitos mínimos")}
+                  </h4>
+                  <ul className="space-y-2 text-sm text-text">
+                    {expansion.minRequirements?.map((req, idx) => (
+                      <li key={idx} className="flex items-start gap-2">
+                        <span className="text-accent font-bold">✓</span>
+                        <span>{req}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <div>
+                  <h4 className="text-sm font-bold text-text opacity-80 mb-3">
+                    {t("catalog.recommendedRequirements", "Requisitos recomendados")}
+                  </h4>
+                  <ul className="space-y-2 text-sm text-text">
+                    {expansion.recommendedRequirements?.map((req, idx) => (
+                      <li key={idx} className="flex items-start gap-2">
+                        <span className="text-accent font-bold">✓</span>
+                        <span>{req}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
 
       </div>
