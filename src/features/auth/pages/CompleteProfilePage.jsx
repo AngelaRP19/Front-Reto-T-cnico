@@ -94,7 +94,7 @@ function CompleteProfilePage() {
           {t("completeProfile.subtitle", "Nos falta un par de datos para terminar de armar tu cuenta.")}
         </p>
 
-        <form className="w-full flex flex-col text-left" onSubmit={handleSubmit}>
+        <form className="w-full flex flex-col text-left" onSubmit={handleSubmit} noValidate>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <FormInput
               id="complete-firstName"

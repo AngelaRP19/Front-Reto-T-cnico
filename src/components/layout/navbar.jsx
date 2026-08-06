@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useLingui } from "@lingui/react";
 import { useTheme } from "../../context/ThemeContext";
 import { useAuth } from "../../context/AuthContext";
 import { logout, setBetaTester } from "../../features/auth/services/authService";
 import LanguageSelector from "../common/LanguageSelector";
+import useClickOutside from "../../hooks/useClickOutside";
 
 function Navbar() {
   const navigate = useNavigate();
@@ -14,6 +15,11 @@ function Navbar() {
   const [showBetaConfirm, setShowBetaConfirm] = useState(false);
   const [betaSubmitting, setBetaSubmitting] = useState(false);
   const [betaError, setBetaError] = useState("");
+
+  const userMenuRef = useRef(null);
+  const betaWrapperRef = useRef(null);
+  useClickOutside(userMenuRef, () => setShowUserMenu(false), showUserMenu);
+  useClickOutside(betaWrapperRef, () => setShowBetaConfirm(false), showBetaConfirm);
 
   const { theme, toggleTheme } = useTheme();
   const { user, setUser, clearUser } = useAuth();
@@ -114,7 +120,7 @@ function Navbar() {
               {t("profile.info.betaTester", "Beta tester")}
             </span>
           ) : (
-            <div className="relative w-full max-w-sm lg:w-auto">
+            <div className="relative w-full max-w-sm lg:w-auto" ref={betaWrapperRef}>
               <button
                 onClick={handleBetaButtonClick}
                 disabled={betaSubmitting}
@@ -162,7 +168,7 @@ function Navbar() {
               {t("navbar.login", "Iniciar sesión")}
             </button>
           ) : (
-            <div className="relative hidden lg:flex">
+            <div className="relative hidden lg:flex" ref={userMenuRef}>
               <button
                 onClick={() => setShowUserMenu((prev) => !prev)}
                 className="w-10 h-10 rounded-full bg-main text-white font-bold flex items-center justify-center hover:bg-hover transition-colors shadow-md"
