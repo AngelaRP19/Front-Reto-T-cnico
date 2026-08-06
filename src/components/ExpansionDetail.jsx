@@ -1,8 +1,23 @@
 import { useLingui } from "@lingui/react";
+import { useAuth } from "../context/AuthContext";
+import useCartStore from "../store/cartStore";
+import { canAccessCart } from "../utils/cartAccess";
 
 const ExpansionDetail = ({ data: expansion, onBack }) => {
   const { i18n } = useLingui();
+  const { user } = useAuth();
   const t = (id, message) => i18n._({ id, message });
+  const addItem = useCartStore((state) => state.addItem);
+
+  const handleAddToCart = () => {
+    addItem({
+      id: expansion.id,
+      title: expansion.title,
+      price: expansion.price,
+      platform: expansion.platform,
+      image: expansion.image,
+    });
+  };
 
   return (
     <div className="min-h-screen bg-bg text-text py-6 sm:py-10 px-4 sm:px-6 lg:px-8 transition-colors duration-400">
@@ -71,9 +86,14 @@ const ExpansionDetail = ({ data: expansion, onBack }) => {
                   <span className="text-2xl font-black text-accent">{expansion.price}</span>
                 </div>
 
-                <button className="bg-main hover:bg-hover text-white font-bold py-3 px-6 rounded-2xl shadow-lg transition duration-300 cursor-pointer">
-                  Añadir al carrito 🛒
-                </button>
+                {canAccessCart(user) ? (
+                  <button
+                    onClick={handleAddToCart}
+                    className="bg-main hover:bg-hover text-white font-bold py-3 px-6 rounded-2xl shadow-lg transition duration-300 cursor-pointer"
+                  >
+                    {t("cart.add", "Añadir al carrito")} 🛒
+                  </button>
+                ) : null}
               </div>
 
             </div>
