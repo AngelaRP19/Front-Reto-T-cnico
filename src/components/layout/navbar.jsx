@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useLingui } from "@lingui/react";
 import { useTheme } from "../../context/ThemeContext";
 import { useAuth } from "../../context/AuthContext";
 import { logout, setBetaTester } from "../../features/auth/services/authService";
 import LanguageSelector from "../common/LanguageSelector";
+import useClickOutside from "../../hooks/useClickOutside";
 
 function Navbar() {
   const navigate = useNavigate();
@@ -14,6 +15,11 @@ function Navbar() {
   const [showBetaConfirm, setShowBetaConfirm] = useState(false);
   const [betaSubmitting, setBetaSubmitting] = useState(false);
   const [betaError, setBetaError] = useState("");
+
+  const userMenuRef = useRef(null);
+  const betaWrapperRef = useRef(null);
+  useClickOutside(userMenuRef, () => setShowUserMenu(false), showUserMenu);
+  useClickOutside(betaWrapperRef, () => setShowBetaConfirm(false), showBetaConfirm);
 
   const { theme, toggleTheme } = useTheme();
   const { user, setUser, clearUser } = useAuth();
@@ -62,7 +68,7 @@ function Navbar() {
   };
 
   return (
-    <header className="flex flex-col md:flex-row justify-between items-center w-full h-auto md:h-20 p-5 md:px-10 lg:px-[4.375rem] lg:py-0 gap-5 md:gap-0 bg-bg shadow-[0_2px_10px_rgba(0,0,0,0.08)] mb-[1.875rem] ml-auto transition-colors duration-[400ms]">
+    <header className="flex flex-col md:flex-row justify-between items-center w-full h-auto md:h-20 p-5 md:px-10 lg:px-[4.375rem] lg:py-0 gap-5 md:gap-0 bg-bg shadow-[0_0.125rem_0.625rem_rgba(0,0,0,0.08)] mb-[1.875rem] ml-auto transition-colors duration-[400ms]">
       <div className="flex items-center gap-[0.9375rem] justify-start">
         <div>
           <img
@@ -84,7 +90,7 @@ function Navbar() {
       </button>
 
       <nav
-        className={`absolute lg:static top-20 left-0 w-full lg:w-auto bg-snd-bg lg:bg-transparent shadow-[0_6px_18px_rgba(0,0,0,0.25)] lg:shadow-none overflow-hidden lg:overflow-visible transition-[max-height,opacity] duration-[400ms] ease-in-out lg:flex lg:items-center lg:gap-10 lg:grow lg:max-h-none lg:opacity-100 lg:pointer-events-auto lg:py-0 lg:transition-none ${
+        className={`absolute lg:static top-20 left-0 w-full lg:w-auto bg-snd-bg lg:bg-transparent shadow-[0_0.375rem_1.125rem_rgba(0,0,0,0.25)] lg:shadow-none overflow-hidden lg:overflow-visible transition-[max-height,opacity] duration-[400ms] ease-in-out lg:flex lg:items-center lg:gap-10 lg:grow lg:max-h-none lg:opacity-100 lg:pointer-events-auto lg:py-0 lg:transition-none ${
           menuOpen
             ? "max-h-[25rem] opacity-100 pointer-events-auto py-[1.875rem]"
             : "max-h-0 opacity-0 pointer-events-none"
@@ -114,11 +120,11 @@ function Navbar() {
               {t("profile.info.betaTester", "Beta tester")}
             </span>
           ) : (
-            <div className="relative w-full max-w-sm lg:w-auto">
+            <div className="relative w-full max-w-sm lg:w-auto" ref={betaWrapperRef}>
               <button
                 onClick={handleBetaButtonClick}
                 disabled={betaSubmitting}
-                className="bg-accent text-black font-semibold w-full lg:w-auto px-4 sm:px-5 py-2.5 rounded-full transition-all duration-300 hover:scale-105 hover:shadow-[0_0_20px_var(--accent-color)] active:scale-95 disabled:opacity-60 text-sm sm:text-base"
+                className="bg-accent text-black font-semibold w-full lg:w-auto px-4 sm:px-5 py-2.5 rounded-full transition-all duration-300 hover:scale-105 hover:shadow-[0_0_1.25rem_var(--accent-color)] active:scale-95 disabled:opacity-60 text-sm sm:text-base"
               >
                 {t("beta.title", "¿Quieres ser beta tester?")}
               </button>
@@ -162,7 +168,7 @@ function Navbar() {
               {t("navbar.login", "Iniciar sesión")}
             </button>
           ) : (
-            <div className="relative hidden lg:flex">
+            <div className="relative hidden lg:flex" ref={userMenuRef}>
               <button
                 onClick={() => setShowUserMenu((prev) => !prev)}
                 className="w-10 h-10 rounded-full bg-main text-white font-bold flex items-center justify-center hover:bg-hover transition-colors shadow-md"

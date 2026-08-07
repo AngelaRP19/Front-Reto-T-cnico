@@ -6,7 +6,7 @@ import { changePassword } from "../services/profileService";
 import { useLingui } from "@lingui/react";
 import { translateErrorMessage } from "../../../utils/errorMessages";
 
-function PasswordModal({ hasProvider, onClose, onSuccess }) {
+function PasswordModal({ onClose, onSuccess }) {
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -21,7 +21,7 @@ function PasswordModal({ hasProvider, onClose, onSuccess }) {
     setServerError("");
 
     const fieldErrors = {};
-    if (!hasProvider && !currentPassword) {
+    if (!currentPassword) {
       fieldErrors.currentPassword = "Ingresá tu contraseña actual";
     }
     if (!PASSWORD_RE.test(newPassword)) {
@@ -36,8 +36,7 @@ function PasswordModal({ hasProvider, onClose, onSuccess }) {
 
     setSubmitting(true);
     try {
-      const payload = hasProvider ? { newPassword } : { currentPassword, newPassword };
-      await changePassword(payload);
+      await changePassword({ currentPassword, newPassword });
       onSuccess?.();
       onClose();
     } catch (err) {
@@ -49,21 +48,18 @@ function PasswordModal({ hasProvider, onClose, onSuccess }) {
 
   return (
     <Modal onClose={onClose}>
-      <h3 className="text-lg font-bold mb-4">
-        {hasProvider ? "Agregar contraseña" : "Cambiar contraseña"}
-      </h3>
+      <h3 className="text-lg font-bold mb-4">Cambiar contraseña</h3>
       <form onSubmit={handleSubmit} className="text-left">
-        {!hasProvider && (
-          <FormInput
-            id="password-current"
-            label="Contraseña actual"
-            type="password"
-            placeholder="••••••••"
-            value={currentPassword}
-            onChange={(e) => setCurrentPassword(e.target.value)}
-            error={errors.currentPassword}
-          />
-        )}
+        <FormInput
+          id="password-current"
+          label="Contraseña actual"
+          type="password"
+          placeholder="••••••••"
+          value={currentPassword}
+          onChange={(e) => setCurrentPassword(e.target.value)}
+          error={errors.currentPassword}
+          autoComplete="current-password"
+        />
         <FormInput
           id="password-new"
           label="Nueva contraseña"
@@ -72,6 +68,7 @@ function PasswordModal({ hasProvider, onClose, onSuccess }) {
           value={newPassword}
           onChange={(e) => setNewPassword(e.target.value)}
           error={errors.newPassword}
+          autoComplete="new-password"
         />
         <FormInput
           id="password-confirm"
@@ -81,6 +78,7 @@ function PasswordModal({ hasProvider, onClose, onSuccess }) {
           value={confirmPassword}
           onChange={(e) => setConfirmPassword(e.target.value)}
           error={errors.confirmPassword}
+          autoComplete="new-password"
         />
 
         {serverError && <p className="text-red-400 text-sm mb-4">{serverError}</p>}

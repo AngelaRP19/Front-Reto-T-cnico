@@ -17,6 +17,9 @@ function mapExpansionPack(pack) {
     description: pack.description,
     features: pack.characteristics || [],
     image: pack.URLImage,
+    screenshots: pack.screenshots || [],
+    minRequirements: pack.minimumRequirements || [],
+    recommendedRequirements: pack.recommendedRequirements || [],
   };
 }
 
