@@ -6,12 +6,15 @@ import { useAuth } from "../../context/AuthContext";
 import { logout, setBetaTester } from "../../features/auth/services/authService";
 import LanguageSelector from "../common/LanguageSelector";
 import useClickOutside from "../../hooks/useClickOutside";
+import useCartStore from "../../store/cartStore";
+import { canAccessCart } from "../../utils/cartAccess";
 
 function Navbar() {
   const navigate = useNavigate();
 
   const [menuOpen, setMenuOpen] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
+  const [showCart, setShowCart] = useState(false);
   const [showBetaConfirm, setShowBetaConfirm] = useState(false);
   const [betaSubmitting, setBetaSubmitting] = useState(false);
   const [betaError, setBetaError] = useState("");
@@ -24,6 +27,11 @@ function Navbar() {
   const { theme, toggleTheme } = useTheme();
   const { user, setUser, clearUser } = useAuth();
   const { i18n } = useLingui();
+  const itemCount = useCartStore((state) => state.getItemCount());
+  const cartItems = useCartStore((state) => state.items);
+  const removeItem = useCartStore((state) => state.removeItem);
+  const updateQuantity = useCartStore((state) => state.updateQuantity);
+  const clearCart = useCartStore((state) => state.clearCart);
   const t = (id, message) => i18n._({ id, message });
 
   const displayName = user?.firstName || user?.name || user?.username || "";
@@ -205,6 +213,76 @@ function Navbar() {
               )}
             </div>
           )}
+
+          {canAccessCart(user) ? (
+            <div className="relative">
+              <button
+                className="flex items-center gap-2 px-4 py-2 rounded-full bg-snd-bg text-text font-semibold border border-snd-bg hover:border-main transition"
+                onClick={() => setShowCart((prev) => !prev)}
+              >
+                🛒 {t("cart.title", "Carrito")}
+                {itemCount > 0 && (
+                  <span className="bg-main text-white rounded-full min-w-6 h-6 flex items-center justify-center px-2 text-sm">
+                    {itemCount}
+                  </span>
+                )}
+              </button>
+
+              {showCart && (
+              <div className="absolute right-0 top-full mt-2 w-80 max-w-[90vw] bg-card-bg text-text rounded-2xl shadow-2xl border border-snd-bg p-4 z-[1400]">
+                <div className="flex items-center justify-between mb-3">
+                  <p className="font-bold text-lg">{t("cart.title", "Carrito")}</p>
+                  <button onClick={() => setShowCart(false)} className="text-sm text-main font-semibold">{t("cart.close", "Cerrar")}</button>
+                </div>
+
+                {cartItems.length === 0 ? (
+                  <p className="text-sm text-text/70">{t("cart.empty", "Aún no agregaste paquetes de expansión.")}</p>
+                ) : (
+                  <div className="space-y-3">
+                    {cartItems.map((item) => (
+                      <div key={item.id} className="flex items-start gap-3 rounded-xl bg-snd-bg/50 p-3">
+                        <div className="flex-1 min-w-0">
+                          <p className="font-semibold text-sm truncate">{item.title}</p>
+                          <p className="text-xs text-text/70">{item.platform || t("cart.defaultPlatform", "Pack de expansión")}</p>
+                          <p className="text-sm text-accent font-semibold mt-1">{item.price}</p>
+                        </div>
+                        <div className="flex flex-col items-end gap-2">
+                          <div className="flex items-center gap-2">
+                            <button
+                              onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                              className="w-7 h-7 rounded-full bg-bg text-text font-bold"
+                            >
+                              −
+                            </button>
+                            <span className="text-sm font-semibold">{item.quantity}</span>
+                            <button
+                              onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                              className="w-7 h-7 rounded-full bg-bg text-text font-bold"
+                            >
+                              +
+                            </button>
+                          </div>
+                          <button onClick={() => removeItem(item.id)} className="text-xs text-main font-semibold">
+                            {t("cart.remove", "Quitar")}
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+
+                    <div className="border-t border-snd-bg pt-3 flex items-center justify-between">
+                      <span className="text-sm font-semibold">{t("cart.subtotal", "Subtotal")}</span>
+                      <span className="text-accent font-bold">{useCartStore.getState().getSubtotal().toLocaleString("es-CO", { style: "currency", currency: "COP" })}</span>
+                    </div>
+
+                    <button onClick={() => clearCart()} className="w-full rounded-full bg-main text-white py-2 font-semibold">
+                      {t("cart.clear", "Vaciar carrito")}
+                    </button>
+                  </div>
+                )}
+              </div>
+            )}
+            </div>
+          ) : null}
 
           <LanguageSelector />
 

@@ -1,8 +1,12 @@
 import { useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
+import { useLingui } from "@lingui/react";
+import { useAuth } from "../../../context/AuthContext";
 import Hero from "../../../components/layout/hero";
 import Card from "../../../components/layout/card";
 import { useExpansionPacks } from "../hooks/useExpansionPacks";
+import useCartStore from "../../../store/cartStore";
+import { canAccessCart } from "../../../utils/cartAccess";
 
 function scrollToCatalogo(behavior) {
   const catalogSection = document.getElementById("catalogo");
@@ -14,6 +18,10 @@ function scrollToCatalogo(behavior) {
 function HomePage() {
   const { packs, loading, error } = useExpansionPacks();
   const location = useLocation();
+  const { i18n } = useLingui();
+  const { user } = useAuth();
+  const t = (id, message) => i18n._({ id, message });
+  const addItem = useCartStore((state) => state.addItem);
 
   useEffect(() => {
     if (location.hash === "#catalogo") {
@@ -36,14 +44,24 @@ function HomePage() {
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5 sm:gap-6 lg:gap-8 justify-items-center">
           {packs.map((pack) => (
-            <Link key={pack.id} to={`/catalogo/${pack.id}`} className="w-full cursor-pointer">
-              <Card
-                plataforma={pack.platform}
-                titulo={pack.title}
-                precio={pack.price}
-                image={pack.image}
-              />
-            </Link>
+            <div key={pack.id} className="w-full">
+              <Link to={`/catalogo/${pack.id}`} className="w-full cursor-pointer block">
+                <Card
+                  plataforma={pack.platform}
+                  titulo={pack.title}
+                  precio={pack.price}
+                  image={pack.image}
+                />
+              </Link>
+              {canAccessCart(user) ? (
+                <button
+                  onClick={() => addItem({ id: pack.id, title: pack.title, price: pack.price, platform: pack.platform, image: pack.image })}
+                  className="mt-3 w-full bg-main hover:bg-hover text-white font-semibold py-2.5 rounded-2xl transition"
+                >
+                  {t("cart.add", "Añadir al carrito")}
+                </button>
+              ) : null}
+            </div>
           ))}
           </div>
         )}
