@@ -17,6 +17,7 @@ import ResetPasswordPage from "./features/auth/pages/ResetPasswordPage";
 import CompleteProfilePage from "./features/auth/pages/CompleteProfilePage";
 import OAuthProfileGate from "./features/auth/components/OAuthProfileGate";
 import NotFoundPage from "./pages/NotFoundPage";
+import { CartPage } from "./features/cart/CartPage";
 
 function App() {
   return (
@@ -27,6 +28,14 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/catalogo/:packId" element={<ExpansionDetailPage />} />
           <Route path="/comunidad" element={<ChallengesPage />} />
+          <Route
+            path="/carrito"
+            element={
+              <RequireAuth>
+                <CartPage />
+              </RequireAuth>
+            }
+          />
           <Route
             path="/perfil"
             element={

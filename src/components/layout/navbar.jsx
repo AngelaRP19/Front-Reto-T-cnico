@@ -213,6 +213,16 @@ function Navbar() {
             </div>
           )}
 
+      
+          <Link
+            to="/carrito"
+            className="p-2 text-xl hover:scale-110 transition-transform duration-200 cursor-pointer text-text"
+            aria-label="Ver carrito de compras"
+            title="Carrito de compras"
+          >
+            🛒
+          </Link>
+
           {!user ? (
             <button
               className="w-full max-w-sm lg:w-auto bg-main text-white px-5 py-2.5 rounded-full font-bold text-sm sm:text-base hover:bg-hover transition"
