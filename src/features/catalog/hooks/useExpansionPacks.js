@@ -1,28 +1,19 @@
 import { useEffect, useState } from "react";
+import useLocaleStore from "../../../store/localeStore";
 import { getExpansionPacks } from "../services/expansionsService";
 
-let cachedPromise = null;
-
-function fetchExpansionPacksOnce() {
-  if (!cachedPromise) {
-    cachedPromise = getExpansionPacks().catch((err) => {
-      // Si falla, se limpia el cache para que el próximo montaje reintente en vez de quedar pegado en el error.
-      cachedPromise = null;
-      throw err;
-    });
-  }
-  return cachedPromise;
-}
-
 export function useExpansionPacks() {
+  const locale = useLocaleStore((state) => state.locale);
   const [packs, setPacks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
   useEffect(() => {
     let cancelled = false;
+    setLoading(true);
+    setError("");
 
-    fetchExpansionPacksOnce()
+    getExpansionPacks()
       .then((data) => {
         if (!cancelled) setPacks(data);
       })
@@ -36,7 +27,7 @@ export function useExpansionPacks() {
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [locale]);
 
   return { packs, loading, error };
 }

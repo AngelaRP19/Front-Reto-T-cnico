@@ -33,16 +33,30 @@ export function isLoggedOut() {
   return localStorage.getItem(LOGGED_OUT_KEY) === "1";
 }
 
+import useLocaleStore from "../store/localeStore";
+import { getInitialLocale } from "../i18n";
+
+function buildUrlWithLocale(path, locale) {
+  const url = new URL(path, API_BASE_URL);
+  if (!url.searchParams.has("lang") && !url.searchParams.has("locale")) {
+    url.searchParams.set("lang", locale);
+  }
+  return url.toString();
+}
+
 async function request(path, { method = "GET", body, headers = {}, auth = true } = {}) {
   const token = auth ? getToken() : null;
+  const locale = useLocaleStore.getState().locale || getInitialLocale();
+  const url = buildUrlWithLocale(path, locale);
 
   let response;
   try {
-    response = await fetch(`${API_BASE_URL}${path}`, {
+    response = await fetch(url, {
       method,
       credentials: "include",
       headers: {
         "Content-Type": "application/json",
+        "Accept-Language": locale,
         ...(token ? { Authorization: `Bearer ${token}` } : {}),
         ...headers,
       },

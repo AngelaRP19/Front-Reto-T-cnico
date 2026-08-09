@@ -1,23 +1,12 @@
 import { useEffect, useState } from "react";
+import useLocaleStore from "../../../store/localeStore";
 import {
   getPlatforms,
   getPlatformsByExpansion,
 } from "../services/platformsService";
 
-let cachedPromise = null;
-
-function fetchPlatformsOnce() {
-  if (!cachedPromise) {
-    cachedPromise = getPlatforms().catch((err) => {
-      cachedPromise = null;
-      throw err;
-    });
-  }
-
-  return cachedPromise;
-}
-
 export function usePlatforms() {
+  const locale = useLocaleStore((state) => state.locale);
   const [platforms, setPlatforms] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -25,7 +14,10 @@ export function usePlatforms() {
   useEffect(() => {
     let cancelled = false;
 
-    fetchPlatformsOnce()
+    setLoading(true);
+    setError("");
+
+    getPlatforms()
       .then((data) => {
         if (!cancelled) {
           setPlatforms(data);
@@ -45,7 +37,7 @@ export function usePlatforms() {
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [expansionId, enabled, locale]);
 
   return {
     platforms,

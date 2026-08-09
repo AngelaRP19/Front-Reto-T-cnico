@@ -1,9 +1,10 @@
-import { useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useLingui } from "@lingui/react";
 import { useAuth } from "../../../context/AuthContext";
 import Hero from "../../../components/layout/hero";
 import Card from "../../../components/layout/card";
+import PlatformSelector from "../../../components/PlatformSelector/PlatformSelector";
 import { useExpansionPacks } from "../hooks/useExpansionPacks";
 import useCartStore from "../../../store/cartStore";
 import { canAccessCart } from "../../../utils/cartAccess";
@@ -18,8 +19,11 @@ function scrollToCatalogo(behavior) {
 function HomePage() {
   const { packs, loading, error } = useExpansionPacks();
   const location = useLocation();
+  const navigate = useNavigate();
   const { i18n } = useLingui();
   const { user } = useAuth();
+  const [selectedExpansionForPlatform, setSelectedExpansionForPlatform] = useState(null);
+  const [cartMessage, setCartMessage] = useState("");
   const t = (id, message) => i18n._({ id, message });
   const addItem = useCartStore((state) => state.addItem);
 
@@ -28,6 +32,35 @@ function HomePage() {
       scrollToCatalogo("smooth");
     }
   }, [location.hash]);
+
+  const handleOpenPlatformSelector = (expansion) => {
+    if (!canAccessCart(user)) {
+      navigate("/login");
+      return;
+    }
+
+    setCartMessage("");
+    setSelectedExpansionForPlatform(expansion);
+  };
+
+  const handlePlatformSelected = (platform) => {
+    const result = addItem({
+      id: selectedExpansionForPlatform.id,
+      title: selectedExpansionForPlatform.title,
+      price: selectedExpansionForPlatform.price,
+      platform: platform.name,
+      image: selectedExpansionForPlatform.image,
+    });
+
+    setSelectedExpansionForPlatform(null);
+
+    if (!result?.success) {
+      setCartMessage(result?.message || t("cart.addError", "No se pudo agregar el producto al carrito."));
+      return;
+    }
+
+    setCartMessage(t("cart.addSuccess", "Producto agregado correctamente al carrito."));
+  };
 
   return (
     <>
@@ -55,7 +88,7 @@ function HomePage() {
               </Link>
               {canAccessCart(user) ? (
                 <button
-                  onClick={() => addItem({ id: pack.id, title: pack.title, price: pack.price, platform: pack.platform, image: pack.image })}
+                  onClick={() => handleOpenPlatformSelector(pack)}
                   className="mt-3 w-full bg-main hover:bg-hover text-white font-semibold py-2.5 rounded-2xl transition"
                 >
                   {t("cart.add", "Añadir al carrito")}
@@ -66,6 +99,30 @@ function HomePage() {
           </div>
         )}
       </section>
+
+      <PlatformSelector
+        expansionId={selectedExpansionForPlatform?.id}
+        isOpen={Boolean(selectedExpansionForPlatform)}
+        onClose={() => setSelectedExpansionForPlatform(null)}
+        onSelectPlatform={handlePlatformSelected}
+      />
+
+      {cartMessage && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
+          <div className="bg-card-bg rounded-2xl p-6 w-full max-w-md shadow-xl">
+            <h2 className="text-xl font-bold mb-3 text-text">{t("cart.title", "Carrito")}</h2>
+            <p className="text-text mb-6">{cartMessage}</p>
+            <div className="flex justify-end">
+              <button
+                onClick={() => setCartMessage("")}
+                className="bg-main hover:bg-hover text-white font-bold px-5 py-2 rounded-lg transition duration-200"
+              >
+                {t("cart.close", "Cerrar")}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }

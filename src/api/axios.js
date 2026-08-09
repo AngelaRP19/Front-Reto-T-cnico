@@ -1,6 +1,6 @@
 // src/api/axios.js
 import axios from "axios";
-import i18n from "../i18n/i18n";
+import { i18n } from "@lingui/core";
 
 // Crear instancia de Axios con configuración base
 const api = axios.create({

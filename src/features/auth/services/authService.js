@@ -1,6 +1,4 @@
 import { apiClient, setToken, clearToken, markLoggedOut } from "../../../services/apiClient";
-import axios from "axios";
-import { API_BASE_URL } from "../../../services/apiClient";
 import { encryptPayload } from "../../../services/cryptoUtils";
 
 /**
@@ -70,13 +68,15 @@ export function setBetaTester(value) {
  */
 export async function requestPasswordReset(email) {
   try {
-    const response = await axios.post(`${API_BASE_URL}/auth/forgot-password`, {
-      email,
-    });
-    return response.data; // el backend puede devolver un mensaje de confirmación
+    const data = await apiClient.post(
+      "/auth/forgot-password",
+      { email },
+      { auth: false }
+    );
+    return data;
   } catch (err) {
-    if (err.response?.data?.message) {
-      throw new Error(err.response.data.message);
+    if (err.data?.message) {
+      throw new Error(err.data.message);
     }
     throw new Error("No se pudo enviar la solicitud de recuperación.");
   }
@@ -89,14 +89,15 @@ export async function requestPasswordReset(email) {
  */
 export async function resetPassword(token, newPassword) {
   try {
-    const response = await axios.post(`${API_BASE_URL}/auth/reset-password`, {
-      token,
-      newPassword,
-    });
-    return response.data; // confirmación del backend
+    const data = await apiClient.post(
+      "/auth/reset-password",
+      { token, newPassword },
+      { auth: false }
+    );
+    return data;
   } catch (err) {
-    if (err.response?.data?.message) {
-      throw new Error(err.response.data.message);
+    if (err.data?.message) {
+      throw new Error(err.data.message);
     }
     throw new Error("No se pudo restablecer la contraseña.");
   }

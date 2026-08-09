@@ -1,19 +1,22 @@
 import { useEffect, useState } from "react";
 import { useLingui } from "@lingui/react";
 import { activateLocale, getInitialLocale, normalizeLocale } from "../../i18n";
+import useLocaleStore from "../../store/localeStore";
 
 function LanguageSelector() {
   const { i18n } = useLingui();
-  const [locale, setLocale] = useState(() => normalizeLocale(i18n?.locale || getInitialLocale()));
+  const { locale: storedLocale, setLocale: setStoredLocale } = useLocaleStore();
+  const [locale, setLocale] = useState(() => normalizeLocale(storedLocale || i18n?.locale || getInitialLocale()));
 
   useEffect(() => {
-    setLocale(normalizeLocale(i18n?.locale || getInitialLocale()));
-  }, [i18n?.locale]);
+    setLocale(normalizeLocale(storedLocale || i18n?.locale || getInitialLocale()));
+  }, [storedLocale, i18n?.locale]);
 
   const handleChange = async (newLocale) => {
     const normalizedLocale = normalizeLocale(newLocale);
     setLocale(normalizedLocale);
     await activateLocale(normalizedLocale);
+    setStoredLocale(normalizedLocale);
   };
 
   return (

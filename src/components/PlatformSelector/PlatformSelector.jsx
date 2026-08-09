@@ -1,11 +1,15 @@
 import { usePlatformsByExpansion } from "../../features/catalog/hooks/usePlatforms";
 
+import { useLingui } from "@lingui/react";
+
 function PlatformSelector({
   expansionId,
   isOpen,
   onClose,
   onSelectPlatform,
 }) {
+  const { i18n } = useLingui();
+  const t = (id, message) => i18n._({ id, message });
   const { platforms, loading, error } =
     usePlatformsByExpansion(expansionId, isOpen);
 
@@ -19,35 +23,33 @@ function PlatformSelector({
         <button
           onClick={onClose}
           className="absolute top-5 right-5 text-3xl cursor-pointer text-gray-700 hover:text-black"
-          aria-label="Cerrar"
+          aria-label={t("platformSelector.close", "Cerrar")}
         >
           ×
         </button>
 
         {/* Título */}
         <h2 className="text-3xl font-bold text-center mb-8 text-gray-900">
-          Selecciona tu plataforma
+          {t("platformSelector.title", "Selecciona tu plataforma")}
         </h2>
 
         {/* Cargando */}
         {loading && (
           <p className="text-center text-gray-500">
-            Cargando plataformas...
+            {t("platformSelector.loading", "Cargando plataformas...")}
           </p>
         )}
 
         {/* Error */}
         {error && !loading && (
           <div className="text-center">
-            <p className="text-red-500 mb-4">
-              {error}
-            </p>
+            <p className="text-red-500 mb-4">{error}</p>
 
             <button
               onClick={onClose}
               className="bg-main hover:bg-hover text-white font-bold py-2 px-5 rounded-xl"
             >
-              Cerrar
+              {t("platformSelector.closeButton", "Cerrar")}
             </button>
           </div>
         )}
@@ -55,7 +57,7 @@ function PlatformSelector({
         {/* Sin plataformas */}
         {!loading && !error && platforms.length === 0 && (
           <p className="text-center text-gray-500">
-            No hay plataformas disponibles para esta expansión.
+            {t("platformSelector.noPlatforms", "No hay plataformas disponibles para esta expansión.")}
           </p>
         )}
 
