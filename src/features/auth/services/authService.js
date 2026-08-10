@@ -1,12 +1,14 @@
 import { apiClient, setToken, clearToken, markLoggedOut } from "../../../services/apiClient";
 import axios from "axios";
 import { API_BASE_URL } from "../../../services/apiClient";
+import { encryptPayload } from "../../../services/cryptoUtils";
 
 /**
  * Registro de usuario
  */
 export async function register(payload) {
-  const data = await apiClient.post("/auth/register", payload, { auth: false });
+  const encryptedPayload = await encryptPayload(payload);
+  const data = await apiClient.post("/auth/register", encryptedPayload, { auth: false });
   if (data?.token) setToken(data.token);
   return data;
 }
@@ -15,7 +17,8 @@ export async function register(payload) {
  * Login de usuario
  */
 export async function login(username, password) {
-  const data = await apiClient.post("/auth/login", { username, password }, { auth: false });
+  const encryptedPayload = await encryptPayload({ username, password });
+  const data = await apiClient.post("/auth/login", encryptedPayload, { auth: false });
   if (data?.token) setToken(data.token);
   return data;
 }

@@ -35,7 +35,7 @@ function ForgotPasswordPage() {
           {t("auth.forgot.title", "Recuperar contraseña")}
         </h1>
 
-        <form onSubmit={handleSubmit} className="flex flex-col gap-[1.25rem]">
+        <form onSubmit={handleSubmit} className="flex flex-col gap-[1.25rem]" noValidate>
           <FormInput
             id="forgot-email"
             label={t("auth.forgot.email", "Correo electrónico")}
@@ -43,6 +43,7 @@ function ForgotPasswordPage() {
             placeholder={t("auth.forgot.emailPlaceholder", "usuario@correo.com")}
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            autoComplete="off"
           />
 
           {message && (

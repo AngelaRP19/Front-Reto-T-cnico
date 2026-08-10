@@ -1,7 +1,7 @@
 function Modal({ onClose, children, maxWidthClass = "max-w-sm" }) {
   return (
     <div
-      className="fixed inset-0 bg-black/60 flex justify-center items-center p-4 sm:p-6 z-[1300] animate-fadeIn"
+      className="fixed inset-0 bg-black/60 flex justify-center items-center p-4 sm:p-6 z-[1500] animate-fadeIn"
       onClick={onClose}
     >
       <div

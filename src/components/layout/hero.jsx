@@ -20,7 +20,7 @@ function Hero({ onExploreClick }) {
 
       <div className="flex-1 w-full lg:w-auto flex justify-center items-center h-[13.75rem] md:h-auto">
         <img
-          className="w-full max-w-[37.5rem] h-auto object-cover rounded-xl shadow-[0_6px_20px_rgba(0,0,0,0.5)]"
+          className="w-full max-w-[37.5rem] h-auto object-cover rounded-xl shadow-[0_0.375rem_1.25rem_rgba(0,0,0,0.5)]"
           src="https://res.cloudinary.com/w1jl4sa5/image/upload/v1784588991/TS4_Royalty-and-Legacy_Sale-Hero_16x9-ES_mmadik.avif"
           alt={t("hero.imageAlt", "Imagen Hero")}
         />

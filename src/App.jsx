@@ -14,35 +14,48 @@ import LoginPage from "./features/auth/pages/loginPage";
 import RegisterPage from "./features/auth/pages/registerPage";
 import ForgotPasswordPage from "./features/auth/pages/ForgotPasswordPage";
 import ResetPasswordPage from "./features/auth/pages/ResetPasswordPage";
+import CompleteProfilePage from "./features/auth/pages/CompleteProfilePage";
+import OAuthProfileGate from "./features/auth/components/OAuthProfileGate";
 import NotFoundPage from "./pages/NotFoundPage";
 
 function App() {
   return (
-    <Routes>
-      <Route element={<MainLayout />}>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/catalogo/:packId" element={<ExpansionDetailPage />} />
-        <Route path="/comunidad" element={<ChallengesPage />} />
+    <>
+      <OAuthProfileGate />
+      <Routes>
+        <Route element={<MainLayout />}>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/catalogo/:packId" element={<ExpansionDetailPage />} />
+          <Route path="/comunidad" element={<ChallengesPage />} />
+          <Route
+            path="/perfil"
+            element={
+              <RequireAuth>
+                <ProfileLayout />
+              </RequireAuth>
+            }
+          >
+            <Route index element={<ProfileInfoTab />} />
+            <Route path="retos" element={<ProfileChallengesTab />} />
+            <Route path="compras" element={<ProfilePurchasesTab />} />
+            <Route path="configuracion" element={<ProfileSettingsTab />} />
+          </Route>
+        </Route>
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
+        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+        <Route path="/reset-password/:token" element={<ResetPasswordPage />} />
         <Route
-          path="/perfil"
+          path="/completar-perfil"
           element={
             <RequireAuth>
-              <ProfileLayout />
+              <CompleteProfilePage />
             </RequireAuth>
           }
-        >
-          <Route index element={<ProfileInfoTab />} />
-          <Route path="retos" element={<ProfileChallengesTab />} />
-          <Route path="compras" element={<ProfilePurchasesTab />} />
-          <Route path="configuracion" element={<ProfileSettingsTab />} />
-        </Route>
-      </Route>
-      <Route path="/login" element={<LoginPage />} />
-      <Route path="/register" element={<RegisterPage />} />
-      <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-      <Route path="/reset-password/:token" element={<ResetPasswordPage />} />
-      <Route path="*" element={<NotFoundPage />} />
-    </Routes>
+        />
+        <Route path="*" element={<NotFoundPage />} />
+      </Routes>
+    </>
   );
 }
 

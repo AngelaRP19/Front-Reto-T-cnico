@@ -36,7 +36,7 @@ function HomePage() {
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5 sm:gap-6 lg:gap-8 justify-items-center">
           {packs.map((pack) => (
-            <Link key={pack.id} to={`/catalogo/${pack.id}`} className="w-full cursor-pointer">
+            <Link key={pack.id} to={`/catalogo/${pack.id}`} className="w-full cursor-pointer block">
               <Card
                 plataforma={pack.platform}
                 titulo={pack.title}

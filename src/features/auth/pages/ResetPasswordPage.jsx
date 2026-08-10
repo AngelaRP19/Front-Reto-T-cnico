@@ -50,6 +50,7 @@ function ResetPasswordPage() {
             placeholder="••••••••"
             value={newPassword}
             onChange={(e) => setNewPassword(e.target.value)}
+            autoComplete="new-password"
           />
 
           <FormInput
@@ -59,6 +60,7 @@ function ResetPasswordPage() {
             placeholder="••••••••"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
+            autoComplete="new-password"
           />
 
           {message && (
