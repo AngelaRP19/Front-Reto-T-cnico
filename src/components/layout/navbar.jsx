@@ -33,8 +33,8 @@ function Navbar() {
   const { user, setUser, clearUser } = useAuth();
   const { i18n } = useLingui();
   const cartItems = useCartStore((state) => state.items);
+  const itemCount = useCartStore((state) => state.getItemCount());
   const removeItem = useCartStore((state) => state.removeItem);
-  const updateQuantity = useCartStore((state) => state.updateQuantity);
   const t = (id, message) => i18n._({ id, message });
 
   const displayName = user?.firstName || user?.name || user?.username || "";
@@ -266,6 +266,11 @@ function Navbar() {
                 onClick={() => setShowCart((prev) => !prev)}
               >
                 🛒 {t("cart.title", "Carrito")}
+                {itemCount > 0 && (
+                  <span className="bg-main text-white rounded-full min-w-6 h-6 flex items-center justify-center px-2 text-sm">
+                    {itemCount}
+                  </span>
+                )}
               </button>
 
               {showCart && (
@@ -287,21 +292,6 @@ function Navbar() {
                           <p className="text-sm text-accent font-semibold mt-1">{item.price}</p>
                         </div>
                         <div className="flex flex-col items-end gap-2">
-                          <div className="flex items-center gap-2">
-                            <button
-                              onClick={() => updateQuantity(item.id, item.platform, item.quantity - 1)}
-                              className="w-7 h-7 rounded-full bg-bg text-text font-bold"
-                            >
-                              −
-                            </button>
-                            <span className="text-sm font-semibold">{item.quantity}</span>
-                            <button
-                              onClick={() => updateQuantity(item.id, item.platform, item.quantity + 1)}
-                              className="w-7 h-7 rounded-full bg-bg text-text font-bold"
-                            >
-                              +
-                            </button>
-                          </div>
                           <button onClick={() => removeItem(item.id, item.platform)} className="text-xs text-main font-semibold">
                             {t("cart.remove", "Quitar")}
                           </button>

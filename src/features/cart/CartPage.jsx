@@ -1,8 +1,10 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import useCartStore from "../../store/cartStore";
 import { addToBackendCart, purchaseCart } from "./cartService";
 
 export const CartPage = () => {
+  const navigate = useNavigate();
   const items = useCartStore((state) => state.items);
   const clearCart = useCartStore((state) => state.clearCart);
   const removeItem = useCartStore((state) => state.removeItem);
@@ -208,6 +210,13 @@ export const CartPage = () => {
             <p><strong>Método seleccionado:</strong> {completedOrder?.paymentMethod || paymentMethod}</p>
             <p><strong>Estado:</strong> {completedOrder?.status || "completado"}</p>
           </div>
+
+          <button
+            onClick={() => navigate("/")}
+            className="bg-main hover:bg-hover text-white font-medium px-6 py-2.5 rounded-lg transition-colors cursor-pointer"
+          >
+            Volver al inicio
+          </button>
         </div>
       )}
     </div>
