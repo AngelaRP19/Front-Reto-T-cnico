@@ -8,7 +8,11 @@ function Card(props) {
           className="w-full h-full object-cover block transition-transform duration-500 group-hover:scale-105"
           src={props.image}
           alt={props.titulo}
-        />
+          width="400"
+          height="400"
+          loading="lazy"
+          decoding="async"
+/>
       </div>
 
       {/* Información de la tarjeta */}
