@@ -6,15 +6,16 @@ import FormSelect from "../../../components/common/FormSelect";
 import ConfirmDialog from "../../../components/common/ConfirmDialog";
 import PasswordModal from "../components/PasswordModal";
 import COUNTRIES from "../../auth/data/countries";
-import { NAME_RE, EMAIL_RE } from "../../auth/utils/validators";
+import { NAME_RE, EMAIL_RE, USERNAME_RE } from "../../auth/utils/validators";
 import { setBetaTester } from "../../auth/services/authService";
 import { updateProfile } from "../services/profileService";
-import { translateErrorMessage } from "../../../utils/errorMessages";
+import { translateErrorMessage, isFieldErrorMap } from "../../../utils/errorMessages";
 
 function buildForm(user) {
   return {
     firstName: user?.firstName || "",
     lastName: user?.lastName || "",
+    username: user?.username || "",
     email: user?.email || "",
     country: user?.country || "",
   };
@@ -38,10 +39,16 @@ function ProfileInfoTab() {
 
   const { i18n } = useLingui();
   const t = (id, message) => i18n._({ id, message });
-  const hasProvider = Boolean(user?.provider);
+  const hasPassword = user?.hasPassword !== false;
 
   const updateField = (field) => (e) => {
     setForm((prev) => ({ ...prev, [field]: e.target.value }));
+    setErrors((prev) => {
+      if (!prev[field]) return prev;
+      const next = { ...prev };
+      delete next[field];
+      return next;
+    });
   };
 
   const handleEditClick = () => {
@@ -62,6 +69,7 @@ function ProfileInfoTab() {
     const fieldErrors = {};
     if (!NAME_RE.test(form.firstName.trim())) fieldErrors.firstName = t("profile.info.errors.name", "Solo letras y espacios");
     if (!NAME_RE.test(form.lastName.trim())) fieldErrors.lastName = t("profile.info.errors.name", "Solo letras y espacios");
+    if (!USERNAME_RE.test(form.username.trim())) fieldErrors.username = t("profile.info.errors.username", "3-30 caracteres: letras, números y guion bajo");
     if (!EMAIL_RE.test(form.email.trim())) fieldErrors.email = t("profile.info.errors.email", "Ingresá un correo electrónico válido");
     if (!form.country) fieldErrors.country = t("profile.info.errors.country", "Selecciona tu país");
     return fieldErrors;
@@ -82,6 +90,7 @@ function ProfileInfoTab() {
       const updated = await updateProfile({
         firstName: form.firstName.trim(),
         lastName: form.lastName.trim(),
+        username: form.username.trim(),
         email: form.email.trim(),
         country: form.country,
       });
@@ -89,7 +98,12 @@ function ProfileInfoTab() {
       setIsEditing(false);
     } catch (err) {
       if (err.sessionExpired) clearUser();
-      setServerError(translateErrorMessage(err, t("profile.info.saveError", "No se pudo guardar. Intentá de nuevo."), i18n));
+      if (isFieldErrorMap(err.data)) {
+        setErrors((prev) => ({ ...prev, ...err.data }));
+        setServerError(t("profile.info.reviewFields", "Revisá los campos marcados."));
+      } else {
+        setServerError(translateErrorMessage(err, t("profile.info.saveError", "No se pudo guardar. Intentá de nuevo."), i18n));
+      }
     } finally {
       setSubmitting(false);
     }
@@ -159,10 +173,10 @@ function ProfileInfoTab() {
       <FormInput
         id="profile-username"
         label={t("profile.info.username", "Nombre de usuario")}
-        value={user?.username || ""}
-        onChange={() => {}}
-        disabled
-        hint={t("profile.info.usernameHint", "El nombre de usuario no se puede cambiar.")}
+        value={form.username}
+        onChange={updateField("username")}
+        error={errors.username}
+        disabled={!isEditing}
       />
 
       <FormInput
@@ -186,25 +200,27 @@ function ProfileInfoTab() {
         disabled={!isEditing}
       />
 
-      <div className="w-full mb-4">
-        <label className="block text-xs font-bold tracking-[0.5px] uppercase text-text opacity-70 mb-2">
-          {t("profile.info.password", "Contraseña")}
-        </label>
-        <div className="flex items-center gap-3">
-          <input
-            type="password"
-            value="········"
-            disabled
-            className="flex-1 px-4 py-3 rounded-[10px] border border-snd-bg bg-snd-bg text-text text-[15px]"
-          />
-          <button
-            onClick={() => setShowPasswordModal(true)}
-            className="text-sm font-bold text-main hover:text-hover transition whitespace-nowrap"
-          >
-            {hasProvider ? t("profile.info.addPassword", "Agregar") : t("profile.info.changePassword", "Cambiar")}
-          </button>
+      {hasPassword && (
+        <div className="w-full mb-4">
+          <label className="block text-xs font-bold tracking-[0.03125rem] uppercase text-text opacity-70 mb-2">
+            {t("profile.info.password", "Contraseña")}
+          </label>
+          <div className="flex items-center gap-3">
+            <input
+              type="password"
+              value="········"
+              disabled
+              className="flex-1 px-4 py-3 rounded-[0.625rem] border border-snd-bg bg-snd-bg text-text text-[0.9375rem]"
+            />
+            <button
+              onClick={() => setShowPasswordModal(true)}
+              className="text-sm font-bold text-main hover:text-hover transition whitespace-nowrap"
+            >
+              {t("profile.info.changePassword", "Cambiar")}
+            </button>
+          </div>
         </div>
-      </div>
+      )}
 
       {passwordSuccess && (
         <p className="text-accent text-sm font-bold mb-4">{t("profile.info.passwordUpdated", "Contraseña actualizada correctamente.")}</p>
@@ -255,7 +271,6 @@ function ProfileInfoTab() {
 
       {showPasswordModal && (
         <PasswordModal
-          hasProvider={hasProvider}
           onClose={() => setShowPasswordModal(false)}
           onSuccess={() => {
             setPasswordSuccess(true);
