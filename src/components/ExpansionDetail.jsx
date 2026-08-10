@@ -76,6 +76,9 @@ const ExpansionDetail = ({ data: expansion, onBack }) => {
 
   return (
     <>
+    <div className="min-h-screen bg-bg text-text py-6 sm:py-10 px-4 sm:px-6 lg:px-8 transition-colors duration-400">
+      <div className="max-w-5xl mx-auto">
+
       {/* =========================================
           BOTÓN REGRESAR
           ========================================= */}
@@ -105,7 +108,7 @@ const ExpansionDetail = ({ data: expansion, onBack }) => {
             <img
               src={expansion.image}
               alt={expansion.title}
-              className="rounded-3xl shadow-md w-full aspect-[4/3] md:max-h-[20rem] object-cover transform group-hover:scale-105 transition duration-300"
+              className="rounded-3xl shadow-md w-full aspect-[4/3] max-h-[14rem] md:max-h-[20rem] object-cover transform group-hover:scale-105 transition duration-300"
             />
           </div>
 
@@ -329,6 +332,9 @@ const ExpansionDetail = ({ data: expansion, onBack }) => {
 
       </div>
 
+      </div>
+      </div>
+
       {/* =========================================
           SELECTOR DE PLATAFORMA
           =========================================
@@ -349,9 +355,15 @@ const ExpansionDetail = ({ data: expansion, onBack }) => {
           MENSAJE DEL CARRITO
           ========================================= */}
       {cartMessage && (
-        <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4">
+        <div
+          className="fixed inset-0 bg-black/60 flex items-center justify-center z-[1500] p-4"
+          onClick={() => setCartMessage("")}
+        >
 
-          <div className="bg-card-bg rounded-2xl p-6 w-full max-w-md shadow-xl">
+          <div
+            className="bg-card-bg rounded-2xl p-6 w-full max-w-md shadow-xl"
+            onClick={(e) => e.stopPropagation()}
+          >
 
             <h2 className="text-xl font-bold mb-3 text-text">
               Carrito

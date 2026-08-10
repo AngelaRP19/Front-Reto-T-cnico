@@ -12,8 +12,14 @@ function PlatformSelector({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
-      <div className="bg-white rounded-3xl w-[90%] max-w-xl p-8 relative shadow-2xl">
+    <div
+      className="fixed inset-0 z-[1500] flex items-center justify-center bg-black/60 p-4"
+      onClick={onClose}
+    >
+      <div
+        className="bg-white rounded-3xl w-[90%] max-w-xl p-8 relative shadow-2xl max-h-[calc(100vh-2rem)] overflow-y-auto"
+        onClick={(e) => e.stopPropagation()}
+      >
 
         {/* Cerrar */}
         <button

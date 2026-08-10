@@ -28,7 +28,7 @@ function OAuthProfileGate() {
   if (!show) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/60 flex justify-center items-center z-[1400] animate-fadeIn">
+    <div className="fixed inset-0 bg-black/60 flex justify-center items-center z-[1500] animate-fadeIn">
       <div className="bg-card-bg text-text rounded-2xl shadow-2xl w-[90%] max-w-sm p-6 text-center transition-colors duration-300">
         <h3 className="text-lg font-bold mb-2">{t("oauth.completeProfile.title", "Completá tu perfil")}</h3>
         <p className="text-sm opacity-80 mb-5">

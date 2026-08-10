@@ -137,7 +137,7 @@ function CardChallenge({ challenge, subscription, userId, isAuthenticated, onSub
 
       {showModal && (
         <div
-          className="fixed inset-0 bg-black/60 flex justify-center items-center p-4 sm:p-6 z-[1300] animate-fadeIn"
+          className="fixed inset-0 bg-black/60 flex justify-center items-center p-4 sm:p-6 z-[1500] animate-fadeIn"
           onClick={() => setShowModal(false)}
         >
           <div
@@ -170,7 +170,7 @@ function CardChallenge({ challenge, subscription, userId, isAuthenticated, onSub
 
       {showCancelConfirm && (
         <div
-          className="fixed inset-0 bg-black/60 flex justify-center items-center p-4 sm:p-6 z-[1300] animate-fadeIn"
+          className="fixed inset-0 bg-black/60 flex justify-center items-center p-4 sm:p-6 z-[1500] animate-fadeIn"
           onClick={(e) => { e.stopPropagation(); setShowCancelConfirm(false); }}
         >
           <div

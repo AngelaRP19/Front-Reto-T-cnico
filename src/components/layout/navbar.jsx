@@ -20,9 +20,14 @@ function Navbar() {
   const [betaError, setBetaError] = useState("");
 
   const userMenuRef = useRef(null);
+  const mobileUserMenuRef = useRef(null);
   const betaWrapperRef = useRef(null);
-  useClickOutside(userMenuRef, () => setShowUserMenu(false), showUserMenu);
+  const cartWrapperRef = useRef(null);
+  const mobileNavWrapperRef = useRef(null);
+  useClickOutside([userMenuRef, mobileUserMenuRef], () => setShowUserMenu(false), showUserMenu);
   useClickOutside(betaWrapperRef, () => setShowBetaConfirm(false), showBetaConfirm);
+  useClickOutside(cartWrapperRef, () => setShowCart(false), showCart);
+  useClickOutside(mobileNavWrapperRef, () => setMenuOpen(false), menuOpen);
 
   const { theme, toggleTheme } = useTheme();
   const { user, setUser, clearUser } = useAuth();
@@ -76,7 +81,7 @@ function Navbar() {
   };
 
   return (
-    <header className="flex flex-col md:flex-row justify-between items-center w-full h-auto md:h-20 p-5 md:px-10 lg:px-[4.375rem] lg:py-0 gap-5 md:gap-0 bg-bg shadow-[0_0.125rem_0.625rem_rgba(0,0,0,0.08)] mb-[1.875rem] ml-auto transition-colors duration-[400ms]">
+    <header className="relative flex flex-col md:flex-row justify-between items-center w-full h-auto md:h-20 p-5 md:px-10 lg:px-[4.375rem] lg:py-0 gap-5 md:gap-0 bg-bg shadow-[0_0.125rem_0.625rem_rgba(0,0,0,0.08)] mb-[1.875rem] ml-auto transition-colors duration-[400ms]">
       <div className="flex items-center gap-[0.9375rem] justify-start">
         <div>
           <img
@@ -87,18 +92,61 @@ function Navbar() {
         </div>
       </div>
 
-      <button
-        type="button"
-        className="block lg:hidden text-[2rem] cursor-pointer text-text absolute top-[1.5625rem] right-[1.875rem] z-[1200]"
-        onClick={() => setMenuOpen(!menuOpen)}
-        aria-label={t("navbar.openMenu", "Abrir menú")}
-        aria-expanded={menuOpen}
-      >
-        ☰
-      </button>
+      <div className="contents" ref={mobileNavWrapperRef}>
+      <div className="flex lg:hidden items-center gap-3 absolute top-[1.5625rem] right-[1.875rem] z-[1200]">
+        {user && (
+          <div className="relative" ref={mobileUserMenuRef}>
+            <button
+              onClick={() => setShowUserMenu((prev) => !prev)}
+              className="w-10 h-10 rounded-full bg-main text-white font-bold flex items-center justify-center hover:bg-hover transition-colors shadow-md"
+              aria-label="Menú de perfil"
+            >
+              {initial}
+            </button>
+
+            {showUserMenu && (
+              <div className="absolute right-0 top-full mt-2 w-64 max-w-[90vw] bg-card-bg text-text rounded-xl shadow-lg p-4 z-[1300] transition-colors duration-300">
+                <p className="font-bold text-base mb-1">{displayName || t("navbar.user", "Usuario")}</p>
+                {user.email && (
+                  <p className="text-sm opacity-70 mb-1 break-all">{user.email}</p>
+                )}
+                {user.provider && (
+                  <p className="text-xs opacity-60 mb-3">{t("navbar.connectedWith", "Conectado con {provider}").replace("{provider}", user.provider)}</p>
+                )}
+                <button
+                  onClick={() => {
+                    navigate("/perfil");
+                    setShowUserMenu(false);
+                    setMenuOpen(false);
+                  }}
+                  className="w-full text-sm font-bold text-text hover:text-hover transition-colors text-left mb-2"
+                >
+                  {t("navbar.viewProfile", "Ver perfil")}
+                </button>
+                <button
+                  onClick={handleLogout}
+                  className="w-full mt-2 text-sm font-bold text-main hover:text-hover transition-colors text-left"
+                >
+                  {t("navbar.logout", "Cerrar sesión")}
+                </button>
+              </div>
+            )}
+          </div>
+        )}
+
+        <button
+          type="button"
+          className="text-[2rem] cursor-pointer text-text"
+          onClick={() => setMenuOpen(!menuOpen)}
+          aria-label={t("navbar.openMenu", "Abrir menú")}
+          aria-expanded={menuOpen}
+        >
+          ☰
+        </button>
+      </div>
 
       <nav
-        className={`absolute lg:static top-20 left-0 w-full lg:w-auto bg-snd-bg lg:bg-transparent shadow-[0_0.375rem_1.125rem_rgba(0,0,0,0.25)] lg:shadow-none overflow-hidden lg:overflow-visible transition-[max-height,opacity] duration-[400ms] ease-in-out lg:flex lg:items-center lg:gap-10 lg:grow lg:max-h-none lg:opacity-100 lg:pointer-events-auto lg:py-0 lg:transition-none ${
+        className={`absolute lg:static top-20 left-0 w-full lg:w-auto bg-snd-bg lg:bg-transparent shadow-[0_0.375rem_1.125rem_rgba(0,0,0,0.25)] lg:shadow-none overflow-hidden lg:overflow-visible transition-[max-height,opacity] duration-[400ms] ease-in-out lg:flex lg:items-center lg:gap-10 lg:grow lg:max-h-none lg:opacity-100 lg:pointer-events-auto lg:py-0 lg:transition-none z-[1100] ${
           menuOpen
             ? "max-h-[25rem] opacity-100 pointer-events-auto py-[1.875rem]"
             : "max-h-0 opacity-0 pointer-events-none"
@@ -106,17 +154,17 @@ function Navbar() {
       >
         <ul className="flex flex-col items-center gap-[0.9375rem] md:gap-5 lg:flex-row lg:gap-[1.875rem] lg:mr-auto list-none">
           <li>
-            <Link to="/" className="no-underline text-text text-lg font-semibold transition-colors duration-300 hover:text-main">
+            <Link to="/" onClick={() => setMenuOpen(false)} className="no-underline text-text text-lg font-semibold transition-colors duration-300 hover:text-main">
               {t("navbar.home", "Inicio")}
             </Link>
           </li>
           <li>
-            <Link to="/#catalogo" className="no-underline text-text text-lg font-semibold transition-colors duration-300 hover:text-main">
+            <Link to="/#catalogo" onClick={() => setMenuOpen(false)} className="no-underline text-text text-lg font-semibold transition-colors duration-300 hover:text-main">
               {t("navbar.catalog", "Catálogo")}
             </Link>
           </li>
           <li>
-            <Link to="/comunidad" className="no-underline text-text text-lg font-semibold transition-colors duration-300 hover:text-main">
+            <Link to="/comunidad" onClick={() => setMenuOpen(false)} className="no-underline text-text text-lg font-semibold transition-colors duration-300 hover:text-main">
               {t("navbar.community", "Comunidad")}
             </Link>
           </li>
@@ -215,7 +263,7 @@ function Navbar() {
           )}
 
           {canAccessCart(user) ? (
-            <div className="relative">
+            <div className="relative" ref={cartWrapperRef}>
               <button
                 className="flex items-center gap-2 px-4 py-2 rounded-full bg-snd-bg text-text font-semibold border border-snd-bg hover:border-main transition"
                 onClick={() => setShowCart((prev) => !prev)}
@@ -229,7 +277,7 @@ function Navbar() {
               </button>
 
               {showCart && (
-              <div className="absolute right-0 top-full mt-2 w-80 max-w-[90vw] bg-card-bg text-text rounded-2xl shadow-2xl border border-snd-bg p-4 z-[1400]">
+              <div className="absolute left-1/2 -translate-x-1/2 lg:left-auto lg:right-0 lg:translate-x-0 top-full mt-2 w-80 max-w-[90vw] bg-card-bg text-text rounded-2xl shadow-2xl border border-snd-bg p-4 z-[1400]">
                 <div className="flex items-center justify-between mb-3">
                   <p className="font-bold text-lg">{t("cart.title", "Carrito")}</p>
                   <button onClick={() => setShowCart(false)} className="text-sm text-main font-semibold">{t("cart.close", "Cerrar")}</button>
@@ -295,6 +343,7 @@ function Navbar() {
           </button>
         </div>
       </nav>
+      </div>
     </header>
   );
 }
