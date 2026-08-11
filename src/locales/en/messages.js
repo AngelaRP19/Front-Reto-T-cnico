@@ -159,5 +159,12 @@ export const messages = {
   "profile.settings.light": "☀️ Light",
   "profile.settings.language": "Language",
   "profile.settings.languageDescription": "You will soon be able to change the language here.",
-  "profile.settings.spanish": "Spanish"
+  "profile.settings.spanish": "Spanish",
+  "catalog.back": "Back to catalog",
+  "catalog.includes": "What does this pack include?",
+  "catalog.totalPrice": "Total price",
+  "catalog.screenshots": "Screenshots",
+  "catalog.requirements": "System requirements",
+  "catalog.minRequirements": "Minimum requirements",
+  "catalog.recommendedRequirements": "Recommended requirements"
 };

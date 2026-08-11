@@ -157,5 +157,12 @@ export const messages = {
   "profile.settings.light": "☀️ Clair",
   "profile.settings.language": "Langue",
   "profile.settings.languageDescription": "Vous pourrez bientôt changer la langue ici.",
-  "profile.settings.spanish": "Espagnol"
+  "profile.settings.spanish": "Espagnol",
+  "catalog.back": "Retour au catalogue",
+  "catalog.includes": "Que comprend ce pack ?",
+  "catalog.totalPrice": "Prix total",
+  "catalog.screenshots": "Captures d'écran",
+  "catalog.requirements": "Configuration requise",
+  "catalog.minRequirements": "Configuration minimale",
+  "catalog.recommendedRequirements": "Configuration recommandée"
 };
