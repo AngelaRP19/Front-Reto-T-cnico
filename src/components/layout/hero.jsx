@@ -12,7 +12,7 @@ function Hero({ onExploreClick }) {
 
         <button 
           onClick={onExploreClick}
-          className="bg-accent text-[#111] border-none px-6 py-3 rounded-lg font-bold cursor-pointer transition-colors duration-300 hover:bg-hover"
+          className="bg-accent text-white border-none px-6 py-3 rounded-lg font-bold cursor-pointer transition-colors duration-300 hover:bg-hover"
         >
           {t("hero.button", "Explorar")}
         </button>
@@ -20,9 +20,11 @@ function Hero({ onExploreClick }) {
 
       <div className="flex-1 w-full lg:w-auto flex justify-center items-center h-[13.75rem] md:h-auto">
         <img
-          className="w-full max-w-[37.5rem] h-auto object-cover rounded-xl shadow-[0_0.375rem_1.25rem_rgba(0,0,0,0.5)]"
-          src="https://res.cloudinary.com/w1jl4sa5/image/upload/v1784588991/TS4_Royalty-and-Legacy_Sale-Hero_16x9-ES_mmadik.avif"
-          alt={t("hero.imageAlt", "Imagen Hero")}
+           width={960}
+           height={540}
+           className="w-full max-w-[37.5rem] h-auto object-cover rounded-xl shadow-[0_0.375rem_1.25rem_rgba(0,0,0,0.5)]"
+           src="https://res.cloudinary.com/w1jl4sa5/image/upload/v1784588991/TS4_Royalty-and-Legacy_Sale-Hero_16x9-ES_mmadik.avif"
+           alt={t("hero.imageAlt", "Imagen Hero")}
         />
       </div>
     </section>

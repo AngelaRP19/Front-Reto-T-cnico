@@ -22,7 +22,7 @@ function HomePage() {
   }, [location.hash]);
 
   return (
-    <>
+    <main>
       <Hero onExploreClick={() => scrollToCatalogo("smooth")} />
 
       <section
@@ -48,7 +48,7 @@ function HomePage() {
           </div>
         )}
       </section>
-    </>
+    </main>
   );
 }
 
