@@ -5,10 +5,11 @@ import { useAuth } from "../../../context/AuthContext";
 import { fetchCurrentUser } from "../../auth/services/authService";
 
 const NAV_ITEMS = [
-  { to: "/perfil", labelKey: "profile.nav.profile", end: true },
-  { to: "/perfil/retos", labelKey: "profile.nav.challenges" },
-  { to: "/perfil/compras", labelKey: "profile.nav.purchases" },
-  { to: "/perfil/configuracion", labelKey: "profile.nav.settings" },
+  { to: "/perfil", labelKey: "profile.nav.profile", label: "Mi perfil", end: true },
+  { to: "/perfil/retos", labelKey: "profile.nav.challenges", label: "Mis retos" },
+  { to: "/perfil/compras", labelKey: "profile.nav.purchases", label: "Historial de compras" },
+  { to: "/perfil/beta-testing", labelKey: "profile.nav.betaTesting", label: "Beta testing", betaOnly: true },
+  { to: "/perfil/configuracion", labelKey: "profile.nav.settings", label: "Configuración" },
 ];
 
 function ProfileLayout() {
@@ -31,7 +32,7 @@ function ProfileLayout() {
     <div className="w-full max-w-5xl mx-auto px-5 py-10 flex flex-col md:flex-row gap-8">
       <aside className="w-full md:w-56 shrink-0">
         <nav className="flex md:flex-col gap-2 overflow-x-auto md:overflow-visible">
-          {NAV_ITEMS.map((item) => (
+          {NAV_ITEMS.filter((item) => !item.betaOnly || user?.betaTester).map((item) => (
             <NavLink
               key={item.to}
               to={item.to}
@@ -42,7 +43,7 @@ function ProfileLayout() {
                 }`
               }
             >
-              {t(item.labelKey, item.labelKey === "profile.nav.profile" ? "Mi perfil" : item.labelKey === "profile.nav.challenges" ? "Mis retos" : item.labelKey === "profile.nav.purchases" ? "Historial de compras" : "Configuración")}
+              {t(item.labelKey, item.label)}
             </NavLink>
           ))}
         </nav>
