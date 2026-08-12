@@ -1,10 +1,12 @@
 import { useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useLingui } from "@lingui/react";
+import { ShoppingCart, Moon, Sun } from "lucide-react";
 import { useTheme } from "../../context/ThemeContext";
 import { useAuth } from "../../context/AuthContext";
 import { logout, setBetaTester } from "../../features/auth/services/authService";
 import LanguageSelector from "../common/LanguageSelector";
+import ConfirmDialog from "../common/ConfirmDialog";
 import useClickOutside from "../../hooks/useClickOutside";
 import useCartStore from "../../store/cartStore";
 import { canAccessCart } from "../../utils/cartAccess";
@@ -18,6 +20,8 @@ function Navbar() {
   const [showBetaConfirm, setShowBetaConfirm] = useState(false);
   const [betaSubmitting, setBetaSubmitting] = useState(false);
   const [betaError, setBetaError] = useState("");
+  const [showBetaCancelConfirm, setShowBetaCancelConfirm] = useState(false);
+  const [betaCancelSubmitting, setBetaCancelSubmitting] = useState(false);
 
   const userMenuRef = useRef(null);
   const mobileUserMenuRef = useRef(null);
@@ -75,6 +79,21 @@ function Navbar() {
       setBetaError(err.message || t("beta.error", "No se pudo activar beta testing. Intentá de nuevo."));
     } finally {
       setBetaSubmitting(false);
+    }
+  };
+
+  const handleBetaCancelConfirm = async () => {
+    setShowBetaCancelConfirm(false);
+    setBetaCancelSubmitting(true);
+    setBetaError("");
+    try {
+      const updated = await setBetaTester(false);
+      setUser({ ...user, ...updated });
+    } catch (err) {
+      if (err.sessionExpired) clearUser();
+      setBetaError(err.message || t("profile.info.betaCancelError", "No se pudo cancelar. Intentá de nuevo."));
+    } finally {
+      setBetaCancelSubmitting(false);
     }
   };
 
@@ -170,9 +189,13 @@ function Navbar() {
 
         <div className="flex flex-col w-full justify-center items-center gap-4 px-5 sm:px-8 mt-6 lg:mt-0 lg:flex-row lg:w-auto lg:items-center lg:px-0 lg:ml-auto">
           {user?.betaTester ? (
-            <span className="w-full max-w-sm lg:w-auto text-center px-4 py-2 rounded-full text-sm font-bold text-accent border-2 border-accent bg-accent/10">
+            <button
+              onClick={() => setShowBetaCancelConfirm(true)}
+              disabled={betaCancelSubmitting}
+              className="w-full max-w-sm lg:w-auto text-center px-4 py-2 rounded-full text-sm font-bold text-accent border-2 border-accent bg-accent/10 hover:bg-accent/20 transition cursor-pointer disabled:opacity-60"
+            >
               {t("profile.info.betaTester", "Beta tester")}
-            </span>
+            </button>
           ) : (
             <div className="relative w-full max-w-sm lg:w-auto" ref={betaWrapperRef}>
               <button
@@ -265,7 +288,7 @@ function Navbar() {
                 className="flex items-center gap-2 px-4 py-2 rounded-full bg-snd-bg text-text font-semibold border border-snd-bg hover:border-main transition"
                 onClick={() => setShowCart((prev) => !prev)}
               >
-                🛒 {t("cart.title", "Carrito")}
+                <ShoppingCart size={18} /> {t("cart.title", "Carrito")}
                 {itemCount > 0 && (
                   <span className="bg-main text-white rounded-full min-w-6 h-6 flex items-center justify-center px-2 text-sm">
                     {itemCount}
@@ -331,14 +354,27 @@ function Navbar() {
 
           <button
             onClick={toggleTheme}
-            className="self-center text-xl sm:text-2xl text-accent hover:rotate-12 transition cursor-pointer"
+            className="self-center text-accent hover:rotate-12 transition cursor-pointer"
             aria-label="Cambiar tema"
           >
-            {theme === "light" ? "🌙" : "☀️"}
+            {theme === "light" ? <Moon size={22} /> : <Sun size={22} />}
           </button>
         </div>
       </nav>
       </div>
+
+      {showBetaCancelConfirm && (
+        <ConfirmDialog
+          title={t("profile.info.betaConfirmTitle", "¿Quieres cancelar tu suscripción a Beta Testing?")}
+          body={t("profile.info.betaConfirmBody", "Perderás el acceso anticipado a nuevos expansion packs y contenido experimental.")}
+          confirmLabel={t("profile.info.betaConfirmOk", "Sí, cancelar")}
+          cancelLabel={t("profile.info.betaConfirmCancel", "Mantener suscripción")}
+          danger
+          confirmDisabled={betaCancelSubmitting}
+          onConfirm={handleBetaCancelConfirm}
+          onCancel={() => setShowBetaCancelConfirm(false)}
+        />
+      )}
     </header>
   );
 }

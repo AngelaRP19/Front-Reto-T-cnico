@@ -152,8 +152,12 @@ function CardChallenge({ challenge, subscription, userId, isAuthenticated, onSub
             </button>
 
             <div className="w-full h-40 rounded-xl bg-snd-bg overflow-hidden mb-4">
-              {challenge.image && (
+              {challenge.image ? (
                 <img src={challenge.image} alt={challenge.title} className="w-full h-full object-cover" />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center text-text opacity-40 text-sm">
+                  {t("challenges.image", "Imagen")}
+                </div>
               )}
             </div>
 

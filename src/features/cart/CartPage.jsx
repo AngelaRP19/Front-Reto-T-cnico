@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { CreditCard, Wallet, Landmark } from "lucide-react";
 import useCartStore from "../../store/cartStore";
 import { addToBackendCart, purchaseCart } from "./cartService";
 
@@ -128,7 +129,7 @@ export const CartPage = () => {
                 className="w-4 h-4 accent-main"
               />
               <div className="ml-3">
-                <span className="block font-semibold text-text">💳 Tarjeta de crédito / débito</span>
+                <span className="flex items-center gap-2 font-semibold text-text"><CreditCard size={18} /> Tarjeta de crédito / débito</span>
                 <span className="text-xs text-text opacity-70">Pago directo y seguro con tarjeta</span>
               </div>
             </label>
@@ -147,7 +148,7 @@ export const CartPage = () => {
                 className="w-4 h-4 accent-main"
               />
               <div className="ml-3">
-                <span className="block font-semibold text-text">🟦 PayPal</span>
+                <span className="flex items-center gap-2 font-semibold text-text"><Wallet size={18} /> PayPal</span>
                 <span className="text-xs text-text opacity-70">Paga con tu cuenta o saldo de PayPal</span>
               </div>
             </label>
@@ -166,7 +167,7 @@ export const CartPage = () => {
                 className="w-4 h-4 accent-main"
               />
               <div className="ml-3">
-                <span className="block font-semibold text-text">🏦 Transferencia bancaria (PSE)</span>
+                <span className="flex items-center gap-2 font-semibold text-text"><Landmark size={18} /> Transferencia bancaria (PSE)</span>
                 <span className="text-xs text-text opacity-70">Débito directo desde tu cuenta bancaria</span>
               </div>
             </label>
