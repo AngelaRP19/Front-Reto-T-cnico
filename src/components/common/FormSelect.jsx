@@ -9,7 +9,7 @@ function FormSelect({ id, label, value, onChange, options = [], placeholder, err
       </label>
       <select
         id={id}
-        className={`w-full px-4 py-3 rounded-[0.625rem] border bg-snd-bg text-text text-[0.9375rem] font-nunito [transition:border-color_0.3s_ease,background-color_0.4s_ease,color_0.4s_ease] focus:outline-none focus:border-main ${
+        className={`w-full px-4 py-3 rounded-[0.625rem] border bg-snd-bg text-text text-[0.9375rem] font-nunito disabled:text-text/40 disabled:italic disabled:opacity-70 disabled:cursor-not-allowed disabled:bg-snd-bg/60 [transition:border-color_0.3s_ease,background-color_0.4s_ease,color_0.4s_ease] focus:outline-none focus:border-main ${
           error ? "border-red-400" : "border-snd-bg"
         } ${error || hint ? "mb-1" : "mb-4"}`}
         value={value}

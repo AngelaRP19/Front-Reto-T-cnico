@@ -23,7 +23,8 @@ function mapExpansionPack(pack) {
   };
 }
 
-export async function getExpansionPacks() {
-  const packs = await apiClient.get("/nodos/expansionpacks", { auth: false });
+export async function getExpansionPacks(lang) {
+  const query = lang ? `?lang=${encodeURIComponent(lang)}` : "";
+  const packs = await apiClient.get(`/nodos/expansionpacks${query}`, { auth: false });
   return (packs || []).map(mapExpansionPack);
 }

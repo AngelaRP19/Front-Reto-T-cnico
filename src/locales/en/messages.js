@@ -155,9 +155,16 @@ export const messages = {
   "profile.settings.title": "Settings",
   "profile.settings.theme": "Theme",
   "profile.settings.themeDescription": "Choose how the app looks.",
-  "profile.settings.dark": "🌙 Dark",
-  "profile.settings.light": "☀️ Light",
+  "profile.settings.dark": "Dark",
+  "profile.settings.light": "Light",
   "profile.settings.language": "Language",
   "profile.settings.languageDescription": "You will soon be able to change the language here.",
-  "profile.settings.spanish": "Spanish"
+  "profile.settings.spanish": "Spanish",
+  "catalog.back": "Back to catalog",
+  "catalog.includes": "What does this pack include?",
+  "catalog.totalPrice": "Total price",
+  "catalog.screenshots": "Screenshots",
+  "catalog.requirements": "System requirements",
+  "catalog.minRequirements": "Minimum requirements",
+  "catalog.recommendedRequirements": "Recommended requirements"
 };

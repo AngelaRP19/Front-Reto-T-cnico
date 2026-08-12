@@ -155,9 +155,16 @@ export const messages = {
   "profile.settings.title": "Configuración",
   "profile.settings.theme": "Tema",
   "profile.settings.themeDescription": "Elegí cómo se ve la app.",
-  "profile.settings.dark": "🌙 Oscuro",
-  "profile.settings.light": "☀️ Claro",
+  "profile.settings.dark": "Oscuro",
+  "profile.settings.light": "Claro",
   "profile.settings.language": "Idioma",
   "profile.settings.languageDescription": "Próximamente vas a poder cambiar el idioma acá.",
-  "profile.settings.spanish": "Español"
+  "profile.settings.spanish": "Español",
+  "catalog.back": "Volver al catálogo",
+  "catalog.includes": "¿Qué incluye este pack?",
+  "catalog.totalPrice": "Precio total",
+  "catalog.screenshots": "Capturas de pantalla",
+  "catalog.requirements": "Requisitos del sistema",
+  "catalog.minRequirements": "Requisitos mínimos",
+  "catalog.recommendedRequirements": "Requisitos recomendados"
 };

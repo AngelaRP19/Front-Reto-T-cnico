@@ -155,7 +155,8 @@ function ProfileInfoTab() {
         <FormInput
           id="profile-firstName"
           label={t("profile.info.firstName", "Nombre")}
-          value={form.firstName}
+          value={isEditing ? form.firstName : ""}
+          placeholder={isEditing ? undefined : form.firstName}
           onChange={updateField("firstName")}
           error={errors.firstName}
           disabled={!isEditing}
@@ -163,7 +164,8 @@ function ProfileInfoTab() {
         <FormInput
           id="profile-lastName"
           label={t("profile.info.lastName", "Apellido")}
-          value={form.lastName}
+          value={isEditing ? form.lastName : ""}
+          placeholder={isEditing ? undefined : form.lastName}
           onChange={updateField("lastName")}
           error={errors.lastName}
           disabled={!isEditing}
@@ -173,7 +175,8 @@ function ProfileInfoTab() {
       <FormInput
         id="profile-username"
         label={t("profile.info.username", "Nombre de usuario")}
-        value={form.username}
+        value={isEditing ? form.username : ""}
+        placeholder={isEditing ? undefined : form.username}
         onChange={updateField("username")}
         error={errors.username}
         disabled={!isEditing}
@@ -183,7 +186,8 @@ function ProfileInfoTab() {
         id="profile-email"
         label={t("profile.info.email", "Correo electrónico")}
         type="email"
-        value={form.email}
+        value={isEditing ? form.email : ""}
+        placeholder={isEditing ? undefined : form.email}
         onChange={updateField("email")}
         error={errors.email}
         disabled={!isEditing}
