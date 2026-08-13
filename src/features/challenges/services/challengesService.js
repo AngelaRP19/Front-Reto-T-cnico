@@ -20,8 +20,9 @@ function mapChallenge(challenge) {
   };
 }
 
-export async function getChallenges() {
-  const challenges = await apiClient.get("/nodos/challenges", { auth: false });
+export async function getChallenges(lang) {
+  const query = lang ? `?lang=${encodeURIComponent(lang)}` : "";
+  const challenges = await apiClient.get(`/nodos/challenges${query}`, { auth: false });
   return (challenges || []).map(mapChallenge);
 }
 

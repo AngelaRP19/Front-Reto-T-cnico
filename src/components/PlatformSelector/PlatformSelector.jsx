@@ -1,3 +1,4 @@
+import { useLingui } from "@lingui/react";
 import { usePlatformsByExpansion } from "../../features/catalog/hooks/usePlatforms";
 
 import { useLingui } from "@lingui/react";
@@ -16,38 +17,46 @@ function PlatformSelector({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
-      <div className="bg-white rounded-3xl w-[90%] max-w-xl p-8 relative shadow-2xl">
+    <div
+      className="fixed inset-0 z-[1500] flex items-center justify-center bg-black/60 p-4"
+      onClick={onClose}
+    >
+      <div
+        className="bg-card-bg text-text rounded-3xl w-[90%] max-w-xl p-8 relative shadow-2xl max-h-[calc(100vh-2rem)] overflow-y-auto transition-colors duration-300"
+        onClick={(e) => e.stopPropagation()}
+      >
 
         {/* Cerrar */}
         <button
           onClick={onClose}
-          className="absolute top-5 right-5 text-3xl cursor-pointer text-gray-700 hover:text-black"
-          aria-label={t("platformSelector.close", "Cerrar")}
+          className="absolute top-5 right-5 text-3xl cursor-pointer text-text hover:text-main"
+          aria-label={t("common.close", "Cerrar")}
         >
           ×
         </button>
 
         {/* Título */}
-        <h2 className="text-3xl font-bold text-center mb-8 text-gray-900">
-          {t("platformSelector.title", "Selecciona tu plataforma")}
+        <h2 className="text-3xl font-bold text-center mb-8 text-text">
+          Selecciona tu plataforma
         </h2>
 
         {/* Cargando */}
         {loading && (
-          <p className="text-center text-gray-500">
-            {t("platformSelector.loading", "Cargando plataformas...")}
+          <p className="text-center text-text opacity-60">
+            Cargando plataformas...
           </p>
         )}
 
         {/* Error */}
         {error && !loading && (
           <div className="text-center">
-            <p className="text-red-500 mb-4">{error}</p>
+            <p className="text-error mb-4">
+              {error}
+            </p>
 
             <button
               onClick={onClose}
-              className="bg-main hover:bg-hover text-white font-bold py-2 px-5 rounded-xl"
+              className="bg-main hover:bg-hover text-bg font-bold py-2 px-5 rounded-xl"
             >
               {t("platformSelector.closeButton", "Cerrar")}
             </button>
@@ -56,8 +65,8 @@ function PlatformSelector({
 
         {/* Sin plataformas */}
         {!loading && !error && platforms.length === 0 && (
-          <p className="text-center text-gray-500">
-            {t("platformSelector.noPlatforms", "No hay plataformas disponibles para esta expansión.")}
+          <p className="text-center text-text opacity-60">
+            No hay plataformas disponibles para esta expansión.
           </p>
         )}
 
@@ -70,8 +79,9 @@ function PlatformSelector({
                 key={`${platform.name}-${index}`}
                 onClick={() => onSelectPlatform(platform)}
                 className="
-                  bg-lime-400
-                  hover:bg-lime-500
+                  bg-accent
+                  hover:bg-accent/90
+                  text-text
                   rounded-full
                   py-4
                   px-6

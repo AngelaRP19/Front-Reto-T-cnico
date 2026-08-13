@@ -15,24 +15,31 @@ function ProfileChallengesTab() {
   const [error, setError] = useState("");
 
   useEffect(() => {
+    let cancelled = false;
+
     async function load() {
+      setLoading(true);
       try {
         const [list, subs] = await Promise.all([
-          getChallenges(),
+          getChallenges(i18n.locale),
           user?.id ? getUserChallengeSubscriptions(user.id) : Promise.resolve({}),
         ]);
+        if (cancelled) return;
         setChallenges(list);
         setSubscriptions(subs);
       } catch (err) {
-        setError(translateErrorMessage(err, t("errors.generic", "Ocurrió un error"), i18n));
+        if (!cancelled) setError(translateErrorMessage(err, t("errors.generic", "Ocurrió un error"), i18n));
       } finally {
-        setLoading(false);
+        if (!cancelled) setLoading(false);
       }
     }
 
     load();
+    return () => {
+      cancelled = true;
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [i18n.locale]);
 
   const handleSubscriptionChange = (challengeId, newSubscription) => {
     setSubscriptions((prev) => ({ ...prev, [challengeId]: newSubscription }));
@@ -47,7 +54,7 @@ function ProfileChallengesTab() {
     <div>
       <h1 className="text-2xl font-extrabold text-text mb-2">{t("profile.challenges.title", "Mis retos")}</h1>
       <p className="text-text opacity-70 mb-6">
-        {t("profile.challenges.completed", "Retos finalizados")}: <span className="font-bold text-accent">{user?.completedChallenges ?? 0}</span>
+        {t("profile.challenges.completed", "Retos finalizados")}: <span className="font-bold text-accent-text">{user?.completedChallenges ?? 0}</span>
       </p>
 
       {loading ? (

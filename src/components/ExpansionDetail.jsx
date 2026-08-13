@@ -5,6 +5,7 @@ import { useAuth } from "../context/AuthContext";
 import useCartStore from "../store/cartStore";
 import { canAccessCart } from "../utils/cartAccess";
 import PlatformSelector from "./PlatformSelector/PlatformSelector";
+import { getPlatforms } from "../features/catalog/services/platformsService";
 
 const ExpansionDetail = ({ data: expansion, onBack }) => {
   const { i18n } = useLingui();
@@ -48,12 +49,23 @@ const ExpansionDetail = ({ data: expansion, onBack }) => {
    *   label: "Steam"
    * }
    */
-  const handlePlatformSelected = (platform) => {
+  const handlePlatformSelected = async (platform) => {
+    let matched;
+    try {
+      const allPlatforms = await getPlatforms();
+      matched = allPlatforms.find(
+        (p) => p.name.toLowerCase() === platform.name.toLowerCase()
+      );
+    } catch {
+      matched = undefined;
+    }
+
     const result = addItem({
       id: expansion.id,
       title: expansion.title,
       price: expansion.price,
       platform: platform.name,
+      platformId: matched?.id,
       image: expansion.image,
     });
 
@@ -76,6 +88,9 @@ const ExpansionDetail = ({ data: expansion, onBack }) => {
 
   return (
     <>
+    <div className="min-h-screen bg-bg text-text py-6 sm:py-10 px-4 sm:px-6 lg:px-8 transition-colors duration-400">
+      <div className="max-w-5xl mx-auto">
+
       {/* =========================================
           BOTÓN REGRESAR
           ========================================= */}
@@ -98,14 +113,14 @@ const ExpansionDetail = ({ data: expansion, onBack }) => {
               ===================================== */}
           <div className="md:w-1/2 bg-card-bg p-4 sm:p-6 flex items-center justify-center relative group overflow-hidden transition-colors duration-400">
 
-            <span className="absolute top-4 left-4 bg-accent text-bg text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider z-10 transition-opacity duration-200 ease-in-out group-hover:opacity-0 pointer-events-none">
+            <span className="absolute top-4 left-4 bg-accent text-text text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider z-10 transition-opacity duration-200 ease-in-out group-hover:opacity-0 pointer-events-none">
               {expansion.category}
             </span>
 
             <img
               src={expansion.image}
               alt={expansion.title}
-              className="rounded-3xl shadow-md w-full aspect-[4/3] md:max-h-[20rem] object-cover transform group-hover:scale-105 transition duration-300"
+              className="rounded-3xl shadow-md w-full aspect-[4/3] max-h-[14rem] md:max-h-[20rem] object-cover transform group-hover:scale-105 transition duration-300"
             />
           </div>
 
@@ -154,7 +169,7 @@ const ExpansionDetail = ({ data: expansion, onBack }) => {
                     key={idx}
                     className="flex items-start gap-2"
                   >
-                    <span className="text-accent font-bold">
+                    <span className="text-accent-text font-bold">
                       ✓
                     </span>
 
@@ -182,7 +197,7 @@ const ExpansionDetail = ({ data: expansion, onBack }) => {
                   )}
                 </span>
 
-                <span className="text-2xl font-black text-accent">
+                <span className="text-2xl font-black text-price">
                   {expansion.price}
                 </span>
 
@@ -191,13 +206,13 @@ const ExpansionDetail = ({ data: expansion, onBack }) => {
               {/* Añadir al carrito */}
               <button
                 onClick={handleOpenPlatformSelector}
-                className="bg-main hover:bg-hover text-white font-bold py-3 px-6 rounded-2xl shadow-lg transition duration-300 cursor-pointer"
+                className="bg-main hover:bg-hover text-bg font-bold py-3 px-6 rounded-2xl shadow-lg transition duration-300 cursor-pointer"
               >
                 {t(
                   "cart.add",
                   "Añadir al carrito"
                 )}{" "}
-                🛒
+                
               </button>
 
             </div>
@@ -274,7 +289,7 @@ const ExpansionDetail = ({ data: expansion, onBack }) => {
                         key={idx}
                         className="flex items-start gap-2"
                       >
-                        <span className="text-accent font-bold">
+                        <span className="text-accent-text font-bold">
                           ✓
                         </span>
 
@@ -307,7 +322,7 @@ const ExpansionDetail = ({ data: expansion, onBack }) => {
                         key={idx}
                         className="flex items-start gap-2"
                       >
-                        <span className="text-accent font-bold">
+                        <span className="text-accent-text font-bold">
                           ✓
                         </span>
 
@@ -327,6 +342,9 @@ const ExpansionDetail = ({ data: expansion, onBack }) => {
           </div>
         )}
 
+      </div>
+
+      </div>
       </div>
 
       {/* =========================================
@@ -349,9 +367,15 @@ const ExpansionDetail = ({ data: expansion, onBack }) => {
           MENSAJE DEL CARRITO
           ========================================= */}
       {cartMessage && (
-        <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4">
+        <div
+          className="fixed inset-0 bg-black/60 flex items-center justify-center z-[1500] p-4"
+          onClick={() => setCartMessage("")}
+        >
 
-          <div className="bg-card-bg rounded-2xl p-6 w-full max-w-md shadow-xl">
+          <div
+            className="bg-card-bg rounded-2xl p-6 w-full max-w-md shadow-xl"
+            onClick={(e) => e.stopPropagation()}
+          >
 
             <h2 className="text-xl font-bold mb-3 text-text">
               Carrito
@@ -365,7 +389,7 @@ const ExpansionDetail = ({ data: expansion, onBack }) => {
 
               <button
                 onClick={() => setCartMessage("")}
-                className="bg-main hover:bg-hover text-white font-bold px-5 py-2 rounded-lg transition duration-200"
+                className="bg-main hover:bg-hover text-bg font-bold px-5 py-2 rounded-lg transition duration-200"
               >
                 Cerrar
               </button>

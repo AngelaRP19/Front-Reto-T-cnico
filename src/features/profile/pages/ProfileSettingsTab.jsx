@@ -1,5 +1,7 @@
 import { useLingui } from "@lingui/react";
+import { Moon, Sun } from "lucide-react";
 import { useTheme } from "../../../context/ThemeContext";
+import LanguageSelector from "../../../components/common/LanguageSelector";
 
 function ProfileSettingsTab() {
   const { theme, toggleTheme } = useTheme();
@@ -19,23 +21,24 @@ function ProfileSettingsTab() {
           onClick={toggleTheme}
           className="flex items-center gap-2 bg-snd-bg text-text px-4 py-2 rounded-full font-bold hover:opacity-80 transition cursor-pointer"
         >
-          {theme === "light" ? t("profile.settings.dark", "🌙 Oscuro") : t("profile.settings.light", "☀️ Claro")}
+          {theme === "light" ? (
+            <>
+              <Moon size={18} /> {t("profile.settings.dark", "Oscuro")}
+            </>
+          ) : (
+            <>
+              <Sun size={18} /> {t("profile.settings.light", "Claro")}
+            </>
+          )}
         </button>
       </div>
 
       <div className="flex items-center justify-between py-4">
         <div>
           <p className="font-bold text-text">{t("profile.settings.language", "Idioma")}</p>
-          <p className="text-sm text-text opacity-70">{t("profile.settings.languageDescription", "Próximamente vas a poder cambiar el idioma acá.")}</p>
+          <p className="text-sm text-text opacity-70">{t("profile.settings.languageDescription", "Elegí el idioma de la app.")}</p>
         </div>
-        <select
-          disabled
-          value="es"
-          onChange={() => {}}
-          className="px-4 py-2 rounded-full bg-snd-bg text-text opacity-60 font-bold cursor-not-allowed"
-        >
-          <option value="es">{t("profile.settings.spanish", "Español")}</option>
-        </select>
+        <LanguageSelector />
       </div>
     </div>
   );

@@ -7,7 +7,7 @@ import { translateErrorMessage } from "../../../utils/errorMessages";
 const STATUS_STYLES = {
   INICIADO: "bg-blue-100 text-blue-700",
   EN_PROGRESO: "bg-amber-100 text-amber-700",
-  FINALIZADO: "bg-green-100 text-green-700",
+  FINALIZADO: "bg-accent/10 text-accent-text",
   FALLIDO: "bg-red-100 text-red-700",
 };
 
@@ -80,8 +80,8 @@ function CardChallenge({ challenge, subscription, userId, isAuthenticated, onSub
   };
 
   const buttonColor = isSubscribed
-    ? "bg-red-500 hover:bg-red-600 text-white"
-    : "bg-emerald-500 hover:bg-emerald-600 text-white";
+    ? "bg-red-600 hover:bg-red-700 text-white"
+    : "bg-accent hover:bg-accent/90 text-text";
 
   const buttonLabel = isSubscribed ? t("challenges.cancel", "Cancelar") : t("challenges.accept", "Aceptar");
 
@@ -131,13 +131,13 @@ function CardChallenge({ challenge, subscription, userId, isAuthenticated, onSub
             </div>
           </div>
 
-          {error && <p className="text-red-400 text-xs mt-2">{error}</p>}
+          {error && <p className="text-error text-xs mt-2">{error}</p>}
         </div>
       </div>
 
       {showModal && (
         <div
-          className="fixed inset-0 bg-black/60 flex justify-center items-center p-4 sm:p-6 z-[1300] animate-fadeIn"
+          className="fixed inset-0 bg-black/60 flex justify-center items-center p-4 sm:p-6 z-[1500] animate-fadeIn"
           onClick={() => setShowModal(false)}
         >
           <div
@@ -147,13 +147,18 @@ function CardChallenge({ challenge, subscription, userId, isAuthenticated, onSub
             <button
               onClick={() => setShowModal(false)}
               className="absolute top-4 right-4 text-2xl font-bold text-text hover:text-hover"
+              aria-label={t("common.close", "Cerrar")}
             >
               ×
             </button>
 
             <div className="w-full h-40 rounded-xl bg-snd-bg overflow-hidden mb-4">
-              {challenge.image && (
+              {challenge.image ? (
                 <img src={challenge.image} alt={challenge.title} className="w-full h-full object-cover" />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center text-text opacity-40 text-sm">
+                  {t("challenges.image", "Imagen")}
+                </div>
               )}
             </div>
 
@@ -161,7 +166,7 @@ function CardChallenge({ challenge, subscription, userId, isAuthenticated, onSub
             <p className="text-sm opacity-80 mb-4">{challenge.description}</p>
             {dateRow}
 
-            {error && <p className="text-red-400 text-sm mt-3 mb-1">{error}</p>}
+            {error && <p className="text-error text-sm mt-3 mb-1">{error}</p>}
 
             <div className="mt-4">{renderButton("w-full")}</div>
           </div>
@@ -170,7 +175,7 @@ function CardChallenge({ challenge, subscription, userId, isAuthenticated, onSub
 
       {showCancelConfirm && (
         <div
-          className="fixed inset-0 bg-black/60 flex justify-center items-center p-4 sm:p-6 z-[1300] animate-fadeIn"
+          className="fixed inset-0 bg-black/60 flex justify-center items-center p-4 sm:p-6 z-[1500] animate-fadeIn"
           onClick={(e) => { e.stopPropagation(); setShowCancelConfirm(false); }}
         >
           <div
@@ -191,7 +196,7 @@ function CardChallenge({ challenge, subscription, userId, isAuthenticated, onSub
               <button
                 onClick={handleConfirmCancel}
                 disabled={submitting}
-                className="flex-1 bg-red-500 hover:bg-red-600 text-white rounded-full py-2.5 text-sm font-bold cursor-pointer disabled:opacity-60 transition"
+                className="flex-1 bg-red-600 hover:bg-red-700 text-white rounded-full py-2.5 text-sm font-bold cursor-pointer disabled:opacity-60 transition"
               >
                 {submitting ? "..." : t("challenges.cancelAction", "Cancelar reto")}
               </button>

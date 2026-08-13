@@ -1,24 +1,46 @@
 @import "tailwindcss";
 
+/* Colores registrados como <color> para que el navegador pueda animar la
+   transición al cambiar de tema (con custom properties sin registrar, la
+   transición de background-color/color driveada solo por la variable no
+   se interpola y el elemento puede quedar "pegado" al color anterior). */
+@property --bg-color { syntax: '<color>'; inherits: true; initial-value: #ffffff; }
+@property --snd-bg-color { syntax: '<color>'; inherits: true; initial-value: #f3f3f3; }
+@property --text-color { syntax: '<color>'; inherits: true; initial-value: #1d1d1d; }
+@property --main-color { syntax: '<color>'; inherits: true; initial-value: #0077B6; }
+@property --accent-color { syntax: '<color>'; inherits: true; initial-value: #82cb1b; }
+@property --accent-text-color { syntax: '<color>'; inherits: true; initial-value: #4d7c0f; }
+@property --price-color { syntax: '<color>'; inherits: true; initial-value: #379424; }
+@property --error-color { syntax: '<color>'; inherits: true; initial-value: #dc2626; } 
+@property --hover-color { syntax: '<color>'; inherits: true; initial-value: #3eaaf7; }
+@property --card-bg { syntax: '<color>'; inherits: true; initial-value: #ffffff; }
+@property --footer-bg { syntax: '<color>'; inherits: true; initial-value: #f3f3f3; }
+
 :root {
   --bg-color: #ffffff;       /* fondo claro */
   --snd-bg-color: #f3f3f3;   /* fondo secundario claro */
   --text-color: #1d1d1d;
-  --main-color: #58B9FF;
-  --accent-color: #7CFC00;
+  --main-color: #0077B6;
+  --accent-color: #82cb1b;
+  --accent-text-color: #4d7c0f;
+  --price-color: #3f6b0a;
+  --error-color: #dc2626;
   --hover-color: #3eaaf7;
   --card-bg: #ffffff;
   --footer-bg: #f3f3f3;
 }
 
-/* 🌙 Modo oscuro Sims */
+/* Modo oscuro Sims */
 [data-theme="dark"] {
   --bg-color: #0b1a1f;
   --snd-bg-color: #142b33;
   --text-color: #e8f9f1;     /* texto claro verdoso */
-  --main-color: #00b4d8;     /* azul Sims */
-  --accent-color: #00ff87;   /* verde plumbob */
-  --hover-color: #00e0a8;    /* verde agua */
+  --main-color: #0695b1;     /* azul Sims */
+  --accent-color: #379424;
+  --accent-text-color: #52a830;
+  --price-color: #62a156;
+  --error-color: #f87171;
+  --hover-color: #247ab4;    /* verde agua */
   --card-bg: #0e2438;        /* azul petróleo */
   --footer-bg: #0b1a1f;
 }
@@ -29,6 +51,9 @@
   --color-text: var(--text-color);
   --color-main: var(--main-color);
   --color-accent: var(--accent-color);
+  --color-accent-text: var(--accent-text-color);
+  --color-price: var(--price-color);
+  --color-error: var(--error-color);
   --color-hover: var(--hover-color);
   --color-card-bg: var(--card-bg);
   --color-footer-bg: var(--footer-bg);

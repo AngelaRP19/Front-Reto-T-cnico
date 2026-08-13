@@ -104,7 +104,7 @@ function LoginPage() {
           </label>
 
           {serverError ? (
-            <p className="text-red-400 text-sm text-center mb-4">{serverError}</p>
+            <p className="text-error text-sm text-center mb-4">{serverError}</p>
           ) : null}
 
           <Button type="submit" variant="primary" disabled={submitting}>

@@ -133,7 +133,7 @@ function ProfileInfoTab() {
             <button
               onClick={() => setShowBetaCancelConfirm(true)}
               disabled={betaSubmitting}
-              className="px-4 py-2 rounded-full text-sm font-bold text-accent border-2 border-accent bg-accent/10 hover:bg-accent/20 transition cursor-pointer disabled:opacity-60"
+              className="px-4 py-2 rounded-full text-sm font-bold text-accent-text border-2 border-accent bg-accent/10 hover:bg-accent/20 transition cursor-pointer disabled:opacity-60"
             >
               {t("profile.info.betaTester", "Beta tester")}
             </button>
@@ -141,7 +141,7 @@ function ProfileInfoTab() {
           {!isEditing && (
             <button
               onClick={handleEditClick}
-              className="bg-main text-white px-5 py-2 rounded-full font-bold hover:bg-hover transition"
+              className="bg-main text-bg px-5 py-2 rounded-full font-bold hover:bg-hover transition"
             >
               {t("profile.info.edit", "Editar")}
             </button>
@@ -149,13 +149,14 @@ function ProfileInfoTab() {
         </div>
       </div>
 
-      {betaError && <p className="text-red-400 text-sm mb-4">{betaError}</p>}
+      {betaError && <p className="text-error text-sm mb-4">{betaError}</p>}
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4">
         <FormInput
           id="profile-firstName"
           label={t("profile.info.firstName", "Nombre")}
-          value={form.firstName}
+          value={isEditing ? form.firstName : ""}
+          placeholder={isEditing ? undefined : form.firstName}
           onChange={updateField("firstName")}
           error={errors.firstName}
           disabled={!isEditing}
@@ -163,7 +164,8 @@ function ProfileInfoTab() {
         <FormInput
           id="profile-lastName"
           label={t("profile.info.lastName", "Apellido")}
-          value={form.lastName}
+          value={isEditing ? form.lastName : ""}
+          placeholder={isEditing ? undefined : form.lastName}
           onChange={updateField("lastName")}
           error={errors.lastName}
           disabled={!isEditing}
@@ -173,7 +175,8 @@ function ProfileInfoTab() {
       <FormInput
         id="profile-username"
         label={t("profile.info.username", "Nombre de usuario")}
-        value={form.username}
+        value={isEditing ? form.username : ""}
+        placeholder={isEditing ? undefined : form.username}
         onChange={updateField("username")}
         error={errors.username}
         disabled={!isEditing}
@@ -183,7 +186,8 @@ function ProfileInfoTab() {
         id="profile-email"
         label={t("profile.info.email", "Correo electrónico")}
         type="email"
-        value={form.email}
+        value={isEditing ? form.email : ""}
+        placeholder={isEditing ? undefined : form.email}
         onChange={updateField("email")}
         error={errors.email}
         disabled={!isEditing}
@@ -223,10 +227,10 @@ function ProfileInfoTab() {
       )}
 
       {passwordSuccess && (
-        <p className="text-accent text-sm font-bold mb-4">{t("profile.info.passwordUpdated", "Contraseña actualizada correctamente.")}</p>
+        <p className="text-accent-text text-sm font-bold mb-4">{t("profile.info.passwordUpdated", "Contraseña actualizada correctamente.")}</p>
       )}
 
-      {serverError && <p className="text-red-400 text-sm mb-4">{serverError}</p>}
+      {serverError && <p className="text-error text-sm mb-4">{serverError}</p>}
 
       {isEditing && (
         <div className="flex gap-3 mt-4">
@@ -239,7 +243,7 @@ function ProfileInfoTab() {
           <button
             onClick={handleSaveClick}
             disabled={submitting}
-            className="flex-1 bg-main hover:bg-hover text-white rounded-full py-3 text-sm font-bold cursor-pointer disabled:opacity-60 transition"
+            className="flex-1 bg-main hover:bg-hover text-bg rounded-full py-3 text-sm font-bold cursor-pointer disabled:opacity-60 transition"
           >
             {submitting ? t("profile.info.saving", "Guardando...") : t("profile.info.save", "Guardar cambios")}
           </button>

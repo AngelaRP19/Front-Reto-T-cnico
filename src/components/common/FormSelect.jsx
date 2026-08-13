@@ -9,8 +9,8 @@ function FormSelect({ id, label, value, onChange, options = [], placeholder, err
       </label>
       <select
         id={id}
-        className={`w-full px-4 py-3 rounded-[0.625rem] border bg-snd-bg text-text text-[0.9375rem] font-nunito [transition:border-color_0.3s_ease,background-color_0.4s_ease,color_0.4s_ease] focus:outline-none focus:border-main ${
-          error ? "border-red-400" : "border-snd-bg"
+        className={`w-full px-4 py-3 rounded-[0.625rem] border bg-snd-bg text-text text-[0.9375rem] font-nunito disabled:text-text/40 disabled:italic disabled:opacity-70 disabled:cursor-not-allowed disabled:bg-snd-bg/60 [transition:border-color_0.3s_ease,background-color_0.4s_ease,color_0.4s_ease] focus:outline-none focus:border-main focus-visible:ring-2 focus-visible:ring-main focus-visible:ring-offset-2 focus-visible:ring-offset-bg ${
+          error ? "border-error" : "border-snd-bg"
         } ${error || hint ? "mb-1" : "mb-4"}`}
         value={value}
         onChange={onChange}
@@ -25,7 +25,7 @@ function FormSelect({ id, label, value, onChange, options = [], placeholder, err
         ))}
       </select>
       {error ? (
-        <p className="text-red-400 text-xs mb-4">{error}</p>
+        <p className="text-error text-xs mb-4">{error}</p>
       ) : hint ? (
         <p className="text-text opacity-50 text-xs mb-4">{hint}</p>
       ) : null}

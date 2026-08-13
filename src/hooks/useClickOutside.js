@@ -1,11 +1,14 @@
 import { useEffect } from "react";
 
-function useClickOutside(ref, onOutsideClick, enabled = true) {
+function useClickOutside(refs, onOutsideClick, enabled = true) {
   useEffect(() => {
     if (!enabled) return;
 
+    const refList = Array.isArray(refs) ? refs : [refs];
+
     const handleMouseDown = (e) => {
-      if (ref.current && !ref.current.contains(e.target)) {
+      const isInside = refList.some((ref) => ref.current && ref.current.contains(e.target));
+      if (!isInside) {
         onOutsideClick();
       }
     };
