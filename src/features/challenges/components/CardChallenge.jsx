@@ -7,7 +7,7 @@ import { translateErrorMessage } from "../../../utils/errorMessages";
 const STATUS_STYLES = {
   INICIADO: "bg-blue-100 text-blue-700",
   EN_PROGRESO: "bg-amber-100 text-amber-700",
-  FINALIZADO: "bg-green-100 text-green-700",
+  FINALIZADO: "bg-accent/10 text-accent",
   FALLIDO: "bg-red-100 text-red-700",
 };
 
@@ -81,7 +81,7 @@ function CardChallenge({ challenge, subscription, userId, isAuthenticated, onSub
 
   const buttonColor = isSubscribed
     ? "bg-red-500 hover:bg-red-600 text-white"
-    : "bg-emerald-500 hover:bg-emerald-600 text-white";
+    : "bg-accent hover:bg-accent/90 text-white";
 
   const buttonLabel = isSubscribed ? t("challenges.cancel", "Cancelar") : t("challenges.accept", "Aceptar");
 

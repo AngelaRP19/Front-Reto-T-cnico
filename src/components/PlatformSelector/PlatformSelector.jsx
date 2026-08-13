@@ -74,9 +74,9 @@ function PlatformSelector({
                 key={`${platform.name}-${index}`}
                 onClick={() => onSelectPlatform(platform)}
                 className="
-                  bg-lime-400
-                  hover:bg-lime-500
-                  text-black
+                  bg-accent
+                  hover:bg-accent/90
+                  text-white
                   rounded-full
                   py-4
                   px-6

@@ -6,7 +6,7 @@ import { translateErrorMessage } from "../../../utils/errorMessages";
 
 const STATUS_STYLES = {
   EN_PRUEBA: "bg-blue-100 text-blue-700",
-  FINALIZADO: "bg-green-100 text-green-700",
+  FINALIZADO: "bg-accent/10 text-accent",
   CANCELADO: "bg-red-100 text-red-700",
 };
 
