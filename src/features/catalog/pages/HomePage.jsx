@@ -22,12 +22,12 @@ function HomePage() {
   }, [location.hash]);
 
   return (
-    <>
+    <main>
       <Hero onExploreClick={() => scrollToCatalogo("smooth")} />
 
       <section
         id="catalogo"
-        className="w-[90%] mx-auto my-[3.75rem] flex justify-center flex-wrap gap-[1.875rem] px-5 py-[1.875rem] md:p-[4.375rem] bg-bg transition-colors duration-400"
+        className="w-[90%] mx-auto my-[3.75rem] px-5 py-[1.875rem] md:p-[4.375rem] bg-bg transition-colors duration-400"
       >
         {loading ? (
           <p className="text-text w-full text-center py-10">Cargando catálogo...</p>
@@ -35,20 +35,20 @@ function HomePage() {
           <p className="text-text w-full text-center py-10">{error}</p>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5 sm:gap-6 lg:gap-8 justify-items-center">
-          {packs.map((pack) => (
-            <Link key={pack.id} to={`/catalogo/${pack.id}`} className="w-full cursor-pointer block">
-              <Card
-                plataforma={pack.platform}
-                titulo={pack.title}
-                precio={pack.price}
-                image={pack.image}
-              />
-            </Link>
-          ))}
+            {packs.map((pack) => (
+              <Link key={pack.id} to={`/catalogo/${pack.id}`} className="w-full h-full cursor-pointer block">
+                <Card
+                  plataforma={pack.platform}
+                  titulo={pack.title}
+                  precio={pack.price}
+                  image={pack.image}
+                />
+              </Link>
+            ))}
           </div>
         )}
       </section>
-    </>
+    </main>
   );
 }
 

@@ -5,6 +5,7 @@ import { useAuth } from "../context/AuthContext";
 import useCartStore from "../store/cartStore";
 import { canAccessCart } from "../utils/cartAccess";
 import PlatformSelector from "./PlatformSelector/PlatformSelector";
+import { getPlatforms } from "../features/catalog/services/platformsService";
 
 const ExpansionDetail = ({ data: expansion, onBack }) => {
   const { i18n } = useLingui();
@@ -48,12 +49,23 @@ const ExpansionDetail = ({ data: expansion, onBack }) => {
    *   label: "Steam"
    * }
    */
-  const handlePlatformSelected = (platform) => {
+  const handlePlatformSelected = async (platform) => {
+    let matched;
+    try {
+      const allPlatforms = await getPlatforms();
+      matched = allPlatforms.find(
+        (p) => p.name.toLowerCase() === platform.name.toLowerCase()
+      );
+    } catch {
+      matched = undefined;
+    }
+
     const result = addItem({
       id: expansion.id,
       title: expansion.title,
       price: expansion.price,
       platform: platform.name,
+      platformId: matched?.id,
       image: expansion.image,
     });
 
@@ -185,7 +197,7 @@ const ExpansionDetail = ({ data: expansion, onBack }) => {
                   )}
                 </span>
 
-                <span className="text-2xl font-black text-accent">
+                <span className="text-2xl font-black text-[var(--price-color)]">
                   {expansion.price}
                 </span>
 
@@ -200,7 +212,7 @@ const ExpansionDetail = ({ data: expansion, onBack }) => {
                   "cart.add",
                   "Añadir al carrito"
                 )}{" "}
-                🛒
+                
               </button>
 
             </div>

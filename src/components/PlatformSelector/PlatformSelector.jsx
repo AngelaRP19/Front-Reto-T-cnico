@@ -17,27 +17,27 @@ function PlatformSelector({
       onClick={onClose}
     >
       <div
-        className="bg-white rounded-3xl w-[90%] max-w-xl p-8 relative shadow-2xl max-h-[calc(100vh-2rem)] overflow-y-auto"
+        className="bg-card-bg text-text rounded-3xl w-[90%] max-w-xl p-8 relative shadow-2xl max-h-[calc(100vh-2rem)] overflow-y-auto transition-colors duration-300"
         onClick={(e) => e.stopPropagation()}
       >
 
         {/* Cerrar */}
         <button
           onClick={onClose}
-          className="absolute top-5 right-5 text-3xl cursor-pointer text-gray-700 hover:text-black"
+          className="absolute top-5 right-5 text-3xl cursor-pointer text-text hover:text-main"
           aria-label="Cerrar"
         >
           ×
         </button>
 
         {/* Título */}
-        <h2 className="text-3xl font-bold text-center mb-8 text-gray-900">
+        <h2 className="text-3xl font-bold text-center mb-8 text-text">
           Selecciona tu plataforma
         </h2>
 
         {/* Cargando */}
         {loading && (
-          <p className="text-center text-gray-500">
+          <p className="text-center text-text opacity-60">
             Cargando plataformas...
           </p>
         )}
@@ -45,7 +45,7 @@ function PlatformSelector({
         {/* Error */}
         {error && !loading && (
           <div className="text-center">
-            <p className="text-red-500 mb-4">
+            <p className="text-red-400 mb-4">
               {error}
             </p>
 
@@ -60,7 +60,7 @@ function PlatformSelector({
 
         {/* Sin plataformas */}
         {!loading && !error && platforms.length === 0 && (
-          <p className="text-center text-gray-500">
+          <p className="text-center text-text opacity-60">
             No hay plataformas disponibles para esta expansión.
           </p>
         )}
@@ -74,8 +74,9 @@ function PlatformSelector({
                 key={`${platform.name}-${index}`}
                 onClick={() => onSelectPlatform(platform)}
                 className="
-                  bg-lime-400
-                  hover:bg-lime-500
+                  bg-accent
+                  hover:bg-accent/90
+                  text-white
                   rounded-full
                   py-4
                   px-6
