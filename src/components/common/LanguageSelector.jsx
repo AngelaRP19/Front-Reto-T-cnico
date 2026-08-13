@@ -46,22 +46,38 @@ const LANGUAGES = [
 function LanguageSelector() {
   const { i18n } = useLingui();
   const t = (id, message) => i18n._({ id, message });
-  const [locale, setLocale] = useState(() => normalizeLocale(i18n?.locale || getInitialLocale()));
+
+  // ✅ Verificación segura de localStorage
+  const getStoredLocale = () => {
+    if (typeof window !== "undefined") {
+      return localStorage.getItem("locale");
+    }
+    return null;
+  };
+
+  const [locale, setLocale] = useState(() =>
+    normalizeLocale(getStoredLocale() || i18n?.locale || getInitialLocale())
+  );
   const [open, setOpen] = useState(false);
   const wrapperRef = useRef(null);
 
   useClickOutside(wrapperRef, () => setOpen(false), open);
 
   useEffect(() => {
+    const storedLocale = getStoredLocale();
     setLocale(normalizeLocale(storedLocale || i18n?.locale || getInitialLocale()));
-  }, [storedLocale, i18n?.locale]);
+  }, [i18n?.locale]);
 
   const handleChange = async (newLocale) => {
     const normalizedLocale = normalizeLocale(newLocale);
     setLocale(normalizedLocale);
     setOpen(false);
     await activateLocale(normalizedLocale);
-    setStoredLocale(normalizedLocale);
+
+    // ✅ Guardar idioma solo si window existe
+    if (typeof window !== "undefined") {
+      localStorage.setItem("locale", normalizedLocale);
+    }
   };
 
   const current = LANGUAGES.find((lang) => lang.code === locale) || LANGUAGES[0];
@@ -71,28 +87,26 @@ function LanguageSelector() {
       <button
         type="button"
         onClick={() => setOpen((prev) => !prev)}
-        className="flex items-center gap-2 bg-card-bg text-text border border-snd-bg rounded-full px-3 py-2 text-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-main focus-visible:ring-offset-2 focus-visible:ring-offset-bg hover:border-main transition"
+        className="flex items-center gap-2 min-[2560px]:gap-3 min-[3840px]:gap-4 bg-card-bg text-text border border-snd-bg rounded-full px-3 py-2 min-[2560px]:px-5 min-[2560px]:py-3 min-[3840px]:px-7 min-[3840px]:py-5 text-sm min-[2560px]:text-xl min-[3840px]:text-3xl focus:outline-none focus-visible:ring-2 focus-visible:ring-main focus-visible:ring-offset-2 focus-visible:ring-offset-bg hover:border-main transition"
         aria-label={t("common.selectLanguage", "Select language")}
         aria-haspopup="listbox"
         aria-expanded={open}
       >
-        <current.Flag />
-        {current.label}
+        <current.Flag /> {current.label}
       </button>
 
       {open && (
-        <div className="absolute right-0 top-full mt-2 w-32 bg-card-bg text-text rounded-xl shadow-lg p-2 z-[1300] transition-colors duration-300">
+        <div className="absolute right-0 top-full mt-2 min-[2560px]:mt-3 w-32 min-[2560px]:w-44 min-[3840px]:w-60 bg-card-bg text-text rounded-xl min-[2560px]:rounded-2xl shadow-lg p-2 min-[2560px]:p-3 z-[1300] transition-colors duration-300">
           {LANGUAGES.map((lang) => (
             <button
               key={lang.code}
               type="button"
               onClick={() => handleChange(lang.code)}
-              className={`w-full flex items-center gap-2 px-2 py-1.5 rounded-lg text-sm font-semibold transition ${
+              className={`w-full flex items-center gap-2 min-[2560px]:gap-3 px-2 py-1.5 min-[2560px]:px-3 min-[2560px]:py-2.5 min-[3840px]:px-4 min-[3840px]:py-3.5 rounded-lg min-[2560px]:rounded-xl text-sm min-[2560px]:text-lg min-[3840px]:text-2xl font-semibold transition ${
                 lang.code === locale ? "bg-main/10 text-main" : "hover:bg-snd-bg"
               }`}
             >
-              <lang.Flag />
-              {lang.label}
+              <lang.Flag /> {lang.label}
             </button>
           ))}
         </div>

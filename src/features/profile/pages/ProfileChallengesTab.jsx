@@ -51,20 +51,20 @@ function ProfileChallengesTab() {
   });
 
   return (
-    <div>
-      <h1 className="text-2xl font-extrabold text-text mb-2">{t("profile.challenges.title", "Mis retos")}</h1>
-      <p className="text-text opacity-70 mb-6">
+    <div className="w-full min-[2560px]:w-[96%] min-[3840px]:w-[98%]">
+      <h1 className="text-2xl min-[2560px]:text-5xl min-[3840px]:text-7xl font-extrabold text-text mb-2 min-[2560px]:mb-4">{t("profile.challenges.title", "Mis retos")}</h1>
+      <p className="text-text opacity-70 mb-6 min-[2560px]:mb-10 min-[2560px]:text-xl min-[3840px]:text-3xl">
         {t("profile.challenges.completed", "Retos finalizados")}: <span className="font-bold text-accent-text">{user?.completedChallenges ?? 0}</span>
       </p>
 
       {loading ? (
-        <p className="text-text text-center py-10">{t("profile.challenges.loading", "Cargando retos...")}</p>
+        <p className="text-text text-center py-10 min-[2560px]:py-16 min-[3840px]:py-20 min-[2560px]:text-3xl min-[3840px]:text-4xl">{t("profile.challenges.loading", "Cargando retos...")}</p>
       ) : error ? (
-        <p className="text-text text-center py-10">{error}</p>
+        <p className="text-text text-center py-10 min-[2560px]:py-16 min-[3840px]:py-20 min-[2560px]:text-3xl min-[3840px]:text-4xl">{error}</p>
       ) : acceptedChallenges.length === 0 ? (
-        <p className="text-text opacity-70 text-center py-10">{t("profile.challenges.empty", "Todavía no aceptaste ningún reto.")}</p>
+        <p className="text-text opacity-70 text-center py-10 min-[2560px]:py-16 min-[3840px]:py-20 min-[2560px]:text-2xl min-[3840px]:text-4xl">{t("profile.challenges.empty", "Todavía no aceptaste ningún reto.")}</p>
       ) : (
-        <div className="flex flex-col gap-4">
+        <div className="grid grid-cols-[repeat(auto-fit,minmax(16rem,1fr))] gap-4 min-[2560px]:gap-6 min-[3840px]:gap-8">
           {acceptedChallenges.map((challenge) => (
             <CardChallenge
               key={challenge.id}

@@ -1,8 +1,6 @@
 import { useLingui } from "@lingui/react";
 import { usePlatformsByExpansion } from "../../features/catalog/hooks/usePlatforms";
 
-import { useLingui } from "@lingui/react";
-
 function PlatformSelector({
   expansionId,
   isOpen,
@@ -18,25 +16,25 @@ function PlatformSelector({
 
   return (
     <div
-      className="fixed inset-0 z-[1500] flex items-center justify-center bg-black/60 p-4"
+      className="fixed inset-0 z-[1500] flex items-center justify-center bg-black/60 p-4 min-[2560px]:p-10 min-[3840px]:p-16"
       onClick={onClose}
     >
       <div
-        className="bg-card-bg text-text rounded-3xl w-[90%] max-w-xl p-8 relative shadow-2xl max-h-[calc(100vh-2rem)] overflow-y-auto transition-colors duration-300"
+        className="bg-card-bg text-text rounded-3xl min-[2560px]:rounded-[2rem] w-[90%] max-w-xl min-[2560px]:max-w-4xl min-[3840px]:max-w-6xl p-8 min-[2560px]:p-12 min-[3840px]:p-16 relative shadow-2xl max-h-[calc(100vh-2rem)] overflow-y-auto transition-colors duration-300"
         onClick={(e) => e.stopPropagation()}
       >
 
         {/* Cerrar */}
         <button
           onClick={onClose}
-          className="absolute top-5 right-5 text-3xl cursor-pointer text-text hover:text-main"
+          className="absolute top-5 right-5 min-[2560px]:top-7 min-[2560px]:right-7 min-[3840px]:top-9 min-[3840px]:right-9 text-3xl min-[2560px]:text-5xl min-[3840px]:text-6xl cursor-pointer text-text hover:text-main"
           aria-label={t("common.close", "Cerrar")}
         >
           ×
         </button>
 
         {/* Título */}
-        <h2 className="text-3xl font-bold text-center mb-8 text-text">
+        <h2 className="text-3xl min-[2560px]:text-5xl min-[3840px]:text-7xl font-bold text-center mb-8 min-[2560px]:mb-12 text-text">
           Selecciona tu plataforma
         </h2>
 
@@ -56,7 +54,7 @@ function PlatformSelector({
 
             <button
               onClick={onClose}
-              className="bg-main hover:bg-hover text-bg font-bold py-2 px-5 rounded-xl"
+              className="bg-main hover:bg-hover text-bg font-bold py-2 px-5 min-[2560px]:py-4 min-[2560px]:px-9 min-[2560px]:text-2xl min-[3840px]:py-5 min-[3840px]:px-12 min-[3840px]:text-3xl rounded-xl min-[2560px]:rounded-2xl"
             >
               {t("platformSelector.closeButton", "Cerrar")}
             </button>
@@ -72,7 +70,7 @@ function PlatformSelector({
 
         {/* Plataformas */}
         {!loading && !error && platforms.length > 0 && (
-          <div className="flex flex-col gap-5">
+          <div className="flex flex-col gap-5 min-[2560px]:gap-8">
 
             {platforms.map((platform, index) => (
               <button
@@ -86,6 +84,12 @@ function PlatformSelector({
                   py-4
                   px-6
                   text-xl
+                  min-[2560px]:text-3xl
+                  min-[3840px]:text-4xl
+                  min-[2560px]:py-5
+                  min-[2560px]:px-8
+                  min-[3840px]:py-7
+                  min-[3840px]:px-10
                   font-semibold
                   flex
                   items-center

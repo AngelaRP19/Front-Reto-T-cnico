@@ -10,26 +10,26 @@ function ConfirmDialog({
 }) {
   return (
     <div
-      className="fixed inset-0 bg-black/60 flex justify-center items-center p-4 sm:p-6 z-[1500] animate-fadeIn"
+      className="fixed inset-0 bg-black/60 flex justify-center items-center p-4 sm:p-6 min-[2560px]:p-10 min-[3840px]:p-16 z-[1500] animate-fadeIn"
       onClick={onCancel}
     >
       <div
-        className="bg-card-bg text-text rounded-2xl shadow-2xl w-full max-w-sm max-h-[calc(100vh-2rem)] overflow-y-auto p-5 sm:p-6 transition-colors duration-300"
+        className="bg-card-bg text-text rounded-2xl min-[2560px]:rounded-3xl shadow-2xl w-full max-w-sm min-[2560px]:max-w-2xl min-[3840px]:max-w-4xl max-h-[calc(100vh-2rem)] overflow-y-auto p-5 sm:p-6 min-[2560px]:p-10 min-[3840px]:p-14 transition-colors duration-300"
         onClick={(e) => e.stopPropagation()}
       >
-        <h3 className="text-lg font-bold mb-2">{title}</h3>
-        {body && <p className="text-sm opacity-80 mb-5">{body}</p>}
-        <div className="flex flex-col sm:flex-row gap-3">
+        <h3 className="text-lg min-[2560px]:text-3xl min-[3840px]:text-5xl font-bold mb-2 min-[2560px]:mb-4">{title}</h3>
+        {body && <p className="text-sm min-[2560px]:text-xl min-[3840px]:text-3xl opacity-80 mb-5 min-[2560px]:mb-8">{body}</p>}
+        <div className="flex flex-col sm:flex-row gap-3 min-[2560px]:gap-5">
           <button
             onClick={onCancel}
-            className="flex-1 bg-snd-bg text-text rounded-full py-2.5 text-sm font-bold cursor-pointer hover:opacity-80 transition"
+            className="flex-1 bg-snd-bg text-text rounded-full py-2.5 min-[2560px]:py-4 min-[3840px]:py-6 text-sm min-[2560px]:text-xl min-[3840px]:text-3xl font-bold cursor-pointer hover:opacity-80 transition"
           >
             {cancelLabel}
           </button>
           <button
             onClick={onConfirm}
             disabled={confirmDisabled}
-            className={`flex-1 rounded-full py-2.5 text-sm font-bold cursor-pointer disabled:opacity-60 transition ${
+            className={`flex-1 rounded-full py-2.5 min-[2560px]:py-4 min-[3840px]:py-6 text-sm min-[2560px]:text-xl min-[3840px]:text-3xl font-bold cursor-pointer disabled:opacity-60 transition ${
               danger ? "bg-red-600 hover:bg-red-700 text-white" : "bg-main hover:bg-hover text-bg"
             }`}
           >
