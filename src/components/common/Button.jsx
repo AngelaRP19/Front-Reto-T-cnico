@@ -2,7 +2,7 @@ const BASE = "font-nunito cursor-pointer";
 
 const VARIANTS = {
   primary:
-    "w-full border-none bg-main text-white py-3.5 text-base rounded-full font-bold mb-[1.125rem] transition-colors duration-300 hover:bg-hover",
+    "w-full border-none bg-main text-bg py-3.5 text-base rounded-full font-bold mb-[1.125rem] transition-colors duration-300 hover:bg-hover",
   outline:
     "w-full bg-transparent border-2 border-main text-main py-3 text-[0.9375rem] uppercase rounded-full font-bold transition-colors duration-300 hover:bg-main hover:text-white",
   oauth:

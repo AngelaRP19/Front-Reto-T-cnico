@@ -82,7 +82,7 @@ function ProfilePurchasesTab() {
                     {formatPurchaseDate(purchase.purchaseDate)}
                   </p>
                 </div>
-                <span className="text-lg font-black text-accent shrink-0">
+                <span className="text-lg font-black text-price shrink-0">
                   {purchase.totalPrice?.toLocaleString("es-CO", { style: "currency", currency: "COP" })}
                 </span>
               </div>
@@ -125,7 +125,7 @@ function ProfilePurchasesTab() {
             </div>
             <div className="flex justify-between text-base pt-2">
               <span className="font-bold text-text">{t("profile.purchases.total", "Total")}</span>
-              <span className="font-black text-accent">
+              <span className="font-black text-price">
                 {selectedPurchase.totalPrice?.toLocaleString("es-CO", { style: "currency", currency: "COP" })}
               </span>
             </div>

@@ -1,4 +1,9 @@
+import { useLingui } from "@lingui/react";
+
 function Modal({ onClose, children, maxWidthClass = "max-w-sm" }) {
+  const { i18n } = useLingui();
+  const t = (id, message) => i18n._({ id, message });
+
   return (
     <div
       className="fixed inset-0 bg-black/60 flex justify-center items-center p-4 sm:p-6 z-[1500] animate-fadeIn"
@@ -11,7 +16,7 @@ function Modal({ onClose, children, maxWidthClass = "max-w-sm" }) {
         <button
           onClick={onClose}
           className="absolute top-4 right-4 text-2xl font-bold text-text hover:text-hover"
-          aria-label="Cerrar"
+          aria-label={t("common.close", "Cerrar")}
         >
           ×
         </button>

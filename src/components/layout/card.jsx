@@ -21,7 +21,7 @@ function Card(props) {
             {props.titulo}
           </h3>
         </div>
-        <p className="text-[var(--price-color)] text-[1.25rem] font-black">
+        <p className="text-price text-[1.25rem] font-black">
           {props.precio}
         </p>
       </div>

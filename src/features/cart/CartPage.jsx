@@ -82,7 +82,7 @@ export const CartPage = () => {
 
               <div className="mt-6 pt-4 border-t border-snd-bg flex justify-between items-center">
                 <span className="text-lg font-semibold text-text">Total:</span>
-                <span className="text-2xl font-bold text-accent">
+                <span className="text-2xl font-bold text-price">
                   {subtotal.toLocaleString("es-CO", { style: "currency", currency: "COP" })}
                 </span>
               </div>
@@ -90,13 +90,13 @@ export const CartPage = () => {
               <div className="mt-6 flex flex-col sm:flex-row justify-end gap-3">
                 <button
                   onClick={clearCart}
-                  className="bg-red-500 hover:bg-red-600 text-white font-medium px-6 py-2.5 rounded-lg transition-colors cursor-pointer"
+                  className="bg-red-600 hover:bg-red-700 text-white font-medium px-6 py-2.5 rounded-lg transition-colors cursor-pointer"
                 >
                   Vaciar carrito
                 </button>
                 <button
                   onClick={() => setStep("payment")}
-                  className="bg-main hover:bg-hover text-white font-medium px-6 py-2.5 rounded-lg transition-colors cursor-pointer"
+                  className="bg-main hover:bg-hover text-bg font-medium px-6 py-2.5 rounded-lg transition-colors cursor-pointer"
                 >
                   Proceder al pago
                 </button>
@@ -173,7 +173,7 @@ export const CartPage = () => {
             </label>
           </div>
 
-          {purchaseError && <p className="text-red-400 text-sm mb-4">{purchaseError}</p>}
+          {purchaseError && <p className="text-error text-sm mb-4">{purchaseError}</p>}
 
           <div className="flex justify-between items-center pt-4 border-t border-snd-bg">
             <button
@@ -186,7 +186,7 @@ export const CartPage = () => {
             <button
               onClick={handleConfirmPurchase}
               disabled={purchasing}
-              className="bg-main hover:bg-hover text-white font-medium px-6 py-2.5 rounded-lg transition-colors cursor-pointer disabled:opacity-60"
+              className="bg-main hover:bg-hover text-bg font-medium px-6 py-2.5 rounded-lg transition-colors cursor-pointer disabled:opacity-60"
             >
               {purchasing
                 ? "Procesando..."
@@ -199,7 +199,7 @@ export const CartPage = () => {
       {/* PASO 3: CONFIRMACIÓN DE COMPRA */}
       {step === "success" && (
         <div className="text-center py-8">
-          <div className="w-16 h-16 bg-accent/20 text-accent rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold">
+          <div className="w-16 h-16 bg-accent/20 text-accent-text rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold">
             ✓
           </div>
           <h2 className="text-2xl font-bold text-text mb-2">¡Compra completada!</h2>

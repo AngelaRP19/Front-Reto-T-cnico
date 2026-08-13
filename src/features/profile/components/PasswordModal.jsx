@@ -81,7 +81,7 @@ function PasswordModal({ onClose, onSuccess }) {
           autoComplete="new-password"
         />
 
-        {serverError && <p className="text-red-400 text-sm mb-4">{serverError}</p>}
+        {serverError && <p className="text-error text-sm mb-4">{serverError}</p>}
 
         <div className="flex gap-3 mt-2">
           <button
@@ -94,7 +94,7 @@ function PasswordModal({ onClose, onSuccess }) {
           <button
             type="submit"
             disabled={submitting}
-            className="flex-1 bg-main hover:bg-hover text-white rounded-full py-2.5 text-sm font-bold cursor-pointer disabled:opacity-60 transition"
+            className="flex-1 bg-main hover:bg-hover text-bg rounded-full py-2.5 text-sm font-bold cursor-pointer disabled:opacity-60 transition"
           >
             {submitting ? "Guardando..." : "Guardar"}
           </button>
