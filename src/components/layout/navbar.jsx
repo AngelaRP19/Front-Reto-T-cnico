@@ -20,6 +20,7 @@ function Navbar() {
   const [showBetaConfirm, setShowBetaConfirm] = useState(false);
   const [showBetaCancelConfirm, setShowBetaCancelConfirm] = useState(false);
   const [betaSubmitting, setBetaSubmitting] = useState(false);
+  const [betaCancelSubmitting, setBetaCancelSubmitting] = useState(false);
   const [betaError, setBetaError] = useState("");
 
   const userMenuRef = useRef(null);
