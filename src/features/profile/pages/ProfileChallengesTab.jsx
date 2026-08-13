@@ -54,7 +54,7 @@ function ProfileChallengesTab() {
     <div>
       <h1 className="text-2xl font-extrabold text-text mb-2">{t("profile.challenges.title", "Mis retos")}</h1>
       <p className="text-text opacity-70 mb-6">
-        {t("profile.challenges.completed", "Retos finalizados")}: <span className="font-bold text-accent">{user?.completedChallenges ?? 0}</span>
+        {t("profile.challenges.completed", "Retos finalizados")}: <span className="font-bold text-accent-text">{user?.completedChallenges ?? 0}</span>
       </p>
 
       {loading ? (

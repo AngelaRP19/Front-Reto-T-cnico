@@ -99,7 +99,7 @@ function Navbar() {
   };
 
   return (
-    <header className="relative flex flex-col md:flex-row justify-between items-center w-full h-auto md:h-20 p-5 md:px-10 lg:px-[4.375rem] lg:py-0 gap-5 md:gap-0 bg-bg shadow-[0_0.125rem_0.625rem_rgba(0,0,0,0.08)] mb-[1.875rem] ml-auto transition-colors duration-[400ms]">
+    <header className="sticky top-0 z-[1000] flex flex-col md:flex-row justify-between items-center w-full h-auto md:h-20 p-5 md:px-10 lg:px-[4.375rem] lg:py-0 gap-5 md:gap-0 bg-bg shadow-[0_0.125rem_0.625rem_rgba(0,0,0,0.08)] mb-[1.875rem] ml-auto transition-colors duration-[400ms]">
       <div className="contents" ref={mobileNavWrapperRef}>
       {/* Fila superior mobile/tablet: hamburguesa+idioma+tema | logo | carrito+perfil, siempre visible */}
       <div className="flex lg:hidden items-center justify-between w-full gap-2">
@@ -117,7 +117,7 @@ function Navbar() {
           <button
             onClick={toggleTheme}
             className="text-accent hover:rotate-12 transition cursor-pointer"
-            aria-label="Cambiar tema"
+            aria-label={t("navbar.changeTheme", "Cambiar tema")}
           >
             {theme === "light" ? <Moon size={20} /> : <Sun size={20} />}
           </button>
@@ -141,7 +141,7 @@ function Navbar() {
               >
                 <ShoppingCart size={22} />
                 {itemCount > 0 && (
-                  <span className="absolute -top-1.5 -right-1.5 bg-main text-white rounded-full min-w-[1.125rem] h-[1.125rem] flex items-center justify-center px-1 text-[0.65rem]">
+                  <span className="absolute -top-1.5 -right-1.5 bg-main text-bg rounded-full min-w-[1.125rem] h-[1.125rem] flex items-center justify-center px-1 text-[0.65rem]">
                     {itemCount}
                   </span>
                 )}
@@ -163,7 +163,7 @@ function Navbar() {
                           <div className="flex-1 min-w-0">
                             <p className="font-semibold text-sm truncate">{item.title}</p>
                             <p className="text-xs text-text/70">{item.platform || t("cart.defaultPlatform", "Pack de expansión")}</p>
-                            <p className="text-sm text-accent font-semibold mt-1">{item.price}</p>
+                            <p className="text-sm text-price font-semibold mt-1">{item.price}</p>
                           </div>
                           <div className="flex flex-col items-end gap-2">
                             <button onClick={() => removeItem(item.id, item.platform)} className="text-xs text-main font-semibold">
@@ -181,13 +181,13 @@ function Navbar() {
 
                       <div className="border-t border-snd-bg pt-3 flex items-center justify-between">
                         <span className="text-sm font-semibold">{t("cart.subtotal", "Subtotal")}</span>
-                        <span className="text-accent font-bold">{useCartStore.getState().getSubtotal().toLocaleString("es-CO", { style: "currency", currency: "COP" })}</span>
+                        <span className="text-price font-bold">{useCartStore.getState().getSubtotal().toLocaleString("es-CO", { style: "currency", currency: "COP" })}</span>
                       </div>
 
                       <Link
                         to="/carrito"
                         onClick={() => setShowCart(false)}
-                        className="block w-full text-center rounded-full bg-main hover:bg-hover text-white py-2 font-semibold"
+                        className="block w-full text-center rounded-full bg-main hover:bg-hover text-bg py-2 font-semibold"
                       >
                         {t("cart.viewCart", "Ver carrito")}
                       </Link>
@@ -205,8 +205,8 @@ function Navbar() {
             <div className="relative" ref={mobileUserMenuRef}>
               <button
                 onClick={() => setShowUserMenu((prev) => !prev)}
-                className="w-9 h-9 rounded-full bg-main text-white font-bold flex items-center justify-center hover:bg-hover transition-colors shadow-md text-sm"
-                aria-label="Menú de perfil"
+                className="w-9 h-9 rounded-full bg-main text-bg font-bold flex items-center justify-center hover:bg-hover transition-colors shadow-md text-sm"
+                aria-label={t("navbar.profileMenu", "Menú de perfil")}
               >
                 {initial}
               </button>
@@ -294,7 +294,7 @@ function Navbar() {
             <button
               onClick={() => setShowBetaCancelConfirm(true)}
               disabled={betaCancelSubmitting}
-              className="w-full max-w-sm lg:w-auto text-center px-4 py-2 rounded-full text-sm font-bold text-accent border-2 border-accent bg-accent/10 hover:bg-accent/20 transition cursor-pointer disabled:opacity-60"
+              className="w-full max-w-sm lg:w-auto text-center px-4 py-2 rounded-full text-sm font-bold text-accent-text border-2 border-accent bg-accent/10 hover:bg-accent/20 transition cursor-pointer disabled:opacity-60"
             >
               {t("profile.info.betaTester", "Beta tester")}
             </button>
@@ -303,7 +303,7 @@ function Navbar() {
               <button
                 onClick={handleBetaButtonClick}
                 disabled={betaSubmitting}
-                className="bg-accent text-white font-semibold w-full lg:w-auto px-4 sm:px-5 py-2.5 rounded-full transition-all duration-300 hover:scale-105 hover:shadow-[0_0_1.25rem_var(--accent-color)] active:scale-95 disabled:opacity-60 text-sm sm:text-base"
+                className="bg-accent text-text font-semibold w-full lg:w-auto px-4 sm:px-5 py-2.5 rounded-full transition-all duration-300 hover:scale-105 hover:shadow-[0_0_1.25rem_var(--accent-color)] active:scale-95 disabled:opacity-60 text-sm sm:text-base"
               >
                 {t("beta.title", "¿Quieres ser beta tester?")}
               </button>
@@ -314,7 +314,7 @@ function Navbar() {
                   <div className="flex gap-2">
                     <button
                       onClick={() => handleBetaConfirm(true)}
-                      className="flex-1 bg-accent text-black rounded-full py-2 text-sm font-bold cursor-pointer"
+                      className="flex-1 bg-accent text-text rounded-full py-2 text-sm font-bold cursor-pointer"
                     >
                       {t("beta.yes", "Sí, quiero")}
                     </button>
@@ -330,7 +330,7 @@ function Navbar() {
 
               {betaError && (
                 <div className="absolute left-1/2 -translate-x-1/2 lg:left-auto lg:right-0 lg:translate-x-0 top-full mt-2 w-72 max-w-[90vw] bg-card-bg text-text rounded-xl shadow-xl p-3 z-[1300]">
-                  <p className="text-red-400 text-xs font-semibold">{betaError}</p>
+                  <p className="text-error text-xs font-semibold">{betaError}</p>
                 </div>
               )}
             </div>
@@ -339,7 +339,7 @@ function Navbar() {
           <div className="hidden lg:flex lg:items-center lg:gap-[1.875rem]">
           {!user ? (
             <button
-              className="w-full max-w-sm lg:w-auto bg-main text-white px-5 py-2.5 rounded-full font-bold text-sm sm:text-base hover:bg-hover transition"
+              className="w-full max-w-sm lg:w-auto bg-main text-bg px-5 py-2.5 rounded-full font-bold text-sm sm:text-base hover:bg-hover transition"
               onClick={() => {
                 navigate("/login");
                 setMenuOpen(false);
@@ -351,8 +351,8 @@ function Navbar() {
             <div className="relative" ref={userMenuRef}>
               <button
                 onClick={() => setShowUserMenu((prev) => !prev)}
-                className="w-10 h-10 rounded-full bg-main text-white font-bold flex items-center justify-center hover:bg-hover transition-colors shadow-md"
-                aria-label="Menú de perfil"
+                className="w-10 h-10 rounded-full bg-main text-bg font-bold flex items-center justify-center hover:bg-hover transition-colors shadow-md"
+                aria-label={t("navbar.profileMenu", "Menú de perfil")}
               >
                 {initial}
               </button>
@@ -394,7 +394,7 @@ function Navbar() {
               >
                 <ShoppingCart size={18} /> {t("cart.title", "Carrito")}
                 {itemCount > 0 && (
-                  <span className="bg-main text-white rounded-full min-w-6 h-6 flex items-center justify-center px-2 text-sm">
+                  <span className="bg-main text-bg rounded-full min-w-6 h-6 flex items-center justify-center px-2 text-sm">
                     {itemCount}
                   </span>
                 )}
@@ -416,7 +416,7 @@ function Navbar() {
                         <div className="flex-1 min-w-0">
                           <p className="font-semibold text-sm truncate">{item.title}</p>
                           <p className="text-xs text-text/70">{item.platform || t("cart.defaultPlatform", "Pack de expansión")}</p>
-                          <p className="text-sm text-accent font-semibold mt-1">{item.price}</p>
+                          <p className="text-sm text-price font-semibold mt-1">{item.price}</p>
                         </div>
                         <div className="flex flex-col items-end gap-2">
                           <button onClick={() => removeItem(item.id, item.platform)} className="text-xs text-main font-semibold">
@@ -434,7 +434,7 @@ function Navbar() {
 
                     <div className="border-t border-snd-bg pt-3 flex items-center justify-between">
                       <span className="text-sm font-semibold">{t("cart.subtotal", "Subtotal")}</span>
-                      <span className="text-accent font-bold">{useCartStore.getState().getSubtotal().toLocaleString("es-CO", { style: "currency", currency: "COP" })}</span>
+                      <span className="text-price font-bold">{useCartStore.getState().getSubtotal().toLocaleString("es-CO", { style: "currency", currency: "COP" })}</span>
                     </div>
 
                     <Link
@@ -459,7 +459,7 @@ function Navbar() {
           <button
             onClick={toggleTheme}
             className="self-center text-accent hover:rotate-12 transition cursor-pointer"
-            aria-label="Cambiar tema"
+            aria-label={t("navbar.changeTheme", "Cambiar tema")}
           >
             {theme === "light" ? <Moon size={22} /> : <Sun size={22} />}
           </button>

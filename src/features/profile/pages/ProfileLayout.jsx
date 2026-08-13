@@ -39,7 +39,7 @@ function ProfileLayout() {
               end={item.end}
               className={({ isActive }) =>
                 `whitespace-nowrap px-4 py-3 rounded-xl text-sm font-bold transition-colors ${
-                  isActive ? "bg-main text-white" : "text-text hover:bg-snd-bg"
+                  isActive ? "bg-main text-bg" : "text-text hover:bg-snd-bg"
                 }`
               }
             >

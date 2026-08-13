@@ -1,3 +1,4 @@
+import { useLingui } from "@lingui/react";
 import { usePlatformsByExpansion } from "../../features/catalog/hooks/usePlatforms";
 
 function PlatformSelector({
@@ -6,6 +7,8 @@ function PlatformSelector({
   onClose,
   onSelectPlatform,
 }) {
+  const { i18n } = useLingui();
+  const t = (id, message) => i18n._({ id, message });
   const { platforms, loading, error } =
     usePlatformsByExpansion(expansionId, isOpen);
 
@@ -25,7 +28,7 @@ function PlatformSelector({
         <button
           onClick={onClose}
           className="absolute top-5 right-5 text-3xl cursor-pointer text-text hover:text-main"
-          aria-label="Cerrar"
+          aria-label={t("common.close", "Cerrar")}
         >
           ×
         </button>
@@ -45,13 +48,13 @@ function PlatformSelector({
         {/* Error */}
         {error && !loading && (
           <div className="text-center">
-            <p className="text-red-400 mb-4">
+            <p className="text-error mb-4">
               {error}
             </p>
 
             <button
               onClick={onClose}
-              className="bg-main hover:bg-hover text-white font-bold py-2 px-5 rounded-xl"
+              className="bg-main hover:bg-hover text-bg font-bold py-2 px-5 rounded-xl"
             >
               Cerrar
             </button>
@@ -76,7 +79,7 @@ function PlatformSelector({
                 className="
                   bg-accent
                   hover:bg-accent/90
-                  text-white
+                  text-text
                   rounded-full
                   py-4
                   px-6

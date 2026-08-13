@@ -39,7 +39,7 @@ function OAuthProfileGate() {
             setShow(false);
             navigate("/completar-perfil");
           }}
-          className="w-full bg-main hover:bg-hover text-white rounded-full py-2.5 text-sm font-bold cursor-pointer transition"
+          className="w-full bg-main hover:bg-hover text-bg rounded-full py-2.5 text-sm font-bold cursor-pointer transition"
         >
           {t("oauth.completeProfile.button", "Completar mi perfil")}
         </button>

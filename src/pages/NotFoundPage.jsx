@@ -7,7 +7,7 @@ function NotFoundPage() {
       <p className="text-lg opacity-80">Esta página no existe.</p>
       <Link
         to="/"
-        className="mt-4 bg-main text-white px-6 py-3 rounded-full font-bold hover:bg-hover transition"
+        className="mt-4 bg-main text-bg px-6 py-3 rounded-full font-bold hover:bg-hover transition"
       >
         Volver al inicio
       </Link>
