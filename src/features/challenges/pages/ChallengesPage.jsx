@@ -58,7 +58,10 @@ function ChallengesPage() {
       ) : error ? (
         <p className="text-text text-center py-10 min-[2560px]:py-16 min-[3840px]:py-20 min-[2560px]:text-3xl min-[3840px]:text-4xl">{error}</p>
       ) : (
-        <div className="grid grid-cols-[repeat(auto-fit,minmax(16rem,1fr))] gap-4 min-[2560px]:gap-6 min-[3840px]:gap-8">
+        <div
+          className="grid grid-cols-1 justify-start gap-4 min-[2560px]:gap-6 min-[3840px]:gap-8"
+          style={{ gridTemplateColumns: "repeat(auto-fit, minmax(24rem, 24rem))" }}
+        >
           {challenges.map((challenge) => (
             <CardChallenge
               key={challenge.id}

@@ -121,7 +121,7 @@ function CardChallenge({ challenge, subscription, userId, isAuthenticated, onSub
               </div>
 
               <div className="flex-1 min-w-0">
-                <h3 className="text-[1.9rem] sm:text-[2.25rem] min-[2560px]:text-[3rem] min-[3840px]:text-[4rem] font-bold text-text leading-tight line-clamp-2">{challenge.title}</h3>
+                <h3 className="text-[1.9rem] sm:text-[2.25rem] min-[2560px]:text-[3rem] min-[3840px]:text-[4rem] font-bold text-text leading-tight whitespace-normal break-normal">{challenge.title}</h3>
                 {dateRow}
               </div>
             </div>
