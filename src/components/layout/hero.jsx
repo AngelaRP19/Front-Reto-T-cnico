@@ -7,12 +7,12 @@ function Hero({ onExploreClick }) {
   return (
     <section className="flex flex-col lg:flex-row items-center justify-between text-center lg:text-left gap-10 lg:gap-0 px-5 py-10 md:px-20 md:py-[3.75rem] bg-snd-bg overflow-hidden transition-colors duration-[400ms]">
       <div className="w-full lg:w-auto lg:max-w-[25rem]">
-        <h2 className="text-[2.5rem] md:text-[2.25rem] text-text mb-[0.9375rem]">{t("hero.title", "Expande tu mundo")}</h2>
+        <h1 className="text-[2.5rem] md:text-[2.25rem] text-text mb-[0.9375rem]">{t("hero.title", "Expande tu mundo")}</h1>
         <p className="text-lg text-text mb-[1.5625rem]">{t("hero.description", "Descubre los últimos packs de expansión para PC y Móvil.")}</p>
 
         <button
           onClick={onExploreClick}
-          className="bg-accent text-white border-none px-6 py-3 rounded-lg font-bold cursor-pointer transition-colors duration-300 hover:bg-hover"
+          className="bg-accent text-text border-none px-6 py-3 rounded-lg font-bold cursor-pointer transition-colors duration-300 hover:bg-hover"
         >
           {t("hero.button", "Explorar")}
         </button>

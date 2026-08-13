@@ -45,6 +45,7 @@ const LANGUAGES = [
 
 function LanguageSelector() {
   const { i18n } = useLingui();
+  const t = (id, message) => i18n._({ id, message });
   const [locale, setLocale] = useState(() => normalizeLocale(i18n?.locale || getInitialLocale()));
   const [open, setOpen] = useState(false);
   const wrapperRef = useRef(null);
@@ -69,8 +70,8 @@ function LanguageSelector() {
       <button
         type="button"
         onClick={() => setOpen((prev) => !prev)}
-        className="flex items-center gap-2 bg-card-bg text-text border border-snd-bg rounded-full px-3 py-2 text-sm focus:outline-none hover:border-main transition"
-        aria-label="Select language"
+        className="flex items-center gap-2 bg-card-bg text-text border border-snd-bg rounded-full px-3 py-2 text-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-main focus-visible:ring-offset-2 focus-visible:ring-offset-bg hover:border-main transition"
+        aria-label={t("common.selectLanguage", "Select language")}
         aria-haspopup="listbox"
         aria-expanded={open}
       >

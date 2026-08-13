@@ -113,7 +113,7 @@ const ExpansionDetail = ({ data: expansion, onBack }) => {
               ===================================== */}
           <div className="md:w-1/2 bg-card-bg p-4 sm:p-6 flex items-center justify-center relative group overflow-hidden transition-colors duration-400">
 
-            <span className="absolute top-4 left-4 bg-accent text-bg text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider z-10 transition-opacity duration-200 ease-in-out group-hover:opacity-0 pointer-events-none">
+            <span className="absolute top-4 left-4 bg-accent text-text text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider z-10 transition-opacity duration-200 ease-in-out group-hover:opacity-0 pointer-events-none">
               {expansion.category}
             </span>
 
@@ -169,7 +169,7 @@ const ExpansionDetail = ({ data: expansion, onBack }) => {
                     key={idx}
                     className="flex items-start gap-2"
                   >
-                    <span className="text-accent font-bold">
+                    <span className="text-accent-text font-bold">
                       ✓
                     </span>
 
@@ -197,7 +197,7 @@ const ExpansionDetail = ({ data: expansion, onBack }) => {
                   )}
                 </span>
 
-                <span className="text-2xl font-black text-[var(--price-color)]">
+                <span className="text-2xl font-black text-price">
                   {expansion.price}
                 </span>
 
@@ -206,7 +206,7 @@ const ExpansionDetail = ({ data: expansion, onBack }) => {
               {/* Añadir al carrito */}
               <button
                 onClick={handleOpenPlatformSelector}
-                className="bg-main hover:bg-hover text-white font-bold py-3 px-6 rounded-2xl shadow-lg transition duration-300 cursor-pointer"
+                className="bg-main hover:bg-hover text-bg font-bold py-3 px-6 rounded-2xl shadow-lg transition duration-300 cursor-pointer"
               >
                 {t(
                   "cart.add",
@@ -289,7 +289,7 @@ const ExpansionDetail = ({ data: expansion, onBack }) => {
                         key={idx}
                         className="flex items-start gap-2"
                       >
-                        <span className="text-accent font-bold">
+                        <span className="text-accent-text font-bold">
                           ✓
                         </span>
 
@@ -322,7 +322,7 @@ const ExpansionDetail = ({ data: expansion, onBack }) => {
                         key={idx}
                         className="flex items-start gap-2"
                       >
-                        <span className="text-accent font-bold">
+                        <span className="text-accent-text font-bold">
                           ✓
                         </span>
 
@@ -389,7 +389,7 @@ const ExpansionDetail = ({ data: expansion, onBack }) => {
 
               <button
                 onClick={() => setCartMessage("")}
-                className="bg-main hover:bg-hover text-white font-bold px-5 py-2 rounded-lg transition duration-200"
+                className="bg-main hover:bg-hover text-bg font-bold px-5 py-2 rounded-lg transition duration-200"
               >
                 Cerrar
               </button>

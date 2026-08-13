@@ -7,7 +7,7 @@ import { translateErrorMessage } from "../../../utils/errorMessages";
 const STATUS_STYLES = {
   INICIADO: "bg-blue-100 text-blue-700",
   EN_PROGRESO: "bg-amber-100 text-amber-700",
-  FINALIZADO: "bg-accent/10 text-accent",
+  FINALIZADO: "bg-accent/10 text-accent-text",
   FALLIDO: "bg-red-100 text-red-700",
 };
 
@@ -80,8 +80,8 @@ function CardChallenge({ challenge, subscription, userId, isAuthenticated, onSub
   };
 
   const buttonColor = isSubscribed
-    ? "bg-red-500 hover:bg-red-600 text-white"
-    : "bg-accent hover:bg-accent/90 text-white";
+    ? "bg-red-600 hover:bg-red-700 text-white"
+    : "bg-accent hover:bg-accent/90 text-text";
 
   const buttonLabel = isSubscribed ? t("challenges.cancel", "Cancelar") : t("challenges.accept", "Aceptar");
 
@@ -131,7 +131,7 @@ function CardChallenge({ challenge, subscription, userId, isAuthenticated, onSub
             </div>
           </div>
 
-          {error && <p className="text-red-400 text-xs mt-2">{error}</p>}
+          {error && <p className="text-error text-xs mt-2">{error}</p>}
         </div>
       </div>
 
@@ -147,6 +147,7 @@ function CardChallenge({ challenge, subscription, userId, isAuthenticated, onSub
             <button
               onClick={() => setShowModal(false)}
               className="absolute top-4 right-4 text-2xl font-bold text-text hover:text-hover"
+              aria-label={t("common.close", "Cerrar")}
             >
               ×
             </button>
@@ -165,7 +166,7 @@ function CardChallenge({ challenge, subscription, userId, isAuthenticated, onSub
             <p className="text-sm opacity-80 mb-4">{challenge.description}</p>
             {dateRow}
 
-            {error && <p className="text-red-400 text-sm mt-3 mb-1">{error}</p>}
+            {error && <p className="text-error text-sm mt-3 mb-1">{error}</p>}
 
             <div className="mt-4">{renderButton("w-full")}</div>
           </div>
@@ -195,7 +196,7 @@ function CardChallenge({ challenge, subscription, userId, isAuthenticated, onSub
               <button
                 onClick={handleConfirmCancel}
                 disabled={submitting}
-                className="flex-1 bg-red-500 hover:bg-red-600 text-white rounded-full py-2.5 text-sm font-bold cursor-pointer disabled:opacity-60 transition"
+                className="flex-1 bg-red-600 hover:bg-red-700 text-white rounded-full py-2.5 text-sm font-bold cursor-pointer disabled:opacity-60 transition"
               >
                 {submitting ? "..." : t("challenges.cancelAction", "Cancelar reto")}
               </button>

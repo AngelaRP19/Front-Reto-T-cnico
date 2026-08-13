@@ -29,8 +29,8 @@ function ConfirmDialog({
           <button
             onClick={onConfirm}
             disabled={confirmDisabled}
-            className={`flex-1 rounded-full py-2.5 text-sm font-bold cursor-pointer disabled:opacity-60 transition text-white ${
-              danger ? "bg-red-500 hover:bg-red-600" : "bg-main hover:bg-hover"
+            className={`flex-1 rounded-full py-2.5 text-sm font-bold cursor-pointer disabled:opacity-60 transition ${
+              danger ? "bg-red-600 hover:bg-red-700 text-white" : "bg-main hover:bg-hover text-bg"
             }`}
           >
             {confirmLabel}

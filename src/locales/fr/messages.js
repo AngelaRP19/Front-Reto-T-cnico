@@ -1,4 +1,7 @@
 export const messages = {
+  "common.close": "Fermer",
+  "common.selectLanguage": "Choisir la langue",
+  "navbar.changeTheme": "Changer de thème",
   "auth.backToHome": "Retour à l'accueil",
   "auth.forgot.title": "Récupérer le mot de passe",
   "auth.forgot.email": "Courriel",
