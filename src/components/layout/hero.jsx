@@ -13,7 +13,7 @@ function Hero({ onExploreClick }) {
         <button
           type="button"
           onClick={onExploreClick}
-          className="self-center lg:self-start bg-accent text-text border-none px-7 py-3.5 lg:px-9 lg:py-4.5 lg:text-[1.35rem] min-[2560px]:px-14 min-[2560px]:py-6 min-[2560px]:text-[2.4rem] min-[3840px]:px-18 min-[3840px]:py-8 min-[3840px]:text-[3.4rem] rounded-lg min-[2560px]:rounded-2xl font-bold cursor-pointer transition-colors duration-300 hover:bg-hover"
+          className="self-center lg:self-start bg-accent text-text border-none px-6 py-3 lg:px-7 lg:py-3.5 lg:text-[1.05rem] min-[2560px]:px-8 min-[2560px]:py-3.5 min-[2560px]:text-[1.3rem] min-[3840px]:px-11 min-[3840px]:py-4 min-[3840px]:text-[1.75rem] rounded-lg min-[2560px]:rounded-2xl font-bold cursor-pointer transition-colors duration-300 hover:bg-hover"
         >
           {t("hero.button", "Explorar")}
         </button>

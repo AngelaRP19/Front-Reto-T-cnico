@@ -90,7 +90,7 @@ function Navbar() {
         <div className="flex items-center gap-2 min-[2560px]:gap-4">
           <button
             type="button"
-            className="text-[2rem] min-[2560px]:text-[2.75rem] min-[3840px]:text-[3.5rem] cursor-pointer text-text leading-none"
+            className="text-[2rem] min-[2560px]:text-[2.3rem] min-[3840px]:text-[2.9rem] cursor-pointer text-text leading-none"
             onClick={() => setMenuOpen(!menuOpen)}
             aria-label={t("navbar.openMenu", "Abrir menú")}
             aria-expanded={menuOpen}
@@ -100,7 +100,7 @@ function Navbar() {
           <LanguageSelector />
           <button
             onClick={toggleTheme}
-            className="text-accent min-[2560px]:scale-110 min-[3840px]:scale-125 hover:rotate-12 transition cursor-pointer"
+            className="text-accent min-[2560px]:scale-95 min-[3840px]:scale-105 hover:rotate-12 transition cursor-pointer"
             aria-label={t("navbar.changeTheme", "Cambiar tema")}
           >
             {theme === "light" ? <Moon size={20} /> : <Sun size={20} />}
@@ -119,13 +119,13 @@ function Navbar() {
           {canAccessCart(user) && (
             <div className="relative" ref={mobileCartWrapperRef}>
               <button
-                className="relative text-text min-[2560px]:scale-110 min-[3840px]:scale-125"
+                className="relative text-text min-[2560px]:scale-95 min-[3840px]:scale-105"
                 onClick={() => setShowCart((prev) => !prev)}
                 aria-label={t("cart.title", "Carrito")}
               >
                 <ShoppingCart size={22} />
                 {itemCount > 0 && (
-                  <span className="absolute -top-1.5 -right-1.5 min-[2560px]:-top-2 min-[2560px]:-right-2 bg-main text-bg rounded-full min-w-[1.125rem] h-[1.125rem] min-[2560px]:min-w-7 min-[2560px]:h-7 min-[3840px]:min-w-8 min-[3840px]:h-8 flex items-center justify-center px-1 min-[2560px]:px-1.5 text-[0.65rem] min-[2560px]:text-sm min-[3840px]:text-base">
+                  <span className="absolute -top-1.5 -right-1.5 min-[2560px]:-top-1.5 min-[2560px]:-right-1.5 bg-main text-bg rounded-full min-w-[1.125rem] h-[1.125rem] min-[2560px]:min-w-6 min-[2560px]:h-6 min-[3840px]:min-w-7 min-[3840px]:h-7 flex items-center justify-center px-1 min-[2560px]:px-1 text-[0.65rem] min-[2560px]:text-[0.75rem] min-[3840px]:text-[0.9rem]">
                     {itemCount}
                   </span>
                 )}
@@ -135,7 +135,7 @@ function Navbar() {
                 <div className="absolute right-0 top-full mt-2 min-[2560px]:mt-3 w-80 min-[2560px]:w-[28rem] min-[3840px]:w-[34rem] max-w-[90vw] bg-card-bg text-text rounded-2xl min-[2560px]:rounded-3xl shadow-2xl border border-snd-bg p-4 min-[2560px]:p-6 min-[3840px]:p-8 z-[1400]">
                   <div className="flex items-center justify-between mb-3">
                     <p className="font-bold text-lg min-[2560px]:text-3xl min-[3840px]:text-4xl">{t("cart.title", "Carrito")}</p>
-                    <button onClick={() => setShowCart(false)} className="text-sm min-[2560px]:text-xl min-[3840px]:text-2xl text-main font-semibold">{t("cart.close", "Cerrar")}</button>
+                    <button onClick={() => setShowCart(false)} className="text-sm min-[2560px]:text-[1rem] min-[3840px]:text-[1.25rem] text-main font-semibold">{t("cart.close", "Cerrar")}</button>
                   </div>
 
                   {cartItems.length === 0 ? (
@@ -150,7 +150,7 @@ function Navbar() {
                             <p className="text-sm min-[2560px]:text-xl min-[3840px]:text-2xl text-price font-semibold mt-1">{item.price}</p>
                           </div>
                           <div className="flex flex-col items-end gap-2">
-                            <button onClick={() => removeItem(item.id, item.platform)} className="text-xs min-[2560px]:text-base min-[3840px]:text-lg text-main font-semibold">
+                            <button onClick={() => removeItem(item.id, item.platform)} className="text-xs min-[2560px]:text-[0.9rem] min-[3840px]:text-[1.1rem] text-main font-semibold">
                               {t("cart.remove", "Quitar")}
                             </button>
                           </div>
@@ -171,7 +171,7 @@ function Navbar() {
                       <Link
                         to="/carrito"
                         onClick={() => setShowCart(false)}
-                        className="block w-full text-center rounded-full bg-main hover:bg-hover text-bg py-2 min-[2560px]:py-3 min-[3840px]:py-4 min-[2560px]:text-xl min-[3840px]:text-2xl font-semibold"
+                        className="block w-full text-center rounded-full bg-main hover:bg-hover text-bg py-2 min-[2560px]:py-2.5 min-[3840px]:py-3 min-[2560px]:text-[1rem] min-[3840px]:text-[1.2rem] font-semibold"
                       >
                         {t("cart.viewCart", "Ver carrito")}
                       </Link>
@@ -189,7 +189,7 @@ function Navbar() {
             <div className="relative" ref={mobileUserMenuRef}>
               <button
                 onClick={() => setShowUserMenu((prev) => !prev)}
-                className="w-9 h-9 rounded-full bg-main text-bg font-bold flex items-center justify-center hover:bg-hover transition-colors shadow-md text-sm"
+                className="w-9 h-9 min-[2560px]:w-10 min-[2560px]:h-10 min-[3840px]:w-11 min-[3840px]:h-11 rounded-full bg-main text-bg font-bold flex items-center justify-center hover:bg-hover transition-colors shadow-md text-sm min-[2560px]:text-[0.9rem] min-[3840px]:text-[1rem]"
                 aria-label={t("navbar.profileMenu", "Menú de perfil")}
               >
                 {initial}
@@ -229,7 +229,7 @@ function Navbar() {
                 navigate("/login");
                 setMenuOpen(false);
               }}
-              className="text-base sm:text-lg min-[2560px]:text-2xl min-[3840px]:text-3xl font-bold text-main hover:text-hover transition-colors"
+              className="text-base sm:text-lg min-[2560px]:text-[1.1rem] min-[3840px]:text-[1.45rem] font-bold text-main hover:text-hover transition-colors"
             >
               {t("navbar.login", "Iniciar sesión")}
             </button>
@@ -257,17 +257,17 @@ function Navbar() {
       >
         <ul className="flex flex-col items-center gap-[0.9375rem] md:gap-5 min-[2560px]:gap-6 lg:flex-row lg:gap-[1.875rem] min-[2560px]:lg:gap-8 lg:mr-auto list-none">
           <li>
-            <Link to="/" onClick={() => setMenuOpen(false)} className="no-underline text-text text-lg min-[2560px]:text-3xl min-[3840px]:text-4xl font-semibold transition-colors duration-300 hover:text-main">
+            <Link to="/" onClick={() => setMenuOpen(false)} className="no-underline text-text text-lg min-[2560px]:text-[2rem] min-[3840px]:text-[2.7rem] font-semibold transition-colors duration-300 hover:text-main">
               {t("navbar.home", "Inicio")}
             </Link>
           </li>
           <li>
-            <Link to="/#catalogo" onClick={() => setMenuOpen(false)} className="no-underline text-text text-lg min-[2560px]:text-3xl min-[3840px]:text-4xl font-semibold transition-colors duration-300 hover:text-main">
+            <Link to="/#catalogo" onClick={() => setMenuOpen(false)} className="no-underline text-text text-lg min-[2560px]:text-[2rem] min-[3840px]:text-[2.7rem] font-semibold transition-colors duration-300 hover:text-main">
               {t("navbar.catalog", "Catálogo")}
             </Link>
           </li>
           <li>
-            <Link to="/comunidad" onClick={() => setMenuOpen(false)} className="no-underline text-text text-lg min-[2560px]:text-3xl min-[3840px]:text-4xl font-semibold transition-colors duration-300 hover:text-main">
+            <Link to="/comunidad" onClick={() => setMenuOpen(false)} className="no-underline text-text text-lg min-[2560px]:text-[2rem] min-[3840px]:text-[2.7rem] font-semibold transition-colors duration-300 hover:text-main">
               {t("navbar.community", "Comunidad")}
             </Link>
           </li>
@@ -278,7 +278,7 @@ function Navbar() {
             <button
               onClick={() => setShowBetaCancelConfirm(true)}
               disabled={betaCancelSubmitting}
-              className="w-full max-w-sm lg:w-auto text-center px-4 py-2 min-[2560px]:px-6 min-[2560px]:py-4 min-[2560px]:text-2xl min-[3840px]:px-8 min-[3840px]:py-5 min-[3840px]:text-3xl rounded-full text-sm font-bold text-accent-text border-2 border-accent bg-accent/10 hover:bg-accent/20 transition cursor-pointer disabled:opacity-60"
+              className="w-full max-w-sm lg:w-auto text-center px-4 py-2 min-[2560px]:px-3.5 min-[2560px]:py-2 min-[2560px]:text-[1.1rem] min-[3840px]:px-5 min-[3840px]:py-2.5 min-[3840px]:text-[1.45rem] rounded-full text-sm font-bold text-accent-text border-2 border-accent bg-accent/10 hover:bg-accent/20 transition cursor-pointer disabled:opacity-60"
             >
               {t("profile.info.betaTester", "Beta tester")}
             </button>
@@ -287,7 +287,7 @@ function Navbar() {
               <button
                 onClick={handleBetaButtonClick}
                 disabled={betaSubmitting}
-                className="bg-accent text-text font-semibold w-full lg:w-auto px-4 sm:px-5 min-[2560px]:px-8 min-[3840px]:px-10 py-2.5 min-[2560px]:py-4 min-[3840px]:py-5 rounded-full transition-all duration-300 hover:scale-105 hover:shadow-[0_0_1.25rem_var(--accent-color)] active:scale-95 disabled:opacity-60 text-base sm:text-lg lg:text-xl min-[2560px]:text-2xl min-[3840px]:text-3xl"
+                className="bg-accent text-text font-semibold w-full lg:w-auto px-4 sm:px-5 min-[2560px]:px-[1.125rem] min-[3840px]:px-6 py-2 min-[2560px]:py-2 min-[3840px]:py-2.5 rounded-full transition-all duration-300 hover:scale-105 hover:shadow-[0_0_1.25rem_var(--accent-color)] active:scale-95 disabled:opacity-60 text-base sm:text-lg lg:text-xl min-[2560px]:text-[1.15rem] min-[3840px]:text-[1.5rem]"
               >
                 {t("beta.title", "¿Quieres ser beta tester?")}
               </button>
@@ -298,13 +298,13 @@ function Navbar() {
                   <div className="flex gap-2 min-[2560px]:gap-3">
                     <button
                       onClick={() => handleBetaConfirm(true)}
-                      className="flex-1 bg-accent text-text rounded-full py-2 min-[2560px]:py-3 min-[3840px]:py-4 text-sm min-[2560px]:text-xl min-[3840px]:text-2xl font-bold cursor-pointer"
+                      className="flex-1 bg-accent text-text rounded-full py-2 min-[2560px]:py-2.5 min-[3840px]:py-3 text-sm min-[2560px]:text-[1rem] min-[3840px]:text-[1.2rem] font-bold cursor-pointer"
                     >
                       {t("beta.yes", "Sí, quiero")}
                     </button>
                     <button
                       onClick={() => handleBetaConfirm(false)}
-                      className="flex-1 bg-snd-bg text-text rounded-full py-2 min-[2560px]:py-3 min-[3840px]:py-4 text-sm min-[2560px]:text-xl min-[3840px]:text-2xl font-bold cursor-pointer"
+                      className="flex-1 bg-snd-bg text-text rounded-full py-2 min-[2560px]:py-2.5 min-[3840px]:py-3 text-sm min-[2560px]:text-[1rem] min-[3840px]:text-[1.2rem] font-bold cursor-pointer"
                     >
                       {t("beta.no", "No, gracias")}
                     </button>
@@ -323,7 +323,7 @@ function Navbar() {
           <div className="hidden lg:flex lg:items-center lg:gap-[1.875rem] min-[2560px]:lg:gap-8 min-[3840px]:lg:gap-10">
           {!user ? (
             <button
-              className="w-full max-w-sm lg:w-auto bg-main text-bg px-5 py-2.5 min-[2560px]:px-8 min-[2560px]:py-4 min-[3840px]:px-10 min-[3840px]:py-5 rounded-full font-bold text-base sm:text-lg lg:text-xl min-[2560px]:text-2xl min-[3840px]:text-3xl hover:bg-hover transition"
+              className="w-full max-w-sm lg:w-auto bg-main text-bg px-5 py-2 min-[2560px]:px-5 min-[2560px]:py-2 min-[3840px]:px-7 min-[3840px]:py-2.5 rounded-full font-bold text-base sm:text-lg lg:text-xl min-[2560px]:text-[1.15rem] min-[3840px]:text-[1.5rem] hover:bg-hover transition"
               onClick={() => {
                 navigate("/login");
                 setMenuOpen(false);
@@ -335,7 +335,7 @@ function Navbar() {
             <div className="relative" ref={userMenuRef}>
               <button
                 onClick={() => setShowUserMenu((prev) => !prev)}
-                className="w-10 h-10 min-[2560px]:w-14 min-[2560px]:h-14 min-[3840px]:w-16 min-[3840px]:h-16 rounded-full bg-main text-bg font-bold flex items-center justify-center min-[2560px]:text-xl min-[3840px]:text-2xl hover:bg-hover transition-colors shadow-md"
+                className="w-10 h-10 min-[2560px]:w-10 min-[2560px]:h-10 min-[3840px]:w-11 min-[3840px]:h-11 rounded-full bg-main text-bg font-bold flex items-center justify-center min-[2560px]:text-[0.8rem] min-[3840px]:text-[0.95rem] hover:bg-hover transition-colors shadow-md"
                 aria-label={t("navbar.profileMenu", "Menú de perfil")}
               >
                 {initial}
@@ -373,7 +373,7 @@ function Navbar() {
           {canAccessCart(user) ? (
             <div className="relative" ref={cartWrapperRef}>
               <button
-                className="flex items-center gap-2 min-[2560px]:gap-3 px-4 py-2 min-[2560px]:px-6 min-[2560px]:py-3.5 min-[3840px]:px-8 min-[3840px]:py-4.5 rounded-full bg-snd-bg text-text font-semibold text-base lg:text-xl min-[2560px]:text-2xl min-[3840px]:text-3xl border border-snd-bg hover:border-main transition"
+                className="flex items-center gap-2 min-[2560px]:gap-1.5 px-3 py-2 min-[2560px]:px-4 min-[2560px]:py-2 min-[3840px]:px-5 min-[3840px]:py-2.5 rounded-full bg-snd-bg text-text font-semibold text-base lg:text-xl min-[2560px]:text-[1.1rem] min-[3840px]:text-[1.4rem] border border-snd-bg hover:border-main transition"
                 onClick={() => {
                   setShowCart(true);
                   setCheckoutMessage("");
@@ -381,7 +381,7 @@ function Navbar() {
               >
                 <ShoppingCart size={18} /> {t("cart.title", "Carrito")}
                 {itemCount > 0 && (
-                  <span className="bg-main text-bg rounded-full min-w-6 h-6 min-[2560px]:min-w-8 min-[2560px]:h-8 min-[3840px]:min-w-9 min-[3840px]:h-9 flex items-center justify-center px-2 min-[2560px]:px-2.5 text-sm min-[2560px]:text-base min-[3840px]:text-lg">
+                  <span className="bg-main text-bg rounded-full min-w-6 h-6 min-[2560px]:min-w-6 min-[2560px]:h-6 min-[3840px]:min-w-7 min-[3840px]:h-7 flex items-center justify-center px-1.5 min-[2560px]:px-1.5 text-sm min-[2560px]:text-[0.75rem] min-[3840px]:text-[0.9rem]">
                     {itemCount}
                   </span>
                 )}
@@ -409,14 +409,14 @@ function Navbar() {
                           <div className="flex items-center gap-2">
                             <button
                               onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                              className="w-7 h-7 min-[2560px]:w-9 min-[2560px]:h-9 min-[3840px]:w-10 min-[3840px]:h-10 rounded-full bg-bg text-text font-bold min-[2560px]:text-xl"
+                              className="w-7 h-7 min-[2560px]:w-8 min-[2560px]:h-8 min-[3840px]:w-9 min-[3840px]:h-9 rounded-full bg-bg text-text font-bold min-[2560px]:text-[1rem]"
                             >
                               −
                             </button>
                             <span className="text-sm min-[2560px]:text-xl min-[3840px]:text-2xl font-semibold">{item.quantity}</span>
                             <button
                               onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                              className="w-7 h-7 min-[2560px]:w-9 min-[2560px]:h-9 min-[3840px]:w-10 min-[3840px]:h-10 rounded-full bg-bg text-text font-bold min-[2560px]:text-xl"
+                              className="w-7 h-7 min-[2560px]:w-8 min-[2560px]:h-8 min-[3840px]:w-9 min-[3840px]:h-9 rounded-full bg-bg text-text font-bold min-[2560px]:text-[1rem]"
                             >
                               +
                             </button>
@@ -433,7 +433,7 @@ function Navbar() {
                       <span className="text-accent min-[2560px]:text-xl min-[3840px]:text-2xl font-bold">{useCartStore.getState().getSubtotal().toLocaleString("es-CO", { style: "currency", currency: "COP" })}</span>
                     </div>
 
-                    <button onClick={() => clearCart()} className="w-full rounded-full bg-main text-white py-2 min-[2560px]:py-3 min-[3840px]:py-4 min-[2560px]:text-xl min-[3840px]:text-2xl font-semibold">
+                    <button onClick={() => clearCart()} className="w-full rounded-full bg-main text-white py-2 min-[2560px]:py-2 min-[3840px]:py-2.5 min-[2560px]:text-[0.9rem] min-[3840px]:text-[1.1rem] font-semibold">
                       {t("cart.clear", "Vaciar carrito")}
                     </button>
                   </div>
@@ -447,7 +447,7 @@ function Navbar() {
 
           <button
             onClick={toggleTheme}
-            className="self-center text-accent min-[2560px]:scale-110 min-[3840px]:scale-125 hover:rotate-12 transition cursor-pointer"
+            className="self-center text-accent min-[2560px]:scale-95 min-[3840px]:scale-105 hover:rotate-12 transition cursor-pointer"
             aria-label={t("navbar.changeTheme", "Cambiar tema")}
           >
             {theme === "light" ? <Moon size={22} /> : <Sun size={22} />}
