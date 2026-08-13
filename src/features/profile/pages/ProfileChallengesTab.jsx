@@ -52,22 +52,19 @@ function ProfileChallengesTab() {
 
   return (
     <div className="w-full min-[2560px]:w-[96%] min-[3840px]:w-[98%]">
-      <h1 className="text-2xl min-[2560px]:text-5xl min-[3840px]:text-7xl font-extrabold text-text mb-2 min-[2560px]:mb-4">{t("profile.challenges.title", "Mis retos")}</h1>
-      <p className="text-text opacity-70 mb-6 min-[2560px]:mb-10 min-[2560px]:text-xl min-[3840px]:text-3xl">
+      <h1 className="text-2xl min-[2560px]:text-5xl min-[3840px]:text-8xl font-extrabold text-text mb-2 min-[2560px]:mb-4 min-[3840px]:mb-6">{t("profile.challenges.title", "Mis retos")}</h1>
+      <p className="text-text opacity-70 mb-6 min-[2560px]:mb-10 min-[2560px]:text-xl min-[3840px]:text-[3.8rem]">
         {t("profile.challenges.completed", "Retos finalizados")}: <span className="font-bold text-accent-text">{user?.completedChallenges ?? 0}</span>
       </p>
 
       {loading ? (
-        <p className="text-text text-center py-10 min-[2560px]:py-16 min-[3840px]:py-20 min-[2560px]:text-3xl min-[3840px]:text-4xl">{t("profile.challenges.loading", "Cargando retos...")}</p>
+        <p className="text-text text-center py-10 min-[2560px]:py-16 min-[3840px]:py-20 min-[2560px]:text-3xl min-[3840px]:text-[4.4rem]">{t("profile.challenges.loading", "Cargando retos...")}</p>
       ) : error ? (
-        <p className="text-text text-center py-10 min-[2560px]:py-16 min-[3840px]:py-20 min-[2560px]:text-3xl min-[3840px]:text-4xl">{error}</p>
+        <p className="text-text text-center py-10 min-[2560px]:py-16 min-[3840px]:py-20 min-[2560px]:text-3xl min-[3840px]:text-[4.4rem]">{error}</p>
       ) : acceptedChallenges.length === 0 ? (
-        <p className="text-text opacity-70 text-center py-10 min-[2560px]:py-16 min-[3840px]:py-20 min-[2560px]:text-2xl min-[3840px]:text-4xl">{t("profile.challenges.empty", "Todavía no aceptaste ningún reto.")}</p>
+        <p className="text-text opacity-70 text-center py-10 min-[2560px]:py-16 min-[3840px]:py-20 min-[2560px]:text-2xl min-[3840px]:text-[4.4rem]">{t("profile.challenges.empty", "Todavía no aceptaste ningún reto.")}</p>
       ) : (
-        <div
-          className="grid grid-cols-1 justify-start gap-4 min-[2560px]:gap-6 min-[3840px]:gap-8"
-          style={{ gridTemplateColumns: "repeat(auto-fit, minmax(24rem, 24rem))" }}
-        >
+        <div className="grid grid-cols-1 sm:grid-cols-[repeat(auto-fit,minmax(26rem,26rem))] min-[2560px]:grid-cols-[repeat(auto-fit,minmax(34rem,34rem))] min-[3840px]:grid-cols-[repeat(auto-fit,minmax(42rem,42rem))] justify-start gap-4 min-[2560px]:gap-6 min-[3840px]:gap-10">
           {acceptedChallenges.map((challenge) => (
             <CardChallenge
               key={challenge.id}

@@ -50,18 +50,15 @@ function ChallengesPage() {
 
   return (
     <div className="w-full max-w-none ml-0 mr-auto px-5 min-[2560px]:px-10 min-[3840px]:px-14 py-10 min-[2560px]:py-16 min-[3840px]:py-24">
-    <h1 className="text-3xl sm:text-4xl min-[2560px]:text-6xl min-[3840px]:text-8xl font-extrabold text-text mb-3 min-[2560px]:mb-5">{t("challenges.title", "Retos")}</h1>
-     <p className="text-text opacity-80 mb-8 min-[2560px]:mb-12 text-lg sm:text-xl min-[2560px]:text-3xl min-[3840px]:text-4xl">{t("challenges.description", "Descubrí los desafíos disponibles para tu cuenta.")} </p>
+    <h1 className="text-4xl sm:text-5xl lg:text-6xl min-[2560px]:text-7xl min-[3840px]:text-[9rem] font-extrabold text-text mb-4 lg:mb-6 min-[2560px]:mb-5 min-[3840px]:mb-7">{t("challenges.title", "Retos")}</h1>
+     <p className="text-text opacity-80 mb-8 lg:mb-10 min-[2560px]:mb-12 text-xl sm:text-2xl lg:text-[2rem] min-[2560px]:text-3xl min-[3840px]:text-[4.6rem] max-w-[42ch]">{t("challenges.description", "Descubrí los desafíos disponibles para tu cuenta.")} </p>
 
       {loading ? (
-        <p className="text-text text-center py-10 min-[2560px]:py-16 min-[3840px]:py-20 min-[2560px]:text-3xl min-[3840px]:text-4xl">{t("challenges.loading", "Cargando retos...")}</p>
+        <p className="text-text text-center py-10 min-[2560px]:py-16 min-[3840px]:py-20 text-2xl lg:text-[2.4rem] min-[2560px]:text-3xl min-[3840px]:text-[4.6rem]">{t("challenges.loading", "Cargando retos...")}</p>
       ) : error ? (
-        <p className="text-text text-center py-10 min-[2560px]:py-16 min-[3840px]:py-20 min-[2560px]:text-3xl min-[3840px]:text-4xl">{error}</p>
+        <p className="text-text text-center py-10 min-[2560px]:py-16 min-[3840px]:py-20 text-2xl lg:text-[2.4rem] min-[2560px]:text-3xl min-[3840px]:text-[4.6rem]">{error}</p>
       ) : (
-        <div
-          className="grid grid-cols-1 justify-start gap-4 min-[2560px]:gap-6 min-[3840px]:gap-8"
-          style={{ gridTemplateColumns: "repeat(auto-fit, minmax(24rem, 24rem))" }}
-        >
+        <div className="grid grid-cols-1 sm:grid-cols-[repeat(auto-fit,minmax(26rem,26rem))] min-[2560px]:grid-cols-[repeat(auto-fit,minmax(34rem,34rem))] min-[3840px]:grid-cols-[repeat(auto-fit,minmax(42rem,42rem))] justify-start gap-4 min-[2560px]:gap-6 min-[3840px]:gap-10">
           {challenges.map((challenge) => (
             <CardChallenge
               key={challenge.id}

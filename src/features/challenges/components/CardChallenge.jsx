@@ -87,30 +87,31 @@ function CardChallenge({ challenge, subscription, userId, isAuthenticated, onSub
 
   const renderButton = (widthClass) => (
     <button
+      type="button"
       onClick={handleToggle}
       disabled={submitting}
-      className={`${widthClass} px-6 py-2.5 min-[2560px]:px-10 min-[2560px]:py-4 min-[2560px]:text-[2rem] min-[3840px]:px-12 min-[3840px]:py-5 min-[3840px]:text-[2.7rem] rounded-full font-semibold text-[1.35rem] transition-colors duration-200 cursor-pointer disabled:opacity-60 ${buttonColor}`}
+      className={`${widthClass} px-6 py-2.5 lg:px-8 lg:py-3.5 lg:text-[1.6rem] min-[2560px]:px-10 min-[2560px]:py-4 min-[2560px]:text-[2rem] min-[3840px]:px-14 min-[3840px]:py-6 min-[3840px]:text-[3.2rem] rounded-full font-semibold text-[1.35rem] transition-colors duration-200 cursor-pointer disabled:opacity-60 ${buttonColor}`}
     >
       {submitting ? "..." : buttonLabel}
     </button>
   );
 
   const dateRow = (
-    <p className="text-xl sm:text-2xl min-[2560px]:text-[1.9rem] min-[3840px]:text-[2.35rem] text-text opacity-85 mt-1 min-[2560px]:mt-2 flex items-center gap-2 min-[2560px]:gap-3 flex-wrap">
+    <p className="text-xl sm:text-2xl lg:text-[1.65rem] min-[2560px]:text-[1.9rem] min-[3840px]:text-[2.9rem] text-text opacity-85 mt-1 min-[2560px]:mt-2 min-[3840px]:mt-3 flex items-center gap-2 min-[2560px]:gap-3 min-[3840px]:gap-4 flex-wrap">
       <span>{t("challenges.start", "Inicio")}: {challenge.startDate} · {t("challenges.end", "Fin")}: {challenge.endDate}</span>
       {statusLabel && (
-        <span className={`px-2 py-0.5 min-[2560px]:px-3 min-[2560px]:py-1 min-[3840px]:px-4 min-[3840px]:py-1.5 rounded-full text-xl min-[2560px]:text-[1.45rem] min-[3840px]:text-[1.7rem] font-bold ${statusStyle}`}>{statusLabel}</span>
+        <span className={`px-2 py-0.5 min-[2560px]:px-3 min-[2560px]:py-1 min-[3840px]:px-5 min-[3840px]:py-2 rounded-full text-xl min-[2560px]:text-[1.45rem] min-[3840px]:text-[2.2rem] font-bold ${statusStyle}`}>{statusLabel}</span>
       )}
     </p>
   );
 
   return (
     <>
-      <div onClick={() => setShowModal(true)} className="w-full cursor-pointer">
-        <div className="bg-card-bg border border-snd-bg rounded-2xl min-[2560px]:rounded-3xl p-5 sm:p-6 min-[2560px]:p-8 min-[3840px]:p-10 shadow-sm transition-colors duration-300 hover:border-main">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-            <div className="flex items-center gap-3 sm:gap-4 flex-1 min-w-0">
-              <div className="relative w-14 h-14 sm:w-16 sm:h-16 min-[2560px]:w-24 min-[2560px]:h-24 min-[3840px]:w-28 min-[3840px]:h-28 rounded-xl min-[2560px]:rounded-2xl bg-snd-bg overflow-hidden shrink-0">
+      <div onClick={() => setShowModal(true)} className="w-full h-full cursor-pointer">
+        <div className="bg-card-bg border border-snd-bg rounded-2xl min-[2560px]:rounded-3xl p-5 sm:p-6 lg:p-7 min-[2560px]:p-8 min-[3840px]:p-12 shadow-sm transition-colors duration-300 hover:border-main h-full flex flex-col">
+          <div className="flex items-start gap-3 sm:gap-4 min-[3840px]:gap-6 min-w-0 min-h-[8.5rem] min-[2560px]:min-h-[12rem] min-[3840px]:min-h-[16rem]">
+            <div className="flex items-center gap-3 sm:gap-4 min-[3840px]:gap-6 flex-1 min-w-0">
+              <div className="relative w-14 h-14 sm:w-16 sm:h-16 min-[2560px]:w-24 min-[2560px]:h-24 min-[3840px]:w-32 min-[3840px]:h-32 rounded-xl min-[2560px]:rounded-2xl bg-snd-bg overflow-hidden shrink-0">
                 {challenge.image ? (
                   <img src={challenge.image} alt={challenge.title} className="w-full h-full object-cover" />
                 ) : (
@@ -121,17 +122,17 @@ function CardChallenge({ challenge, subscription, userId, isAuthenticated, onSub
               </div>
 
               <div className="flex-1 min-w-0">
-                <h3 className="text-[1.9rem] sm:text-[2.25rem] min-[2560px]:text-[3rem] min-[3840px]:text-[4rem] font-bold text-text leading-tight whitespace-normal break-normal">{challenge.title}</h3>
+                <h3 className="text-[2.1rem] sm:text-[2.35rem] lg:text-[2.8rem] min-[2560px]:text-[3rem] min-[3840px]:text-[4.6rem] font-bold text-text leading-tight whitespace-normal break-normal">{challenge.title}</h3>
                 {dateRow}
               </div>
             </div>
-
-            <div className="w-full sm:w-auto flex justify-end shrink-0">
-              {renderButton("w-full sm:w-auto")}
-            </div>
           </div>
 
-          {error && <p className="text-error text-lg min-[2560px]:text-2xl min-[3840px]:text-[2.4rem] mt-2">{error}</p>}
+          <div className="mt-auto pt-4 min-[2560px]:pt-6 min-[3840px]:pt-8 flex justify-end">
+            {renderButton("w-full sm:w-auto min-[3840px]:min-w-[12rem]")}
+          </div>
+
+          {error && <p className="text-error text-lg min-[2560px]:text-2xl min-[3840px]:text-[2.8rem] mt-2 min-[3840px]:mt-4">{error}</p>}
         </div>
       </div>
 
