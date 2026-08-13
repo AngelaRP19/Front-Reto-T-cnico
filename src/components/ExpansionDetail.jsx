@@ -197,7 +197,7 @@ const ExpansionDetail = ({ data: expansion, onBack }) => {
                   )}
                 </span>
 
-                <span className="text-2xl font-black text-accent">
+                <span className="text-2xl font-black text-[var(--price-color)]">
                   {expansion.price}
                 </span>
 
@@ -212,7 +212,7 @@ const ExpansionDetail = ({ data: expansion, onBack }) => {
                   "cart.add",
                   "Añadir al carrito"
                 )}{" "}
-                🛒
+                
               </button>
 
             </div>

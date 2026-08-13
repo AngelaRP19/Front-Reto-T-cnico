@@ -9,6 +9,7 @@ import ProfileLayout from "./features/profile/pages/ProfileLayout";
 import ProfileInfoTab from "./features/profile/pages/ProfileInfoTab";
 import ProfileChallengesTab from "./features/profile/pages/ProfileChallengesTab";
 import ProfilePurchasesTab from "./features/profile/pages/ProfilePurchasesTab";
+import ProfileBetaTestingTab from "./features/profile/pages/ProfileBetaTestingTab";
 import ProfileSettingsTab from "./features/profile/pages/ProfileSettingsTab";
 import LoginPage from "./features/auth/pages/loginPage";
 import RegisterPage from "./features/auth/pages/registerPage";
@@ -47,6 +48,7 @@ function App() {
             <Route index element={<ProfileInfoTab />} />
             <Route path="retos" element={<ProfileChallengesTab />} />
             <Route path="compras" element={<ProfilePurchasesTab />} />
+            <Route path="beta-testing" element={<ProfileBetaTestingTab />} />
             <Route path="configuracion" element={<ProfileSettingsTab />} />
           </Route>
         </Route>
