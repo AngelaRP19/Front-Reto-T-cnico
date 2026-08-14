@@ -3,27 +3,80 @@ import { Routes, Route } from "react-router-dom";
 import MainLayout from "./components/layout/MainLayout";
 import RequireAuth from "./components/common/RequireAuth";
 import HomePage from "./features/catalog/pages/HomePage";
-import ExpansionDetailPage from "./features/catalog/pages/ExpansionDetailPage";
-import ChallengesPage from "./features/challenges/pages/ChallengesPage";
-import ProfileLayout from "./features/profile/pages/ProfileLayout";
-import ProfileInfoTab from "./features/profile/pages/ProfileInfoTab";
-import ProfileChallengesTab from "./features/profile/pages/ProfileChallengesTab";
-import ProfilePurchasesTab from "./features/profile/pages/ProfilePurchasesTab";
-import ProfileBetaTestingTab from "./features/profile/pages/ProfileBetaTestingTab";
-import ProfileSettingsTab from "./features/profile/pages/ProfileSettingsTab";
-import LoginPage from "./features/auth/pages/loginPage";
-import RegisterPage from "./features/auth/pages/registerPage";
-import ForgotPasswordPage from "./features/auth/pages/ForgotPasswordPage";
-import ResetPasswordPage from "./features/auth/pages/ResetPasswordPage";
-import CompleteProfilePage from "./features/auth/pages/CompleteProfilePage";
 import OAuthProfileGate from "./features/auth/components/OAuthProfileGate";
-import NotFoundPage from "./pages/NotFoundPage";
-import { CartPage } from "./features/cart/CartPage";
+import { lazy, Suspense } from "react";
+
+const ExpansionDetailPage = lazy(() =>
+  import("./features/catalog/pages/ExpansionDetailPage")
+);
+
+const ChallengesPage = lazy(() =>
+  import("./features/challenges/pages/ChallengesPage")
+);
+
+const ProfileLayout = lazy(() =>
+  import("./features/profile/pages/ProfileLayout")
+);
+
+const ProfileInfoTab = lazy(() =>
+  import("./features/profile/pages/ProfileInfoTab")
+);
+
+const ProfileChallengesTab = lazy(() =>
+  import("./features/profile/pages/ProfileChallengesTab")
+);
+
+const ProfilePurchasesTab = lazy(() =>
+  import("./features/profile/pages/ProfilePurchasesTab")
+);
+
+const ProfileBetaTestingTab = lazy(() =>
+  import("./features/profile/pages/ProfileBetaTestingTab")
+);
+
+const ProfileSettingsTab = lazy(() =>
+  import("./features/profile/pages/ProfileSettingsTab")
+);
+
+const LoginPage = lazy(() =>
+  import("./features/auth/pages/loginPage")
+);
+
+const RegisterPage = lazy(() =>
+  import("./features/auth/pages/registerPage")
+);
+
+const ForgotPasswordPage = lazy(() =>
+  import("./features/auth/pages/ForgotPasswordPage")
+);
+
+const ResetPasswordPage = lazy(() =>
+  import("./features/auth/pages/ResetPasswordPage")
+);
+
+const CompleteProfilePage = lazy(() =>
+  import("./features/auth/pages/CompleteProfilePage")
+);
+
+const NotFoundPage = lazy(() =>
+  import("./pages/NotFoundPage")
+);
+
+const CartPage = lazy(() =>
+  import("./features/cart/CartPage")
+);
 
 function App() {
   return (
     <>
       <OAuthProfileGate />
+      <Suspense
+      fallback={
+        <div className="min-h-screen flex items-center justify-center bg-main-bg text-text">
+          Cargando...
+        </div>
+        }
+      >
       <Routes>
         <Route element={<MainLayout />}>
           <Route path="/" element={<HomePage />} />
@@ -66,6 +119,7 @@ function App() {
         />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
+      </Suspense>
     </>
   );
 }
