@@ -42,8 +42,8 @@ function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen w-full flex items-center justify-center bg-bg px-5 py-10 transition-colors duration-400">
-      <div className="w-full max-w-[23.75rem] flex flex-col items-center text-center">
+    <div className="min-h-screen w-full flex items-center justify-center bg-bg px-5 py-10 min-[2560px]:px-12 min-[2560px]:py-16 min-[3840px]:px-20 min-[3840px]:py-24 transition-colors duration-400">
+      <div className="w-full max-w-[23.75rem] min-[2560px]:max-w-[42rem] min-[3840px]:max-w-[56rem] flex flex-col items-center text-center">
         <div
           onClick={() => navigate("/")}
           title={t("auth.backToHome", "Volver al inicio")}
@@ -52,11 +52,11 @@ function LoginPage() {
           <img 
             src="https://res.cloudinary.com/w1jl4sa5/image/upload/v1784825556/Logo_of_The_Sims_4.svg_jagzsl.webp" 
             alt="Logo" 
-            className="w-[7.5rem] h-[7.5rem] object-contain" 
+            className="w-[7.5rem] h-[7.5rem] min-[2560px]:w-[11rem] min-[2560px]:h-[11rem] min-[3840px]:w-[14rem] min-[3840px]:h-[14rem] object-contain" 
           />
         </div>
 
-        <h1 className="font-nunito text-2xl font-extrabold text-text mb-7 transition-colors duration-400">
+        <h1 className="font-nunito text-2xl min-[2560px]:text-5xl min-[3840px]:text-7xl font-extrabold text-text mb-7 min-[2560px]:mb-12 transition-colors duration-400">
           {t("login.title", "Iniciar sesión")}
         </h1>
 

@@ -28,12 +28,12 @@ function ExpansionDetailPage() {
   }, [equivalent, navigate]);
 
   if (loading) {
-    return <p className="text-text w-full text-center py-20">Cargando...</p>;
+    return <p className="text-text w-full text-center py-20 min-[2560px]:py-28 min-[3840px]:py-36 min-[2560px]:text-3xl min-[3840px]:text-5xl">Cargando...</p>;
   }
 
   if (!pack) {
     if (equivalent) {
-      return <p className="text-text w-full text-center py-20">Cargando...</p>;
+      return <p className="text-text w-full text-center py-20 min-[2560px]:py-28 min-[3840px]:py-36 min-[2560px]:text-3xl min-[3840px]:text-5xl">Cargando...</p>;
     }
     return <NotFoundPage />;
   }

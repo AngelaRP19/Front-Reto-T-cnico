@@ -6,6 +6,7 @@ import useCartStore from "../store/cartStore";
 import { canAccessCart } from "../utils/cartAccess";
 import PlatformSelector from "./PlatformSelector/PlatformSelector";
 import { getPlatforms } from "../features/catalog/services/platformsService";
+import { getMyPurchases } from "../features/profile/services/purchasesService";
 
 const ExpansionDetail = ({ data: expansion, onBack }) => {
   const { i18n } = useLingui();
@@ -60,6 +61,32 @@ const ExpansionDetail = ({ data: expansion, onBack }) => {
       matched = undefined;
     }
 
+    /*
+     * Ya comprado en otra compra
+     *
+     * La misma expansión para la misma plataforma
+     * no puede volver a comprarse, aunque no esté
+     * en el carrito actual.
+     */
+    try {
+      const purchases = await getMyPurchases();
+      const alreadyPurchased = (purchases || []).some((purchase) =>
+        purchase.items?.some(
+          (purchasedItem) =>
+            purchasedItem.expansionPack?.id === expansion.id &&
+            purchasedItem.platform?.name?.toLowerCase() === platform.name.toLowerCase()
+        )
+      );
+
+      if (alreadyPurchased) {
+        setShowPlatformSelector(false);
+        setCartMessage(`Ya tienes "${expansion.title}" para la plataforma ${platform.name}.`);
+        return;
+      }
+    } catch {
+      // Si falla la consulta de compras, se continúa con la validación del carrito.
+    }
+
     const result = addItem({
       id: expansion.id,
       title: expansion.title,
@@ -88,15 +115,15 @@ const ExpansionDetail = ({ data: expansion, onBack }) => {
 
   return (
     <>
-    <div className="min-h-screen bg-bg text-text py-6 sm:py-10 px-4 sm:px-6 lg:px-8 transition-colors duration-400">
-      <div className="max-w-5xl mx-auto">
+    <div className="min-h-screen bg-bg text-text py-6 sm:py-10 min-[2560px]:py-16 min-[3840px]:py-24 px-4 sm:px-6 lg:px-8 min-[2560px]:px-14 min-[3840px]:px-20 transition-colors duration-400">
+      <div className="max-w-5xl min-[2560px]:max-w-[96rem] min-[3840px]:max-w-[130rem] mx-auto">
 
       {/* =========================================
           BOTÓN REGRESAR
           ========================================= */}
       <button
         onClick={onBack}
-        className="mb-6 flex items-center gap-2 text-sm font-bold text-main hover:text-hover transition duration-200 cursor-pointer"
+        className="mb-6 min-[2560px]:mb-10 flex items-center gap-2 min-[2560px]:gap-3 text-sm min-[2560px]:text-xl min-[3840px]:text-3xl font-bold text-main hover:text-hover transition duration-200 cursor-pointer"
       >
         ← {t("catalog.back", "Volver al catálogo")}
       </button>
@@ -132,7 +159,7 @@ const ExpansionDetail = ({ data: expansion, onBack }) => {
             <div>
 
               {/* Título */}
-              <h1 className="text-3xl font-extrabold text-text mb-2 transition-colors duration-400">
+              <h1 className="text-3xl min-[2560px]:text-5xl min-[3840px]:text-7xl font-extrabold text-text mb-2 min-[2560px]:mb-4 transition-colors duration-400">
                 {expansion.title}
               </h1>
 
@@ -150,7 +177,7 @@ const ExpansionDetail = ({ data: expansion, onBack }) => {
               </div>
 
               {/* Descripción */}
-              <p className="text-text mb-6 text-sm leading-relaxed transition-colors duration-400">
+              <p className="text-text mb-6 min-[2560px]:mb-8 text-sm min-[2560px]:text-xl min-[3840px]:text-3xl leading-relaxed transition-colors duration-400">
                 {expansion.description}
               </p>
 
@@ -197,7 +224,7 @@ const ExpansionDetail = ({ data: expansion, onBack }) => {
                   )}
                 </span>
 
-                <span className="text-2xl font-black text-price">
+                <span className="text-2xl min-[2560px]:text-4xl min-[3840px]:text-6xl font-black text-price">
                   {expansion.price}
                 </span>
 
@@ -206,7 +233,7 @@ const ExpansionDetail = ({ data: expansion, onBack }) => {
               {/* Añadir al carrito */}
               <button
                 onClick={handleOpenPlatformSelector}
-                className="bg-main hover:bg-hover text-bg font-bold py-3 px-6 rounded-2xl shadow-lg transition duration-300 cursor-pointer"
+                className="bg-main hover:bg-hover text-bg font-bold py-3 px-6 min-[2560px]:py-5 min-[2560px]:px-10 min-[2560px]:text-2xl min-[3840px]:py-7 min-[3840px]:px-14 min-[3840px]:text-4xl rounded-2xl min-[2560px]:rounded-3xl shadow-lg transition duration-300 cursor-pointer"
               >
                 {t(
                   "cart.add",
@@ -368,20 +395,20 @@ const ExpansionDetail = ({ data: expansion, onBack }) => {
           ========================================= */}
       {cartMessage && (
         <div
-          className="fixed inset-0 bg-black/60 flex items-center justify-center z-[1500] p-4"
+          className="fixed inset-0 bg-black/60 flex items-center justify-center z-[1500] p-4 min-[2560px]:p-10 min-[3840px]:p-16"
           onClick={() => setCartMessage("")}
         >
 
           <div
-            className="bg-card-bg rounded-2xl p-6 w-full max-w-md shadow-xl"
+            className="bg-card-bg rounded-2xl min-[2560px]:rounded-3xl p-6 min-[2560px]:p-10 min-[3840px]:p-14 w-full max-w-md min-[2560px]:max-w-3xl min-[3840px]:max-w-5xl shadow-xl"
             onClick={(e) => e.stopPropagation()}
           >
 
-            <h2 className="text-xl font-bold mb-3 text-text">
+            <h2 className="text-xl min-[2560px]:text-4xl min-[3840px]:text-5xl font-bold mb-3 min-[2560px]:mb-5 text-text">
               Carrito
             </h2>
 
-            <p className="text-text mb-6">
+            <p className="text-text mb-6 min-[2560px]:mb-8 min-[2560px]:text-2xl min-[3840px]:text-4xl">
               {cartMessage}
             </p>
 
@@ -389,7 +416,7 @@ const ExpansionDetail = ({ data: expansion, onBack }) => {
 
               <button
                 onClick={() => setCartMessage("")}
-                className="bg-main hover:bg-hover text-bg font-bold px-5 py-2 rounded-lg transition duration-200"
+                className="bg-main hover:bg-hover text-bg font-bold px-5 py-2 min-[2560px]:px-9 min-[2560px]:py-4 min-[2560px]:text-2xl min-[3840px]:px-12 min-[3840px]:py-5 min-[3840px]:text-3xl rounded-lg min-[2560px]:rounded-2xl transition duration-200"
               >
                 Cerrar
               </button>
