@@ -255,6 +255,7 @@ function ProfileInfoTab() {
           title={t("profile.info.confirmTitle", "¿Guardar los cambios?")}
           body={t("profile.info.confirmBody", "Se van a actualizar los datos de tu perfil.")}
           confirmLabel={t("profile.info.confirmButton", "Guardar")}
+          cancelLabel={t("profile.info.cancel", "Cancelar")}
           onConfirm={handleConfirmSave}
           onCancel={() => setShowSaveConfirm(false)}
         />

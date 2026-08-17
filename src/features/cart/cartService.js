@@ -1,4 +1,5 @@
 import { apiClient, API_BASE_URL, getToken } from "../../services/apiClient";
+import { i18n } from "@lingui/core";
 
 export function addToBackendCart(expansionId, platformId) {
   return apiClient.post(`/nodos/cart/add?expansionId=${expansionId}&platformId=${platformId}`);
@@ -30,7 +31,10 @@ export async function purchaseCart(paymentMethod) {
   }
 
   if (!response.ok) {
-    const message = typeof data === "string" && data.trim() ? data : "No se pudo procesar la compra.";
+    const message =
+      typeof data === "string" && data.trim()
+        ? data
+        : i18n._({ id: "cart.page.purchaseError", message: "No se pudo procesar la compra." });
     throw new Error(message);
   }
 

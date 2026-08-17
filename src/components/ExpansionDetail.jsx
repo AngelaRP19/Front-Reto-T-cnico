@@ -18,7 +18,7 @@ const ExpansionDetail = ({ data: expansion, onBack }) => {
 
   const addItem = useCartStore((state) => state.addItem);
 
-  const t = (id, message) => i18n._({ id, message });
+  const t = (id, message, values) => i18n._({ id, message, values });
 
   /*
    * Abrir selector de plataforma
@@ -80,7 +80,12 @@ const ExpansionDetail = ({ data: expansion, onBack }) => {
 
       if (alreadyPurchased) {
         setShowPlatformSelector(false);
-        setCartMessage(`Ya tienes "${expansion.title}" para la plataforma ${platform.name}.`);
+        setCartMessage(
+          t("cart.duplicateItem", 'Ya tienes "{title}" para la plataforma {platform}.', {
+            title: expansion.title,
+            platform: platform.name,
+          })
+        );
         return;
       }
     } catch {
@@ -97,20 +102,7 @@ const ExpansionDetail = ({ data: expansion, onBack }) => {
     });
 
     setShowPlatformSelector(false);
-
-    /*
-     * Si el carrito devuelve un error,
-     * mostramos el mensaje.
-     */
-    if (!result?.success) {
-      setCartMessage(
-        result?.message ||
-          "No se pudo agregar el producto al carrito."
-      );
-      return;
-    }
-
-    setCartMessage("Producto agregado correctamente al carrito.");
+    setCartMessage(result.message);
   };
 
   return (
@@ -405,7 +397,7 @@ const ExpansionDetail = ({ data: expansion, onBack }) => {
           >
 
             <h2 className="text-xl min-[2560px]:text-4xl min-[3840px]:text-5xl font-bold mb-3 min-[2560px]:mb-5 text-text">
-              Carrito
+              {t("cart.title", "Carrito")}
             </h2>
 
             <p className="text-text mb-6 min-[2560px]:mb-8 min-[2560px]:text-2xl min-[3840px]:text-4xl">
@@ -418,7 +410,7 @@ const ExpansionDetail = ({ data: expansion, onBack }) => {
                 onClick={() => setCartMessage("")}
                 className="bg-main hover:bg-hover text-bg font-bold px-5 py-2 min-[2560px]:px-9 min-[2560px]:py-4 min-[2560px]:text-2xl min-[3840px]:px-12 min-[3840px]:py-5 min-[3840px]:text-3xl rounded-lg min-[2560px]:rounded-2xl transition duration-200"
               >
-                Cerrar
+                {t("common.close", "Cerrar")}
               </button>
 
             </div>

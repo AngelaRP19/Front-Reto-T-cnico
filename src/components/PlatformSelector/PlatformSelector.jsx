@@ -35,13 +35,13 @@ function PlatformSelector({
 
         {/* Título */}
         <h2 className="text-3xl min-[2560px]:text-5xl min-[3840px]:text-7xl font-bold text-center mb-8 min-[2560px]:mb-12 text-text">
-          Selecciona tu plataforma
+          {t("platformSelector.title", "Selecciona tu plataforma")}
         </h2>
 
         {/* Cargando */}
         {loading && (
           <p className="text-center text-text opacity-60">
-            Cargando plataformas...
+            {t("platformSelector.loading", "Cargando plataformas...")}
           </p>
         )}
 
@@ -64,7 +64,7 @@ function PlatformSelector({
         {/* Sin plataformas */}
         {!loading && !error && platforms.length === 0 && (
           <p className="text-center text-text opacity-60">
-            No hay plataformas disponibles para esta expansión.
+            {t("platformSelector.empty", "No hay plataformas disponibles para esta expansión.")}
           </p>
         )}
 
