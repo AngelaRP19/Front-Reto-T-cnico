@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
+import { i18n } from "@lingui/core";
 
 const AUTH_USER_KEY = "authUser";
 export const GUEST_CART_SCOPE = "guest";
@@ -57,7 +58,11 @@ const useCartStore = create(
         if (existingItem) {
           return {
             success: false,
-            message: `Ya tienes "${item.title}" para la plataforma ${item.platform}.`,
+            message: i18n._({
+              id: "cart.duplicateItem",
+              message: 'Ya tienes "{title}" para la plataforma {platform}.',
+              values: { title: item.title, platform: item.platform },
+            }),
           };
         }
 
@@ -73,7 +78,7 @@ const useCartStore = create(
 
         return {
           success: true,
-          message: "Producto agregado al carrito.",
+          message: i18n._({ id: "cart.addSuccess", message: "Producto agregado al carrito." }),
         };
       },
 

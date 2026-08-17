@@ -81,7 +81,7 @@ function LoginPage() {
           />
 
           <div className="flex items-center w-full mb-6 text-text opacity-60 text-[0.8125rem] before:content-[''] before:flex-1 before:h-[0.0625rem] before:bg-snd-bg after:content-[''] after:flex-1 after:h-[0.0625rem] after:bg-snd-bg">
-            <span className="px-3">o</span>
+            <span className="px-3">{t("login.or", "o")}</span>
           </div>
 
           <div className="flex gap-3 w-full mb-6">

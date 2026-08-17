@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { useLingui } from "@lingui/react";
 import ExpansionDetail from "../../../components/ExpansionDetail";
 import NotFoundPage from "../../../pages/NotFoundPage";
 import { useExpansionPacks } from "../hooks/useExpansionPacks";
@@ -7,6 +8,8 @@ import { useExpansionPacks } from "../hooks/useExpansionPacks";
 function ExpansionDetailPage() {
   const { packId } = useParams();
   const navigate = useNavigate();
+  const { i18n } = useLingui();
+  const t = (id, message) => i18n._({ id, message });
   const { packs, loading, error } = useExpansionPacks();
   const lastPackRef = useRef(null);
 
@@ -28,12 +31,12 @@ function ExpansionDetailPage() {
   }, [equivalent, navigate]);
 
   if (loading) {
-    return <p className="text-text w-full text-center py-20 min-[2560px]:py-28 min-[3840px]:py-36 min-[2560px]:text-3xl min-[3840px]:text-5xl">Cargando...</p>;
+    return <p className="text-text w-full text-center py-20 min-[2560px]:py-28 min-[3840px]:py-36 min-[2560px]:text-3xl min-[3840px]:text-5xl">{t("catalog.loadingDetail", "Cargando...")}</p>;
   }
 
   if (!pack) {
     if (equivalent) {
-      return <p className="text-text w-full text-center py-20 min-[2560px]:py-28 min-[3840px]:py-36 min-[2560px]:text-3xl min-[3840px]:text-5xl">Cargando...</p>;
+      return <p className="text-text w-full text-center py-20 min-[2560px]:py-28 min-[3840px]:py-36 min-[2560px]:text-3xl min-[3840px]:text-5xl">{t("catalog.loadingDetail", "Cargando...")}</p>;
     }
     return <NotFoundPage />;
   }

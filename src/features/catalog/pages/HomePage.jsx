@@ -37,7 +37,7 @@ function HomePage() {
         </h2>
 
         {loading ? (
-          <p className="text-text w-full text-center py-10 min-[2560px]:py-16 min-[3840px]:py-20 min-[2560px]:text-[1.7rem] min-[3840px]:text-[2.7rem]">Cargando catálogo...</p>
+          <p className="text-text w-full text-center py-10 min-[2560px]:py-16 min-[3840px]:py-20 min-[2560px]:text-[1.7rem] min-[3840px]:text-[2.7rem]">{t("catalog.loading", "Cargando catálogo...")}</p>
         ) : error ? (
           <p className="text-text w-full text-center py-10 min-[2560px]:py-16 min-[3840px]:py-20 min-[2560px]:text-[1.7rem] min-[3840px]:text-[2.7rem]">{error}</p>
         ) : (

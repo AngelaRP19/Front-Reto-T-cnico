@@ -1,11 +1,14 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useLingui } from "@lingui/react";
 import { CreditCard, Wallet, Landmark } from "lucide-react";
 import useCartStore from "../../store/cartStore";
 import { addToBackendCart, purchaseCart } from "./cartService";
 
 export const CartPage = () => {
   const navigate = useNavigate();
+  const { i18n } = useLingui();
+  const t = (id, message, values) => i18n._({ id, message, values });
   const items = useCartStore((state) => state.items);
   const clearCart = useCartStore((state) => state.clearCart);
   const removeItem = useCartStore((state) => state.removeItem);
@@ -23,7 +26,9 @@ export const CartPage = () => {
     const missingPlatform = items.find((item) => !item.platformId);
     if (missingPlatform) {
       setPurchaseError(
-        `"${missingPlatform.title}" no tiene una plataforma válida — quitalo del carrito y volvé a agregarlo.`
+        t("cart.page.missingPlatform", '"{title}" no tiene una plataforma válida — quitalo del carrito y volvé a agregarlo.', {
+          title: missingPlatform.title,
+        })
       );
       return;
     }
@@ -39,7 +44,7 @@ export const CartPage = () => {
       setCompletedOrder(order);
       setStep("success");
     } catch (err) {
-      setPurchaseError(err.message || "No se pudo procesar la compra.");
+      setPurchaseError(err.message || t("cart.page.purchaseError", "No se pudo procesar la compra."));
     } finally {
       setPurchasing(false);
     }
@@ -51,11 +56,11 @@ export const CartPage = () => {
       {step === "cart" && (
         <div>
           <h1 className="text-2xl font-bold text-text mb-6 pb-2 border-b border-snd-bg">
-            Tu carrito de compras
+            {t("cart.page.title", "Tu carrito de compras")}
           </h1>
 
           {items.length === 0 ? (
-            <p className="text-text opacity-60 py-8 text-center">El carrito está vacío.</p>
+            <p className="text-text opacity-60 py-8 text-center">{t("cart.page.empty", "El carrito está vacío.")}</p>
           ) : (
             <>
               <div className="divide-y divide-snd-bg">
@@ -64,7 +69,7 @@ export const CartPage = () => {
                     <div className="min-w-0">
                       <h3 className="font-semibold text-text truncate">{item.title}</h3>
                       <p className="text-sm text-text opacity-70">
-                        Plataforma: <span className="font-medium text-main">{item.platform}</span>
+                        {t("cart.page.platformLabel", "Plataforma:")} <span className="font-medium text-main">{item.platform}</span>
                       </p>
                     </div>
                     <div className="flex items-center gap-4 shrink-0">
@@ -73,7 +78,7 @@ export const CartPage = () => {
                         onClick={() => removeItem(item.id, item.platform)}
                         className="text-sm text-red-500 hover:text-red-600 font-semibold cursor-pointer"
                       >
-                        Quitar
+                        {t("cart.remove", "Quitar")}
                       </button>
                     </div>
                   </div>
@@ -81,7 +86,7 @@ export const CartPage = () => {
               </div>
 
               <div className="mt-6 pt-4 border-t border-snd-bg flex justify-between items-center">
-                <span className="text-lg font-semibold text-text">Total:</span>
+                <span className="text-lg font-semibold text-text">{t("cart.page.total", "Total:")}</span>
                 <span className="text-2xl font-bold text-price">
                   {subtotal.toLocaleString("es-CO", { style: "currency", currency: "COP" })}
                 </span>
@@ -92,13 +97,13 @@ export const CartPage = () => {
                   onClick={clearCart}
                   className="bg-red-600 hover:bg-red-700 text-white font-medium px-6 py-2.5 rounded-lg transition-colors cursor-pointer"
                 >
-                  Vaciar carrito
+                  {t("cart.clear", "Vaciar carrito")}
                 </button>
                 <button
                   onClick={() => setStep("payment")}
                   className="bg-main hover:bg-hover text-bg font-medium px-6 py-2.5 rounded-lg transition-colors cursor-pointer"
                 >
-                  Proceder al pago
+                  {t("cart.page.proceedToPayment", "Proceder al pago")}
                 </button>
               </div>
             </>
@@ -109,9 +114,9 @@ export const CartPage = () => {
       {/* PASO 2: SELECCIÓN DE MÉTODO DE PAGO / PASARELA */}
       {step === "payment" && (
         <div>
-          <h2 className="text-xl font-bold text-text mb-2">Selecciona el método de pago</h2>
+          <h2 className="text-xl font-bold text-text mb-2">{t("cart.page.selectPaymentMethod", "Selecciona el método de pago")}</h2>
           <p className="text-sm text-text opacity-70 mb-6">
-            Elige la pasarela o método con el que deseas completar tu pedido.
+            {t("cart.page.selectPaymentMethodSubtitle", "Elige la pasarela o método con el que deseas completar tu pedido.")}
           </p>
 
           <div className="space-y-3 my-6">
@@ -129,8 +134,8 @@ export const CartPage = () => {
                 className="w-4 h-4 accent-main"
               />
               <div className="ml-3">
-                <span className="flex items-center gap-2 font-semibold text-text"><CreditCard size={18} /> Tarjeta de crédito / débito</span>
-                <span className="text-xs text-text opacity-70">Pago directo y seguro con tarjeta</span>
+                <span className="flex items-center gap-2 font-semibold text-text"><CreditCard size={18} /> {t("cart.page.paymentCard", "Tarjeta de crédito / débito")}</span>
+                <span className="text-xs text-text opacity-70">{t("cart.page.paymentCardHint", "Pago directo y seguro con tarjeta")}</span>
               </div>
             </label>
 
@@ -148,8 +153,8 @@ export const CartPage = () => {
                 className="w-4 h-4 accent-main"
               />
               <div className="ml-3">
-                <span className="flex items-center gap-2 font-semibold text-text"><Wallet size={18} /> PayPal</span>
-                <span className="text-xs text-text opacity-70">Paga con tu cuenta o saldo de PayPal</span>
+                <span className="flex items-center gap-2 font-semibold text-text"><Wallet size={18} /> {t("cart.page.paymentPaypal", "PayPal")}</span>
+                <span className="text-xs text-text opacity-70">{t("cart.page.paymentPaypalHint", "Paga con tu cuenta o saldo de PayPal")}</span>
               </div>
             </label>
 
@@ -167,8 +172,8 @@ export const CartPage = () => {
                 className="w-4 h-4 accent-main"
               />
               <div className="ml-3">
-                <span className="flex items-center gap-2 font-semibold text-text"><Landmark size={18} /> Transferencia bancaria (PSE)</span>
-                <span className="text-xs text-text opacity-70">Débito directo desde tu cuenta bancaria</span>
+                <span className="flex items-center gap-2 font-semibold text-text"><Landmark size={18} /> {t("cart.page.paymentPse", "Transferencia bancaria (PSE)")}</span>
+                <span className="text-xs text-text opacity-70">{t("cart.page.paymentPseHint", "Débito directo desde tu cuenta bancaria")}</span>
               </div>
             </label>
           </div>
@@ -181,7 +186,7 @@ export const CartPage = () => {
               disabled={purchasing}
               className="text-text opacity-70 hover:opacity-100 font-medium px-4 py-2 cursor-pointer disabled:opacity-40"
             >
-              ← Volver al carrito
+              {t("cart.page.backToCart", "← Volver al carrito")}
             </button>
             <button
               onClick={handleConfirmPurchase}
@@ -189,8 +194,10 @@ export const CartPage = () => {
               className="bg-main hover:bg-hover text-bg font-medium px-6 py-2.5 rounded-lg transition-colors cursor-pointer disabled:opacity-60"
             >
               {purchasing
-                ? "Procesando..."
-                : `Finalizar compra (${subtotal.toLocaleString("es-CO", { style: "currency", currency: "COP" })})`}
+                ? t("cart.page.processing", "Procesando...")
+                : t("cart.page.finalizePurchase", "Finalizar compra ({amount})", {
+                    amount: subtotal.toLocaleString("es-CO", { style: "currency", currency: "COP" }),
+                  })}
             </button>
           </div>
         </div>
@@ -202,21 +209,21 @@ export const CartPage = () => {
           <div className="w-16 h-16 bg-accent/20 text-accent-text rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold">
             ✓
           </div>
-          <h2 className="text-2xl font-bold text-text mb-2">¡Compra completada!</h2>
-          <p className="text-text opacity-70 mb-6">Gracias por tu compra. Tu orden ha sido procesada exitosamente.</p>
+          <h2 className="text-2xl font-bold text-text mb-2">{t("cart.page.successTitle", "¡Compra completada!")}</h2>
+          <p className="text-text opacity-70 mb-6">{t("cart.page.successBody", "Gracias por tu compra. Tu orden ha sido procesada exitosamente.")}</p>
 
           <div className="bg-snd-bg p-4 rounded-lg max-w-sm mx-auto text-left text-sm text-text space-y-2 mb-6 border border-snd-bg">
-            <p><strong>N° de orden:</strong> #{completedOrder?.id}</p>
-            <p><strong>Total:</strong> {completedOrder?.totalPrice}</p>
-            <p><strong>Método seleccionado:</strong> {completedOrder?.paymentMethod || paymentMethod}</p>
-            <p><strong>Estado:</strong> {completedOrder?.status || "completado"}</p>
+            <p><strong>{t("cart.page.orderNumber", "N° de orden:")}</strong> #{completedOrder?.id}</p>
+            <p><strong>{t("cart.page.total", "Total:")}</strong> {completedOrder?.totalPrice}</p>
+            <p><strong>{t("cart.page.paymentMethodSelected", "Método seleccionado:")}</strong> {completedOrder?.paymentMethod || paymentMethod}</p>
+            <p><strong>{t("cart.page.orderStatus", "Estado:")}</strong> {completedOrder?.status || t("cart.page.statusCompleted", "completado")}</p>
           </div>
 
           <button
             onClick={() => navigate("/")}
             className="bg-main hover:bg-hover text-white font-medium px-6 py-2.5 rounded-lg transition-colors cursor-pointer"
           >
-            Volver al inicio
+            {t("auth.backToHome", "Volver al inicio")}
           </button>
         </div>
       )}

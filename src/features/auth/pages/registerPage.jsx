@@ -226,6 +226,12 @@ function RegisterPage() {
             />
           </div>
 
+          {!errors.password && (
+            <p className="w-full text-text opacity-50 text-xs min-[2560px]:text-sm min-[3840px]:text-xl -mt-2 mb-4">
+              {t("auth.passwordRequirements", "Debe incluir mayúscula, minúscula, número y carácter especial.")}
+            </p>
+          )}
+
           <label className="flex items-center gap-3 min-[2560px]:gap-4 p-3 min-[2560px]:p-5 min-[3840px]:p-6 mb-4 min-[2560px]:mb-6 rounded-xl min-[2560px]:rounded-2xl border-2 border-accent bg-accent/10 cursor-pointer transition-colors duration-300">
             <input
               type="checkbox"
@@ -258,7 +264,7 @@ function RegisterPage() {
         </form>
 
         <div className="flex items-center w-full mb-6 text-text opacity-60 text-[0.8125rem] before:content-[''] before:flex-1 before:h-[0.0625rem] before:bg-snd-bg after:content-[''] after:flex-1 after:h-[0.0625rem] after:bg-snd-bg">
-          <span className="px-3">o regístrate con</span>
+          <span className="px-3">{t("register.or", "o")}</span>
         </div>
 
         <div className="flex gap-3 w-full mb-6">

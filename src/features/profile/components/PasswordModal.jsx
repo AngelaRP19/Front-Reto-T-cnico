@@ -22,13 +22,13 @@ function PasswordModal({ onClose, onSuccess }) {
 
     const fieldErrors = {};
     if (!currentPassword) {
-      fieldErrors.currentPassword = "Ingresá tu contraseña actual";
+      fieldErrors.currentPassword = t("profile.password.errors.current", "Ingresá tu contraseña actual");
     }
     if (!PASSWORD_RE.test(newPassword)) {
-      fieldErrors.newPassword = "Mín. 8 caracteres, con mayúscula, minúscula, número y símbolo";
+      fieldErrors.newPassword = t("profile.password.errors.new", "Mín. 8 caracteres, con mayúscula, minúscula, número y símbolo");
     }
     if (newPassword !== confirmPassword) {
-      fieldErrors.confirmPassword = "Las contraseñas no coinciden";
+      fieldErrors.confirmPassword = t("auth.reset.mismatch", "Las contraseñas no coinciden");
     }
 
     setErrors(fieldErrors);
@@ -48,11 +48,11 @@ function PasswordModal({ onClose, onSuccess }) {
 
   return (
     <Modal onClose={onClose}>
-      <h3 className="text-lg min-[2560px]:text-3xl min-[3840px]:text-5xl font-bold mb-4 min-[2560px]:mb-6">Cambiar contraseña</h3>
+      <h3 className="text-lg min-[2560px]:text-3xl min-[3840px]:text-5xl font-bold mb-4 min-[2560px]:mb-6">{t("profile.password.title", "Cambiar contraseña")}</h3>
       <form onSubmit={handleSubmit} className="text-left">
         <FormInput
           id="password-current"
-          label="Contraseña actual"
+          label={t("profile.password.current", "Contraseña actual")}
           type="password"
           placeholder="••••••••"
           value={currentPassword}
@@ -62,17 +62,18 @@ function PasswordModal({ onClose, onSuccess }) {
         />
         <FormInput
           id="password-new"
-          label="Nueva contraseña"
+          label={t("auth.reset.newPassword", "Nueva contraseña")}
           type="password"
           placeholder="••••••••"
           value={newPassword}
           onChange={(e) => setNewPassword(e.target.value)}
           error={errors.newPassword}
+          hint={!errors.newPassword ? t("auth.passwordRequirements", "Debe incluir mayúscula, minúscula, número y carácter especial.") : undefined}
           autoComplete="new-password"
         />
         <FormInput
           id="password-confirm"
-          label="Confirmar nueva contraseña"
+          label={t("profile.password.confirmNew", "Confirmar nueva contraseña")}
           type="password"
           placeholder="••••••••"
           value={confirmPassword}
@@ -89,14 +90,14 @@ function PasswordModal({ onClose, onSuccess }) {
             onClick={onClose}
             className="flex-1 bg-snd-bg text-text rounded-full py-2.5 min-[2560px]:py-4 min-[3840px]:py-6 text-sm min-[2560px]:text-xl min-[3840px]:text-3xl font-bold cursor-pointer hover:opacity-80 transition"
           >
-            Cancelar
+            {t("profile.info.cancel", "Cancelar")}
           </button>
           <button
             type="submit"
             disabled={submitting}
             className="flex-1 bg-main hover:bg-hover text-bg rounded-full py-2.5 min-[2560px]:py-4 min-[3840px]:py-6 text-sm min-[2560px]:text-xl min-[3840px]:text-3xl font-bold cursor-pointer disabled:opacity-60 transition"
           >
-            {submitting ? "Guardando..." : "Guardar"}
+            {submitting ? t("profile.info.saving", "Guardando...") : t("profile.password.save", "Guardar")}
           </button>
         </div>
       </form>

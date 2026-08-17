@@ -50,6 +50,7 @@ function ResetPasswordPage() {
             placeholder="••••••••"
             value={newPassword}
             onChange={(e) => setNewPassword(e.target.value)}
+            hint={t("auth.passwordRequirements", "Debe incluir mayúscula, minúscula, número y carácter especial.")}
             autoComplete="new-password"
           />
 
