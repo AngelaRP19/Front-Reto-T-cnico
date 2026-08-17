@@ -1,6 +1,7 @@
-import { createContext, useContext, useState, useEffect } from "react";
+import { createContext, useContext, useState, useEffect, useRef } from "react";
 import { getToken, isLoggedOut } from "../services/apiClient";
 import { checkOAuthSession, fetchCurrentUser } from "../features/auth/services/authService";
+import { getCartScopeId, switchCartScope } from "../store/cartStore";
 
 const AuthContext = createContext();
 
@@ -12,12 +13,25 @@ export function AuthProvider({ children }) {
     return stored ? JSON.parse(stored) : null;
   });
 
+  // Rastrea de qué cuenta es el carrito actualmente cargado, para
+  // rehidratarlo solo cuando cambia el usuario real (no en updates
+  // como el toggle de beta tester, que reutiliza el mismo id).
+  const cartScopeRef = useRef(getCartScopeId(user));
+
   const setUser = (data) => {
+    const nextScope = getCartScopeId(data);
+    const scopeChanged = nextScope !== cartScopeRef.current;
+
     setUserState(data);
     if (data) {
       localStorage.setItem(USER_KEY, JSON.stringify(data));
     } else {
       localStorage.removeItem(USER_KEY);
+    }
+
+    if (scopeChanged) {
+      cartScopeRef.current = nextScope;
+      switchCartScope();
     }
   };
 
