@@ -1,14 +1,44 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 
-const storage =
-  typeof window !== "undefined"
-    ? createJSONStorage(() => localStorage)
-    : createJSONStorage(() => ({
-        getItem: () => null,
-        setItem: () => {},
-        removeItem: () => {},
-      }));
+const AUTH_USER_KEY = "authUser";
+export const GUEST_CART_SCOPE = "guest";
+
+export function getCartScopeId(user) {
+  return user && user.id !== undefined && user.id !== null
+    ? String(user.id)
+    : GUEST_CART_SCOPE;
+}
+
+function getBrowserLocalStorage() {
+  return typeof window !== "undefined" ? window.localStorage : undefined;
+}
+
+function readStoredAuthUser() {
+  const ls = getBrowserLocalStorage();
+  if (!ls) return null;
+  try {
+    const raw = ls.getItem(AUTH_USER_KEY);
+    return raw ? JSON.parse(raw) : null;
+  } catch {
+    return null;
+  }
+}
+
+// Cada usuario tiene su propio carrito: la clave real de
+// localStorage se calcula en el momento de la llamada según
+// quién esté logueado, para que el carrito no se filtre entre cuentas.
+function scopedKey(baseName) {
+  return `${baseName}-${getCartScopeId(readStoredAuthUser())}`;
+}
+
+const scopedStorage = {
+  getItem: (name) => getBrowserLocalStorage()?.getItem(scopedKey(name)) ?? null,
+  setItem: (name, value) => getBrowserLocalStorage()?.setItem(scopedKey(name), value),
+  removeItem: (name) => getBrowserLocalStorage()?.removeItem(scopedKey(name)),
+};
+
+const storage = createJSONStorage(() => scopedStorage);
 
 const useCartStore = create(
   persist(
@@ -106,5 +136,15 @@ const useCartStore = create(
     }
   )
 );
+
+// Al cambiar de cuenta hay que cargar el carrito guardado del usuario
+// nuevo (o vaciarlo si todavía no tiene uno) en un solo paso: cada
+// `setState` dispara un guardado automático a storage, así que resetear
+// primero y rehidratar después pisaría el carrito guardado del usuario
+// con un array vacío antes de poder leerlo.
+export function switchCartScope() {
+  const stored = storage.getItem("expansion-cart-storage");
+  useCartStore.setState({ items: stored?.state?.items ?? [] });
+}
 
 export default useCartStore;

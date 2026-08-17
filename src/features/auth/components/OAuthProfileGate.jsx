@@ -28,10 +28,10 @@ function OAuthProfileGate() {
   if (!show) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/60 flex justify-center items-center z-[1500] animate-fadeIn">
-      <div className="bg-card-bg text-text rounded-2xl shadow-2xl w-[90%] max-w-sm p-6 text-center transition-colors duration-300">
-        <h3 className="text-lg font-bold mb-2">{t("oauth.completeProfile.title", "Completá tu perfil")}</h3>
-        <p className="text-sm opacity-80 mb-5">
+    <div className="fixed inset-0 bg-black/60 flex justify-center items-center p-4 min-[2560px]:p-10 min-[3840px]:p-16 z-[1500] animate-fadeIn">
+      <div className="bg-card-bg text-text rounded-2xl min-[2560px]:rounded-3xl shadow-2xl w-[90%] max-w-sm min-[2560px]:max-w-2xl min-[3840px]:max-w-4xl p-6 min-[2560px]:p-10 min-[3840px]:p-14 text-center transition-colors duration-300">
+        <h3 className="text-lg min-[2560px]:text-3xl min-[3840px]:text-5xl font-bold mb-2 min-[2560px]:mb-4">{t("oauth.completeProfile.title", "Completá tu perfil")}</h3>
+        <p className="text-sm min-[2560px]:text-xl min-[3840px]:text-3xl opacity-80 mb-5 min-[2560px]:mb-8">
           {t("oauth.completeProfile.body", "Nos falta un dato para terminar de armar tu cuenta.")}
         </p>
         <button
@@ -39,7 +39,7 @@ function OAuthProfileGate() {
             setShow(false);
             navigate("/completar-perfil");
           }}
-          className="w-full bg-main hover:bg-hover text-bg rounded-full py-2.5 text-sm font-bold cursor-pointer transition"
+          className="w-full bg-main hover:bg-hover text-bg rounded-full py-2.5 min-[2560px]:py-4 min-[3840px]:py-6 text-sm min-[2560px]:text-2xl min-[3840px]:text-4xl font-bold cursor-pointer transition"
         >
           {t("oauth.completeProfile.button", "Completar mi perfil")}
         </button>

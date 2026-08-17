@@ -51,20 +51,20 @@ function ProfileChallengesTab() {
   });
 
   return (
-    <div>
-      <h1 className="text-2xl font-extrabold text-text mb-2">{t("profile.challenges.title", "Mis retos")}</h1>
-      <p className="text-text opacity-70 mb-6">
+    <div className="w-full min-[2560px]:w-[96%] min-[3840px]:w-[98%]">
+      <h1 className="text-2xl min-[2560px]:text-4xl min-[3840px]:text-6xl font-extrabold text-text mb-2 min-[2560px]:mb-4 min-[3840px]:mb-6">{t("profile.challenges.title", "Mis retos")}</h1>
+      <p className="text-text opacity-70 mb-6 min-[2560px]:mb-10 min-[2560px]:text-[1.1rem] min-[3840px]:text-[2.5rem]">
         {t("profile.challenges.completed", "Retos finalizados")}: <span className="font-bold text-accent-text">{user?.completedChallenges ?? 0}</span>
       </p>
 
       {loading ? (
-        <p className="text-text text-center py-10">{t("profile.challenges.loading", "Cargando retos...")}</p>
+        <p className="text-text text-center py-10 min-[2560px]:py-16 min-[3840px]:py-20 min-[2560px]:text-[2rem] min-[3840px]:text-[3rem]">{t("profile.challenges.loading", "Cargando retos...")}</p>
       ) : error ? (
-        <p className="text-text text-center py-10">{error}</p>
+        <p className="text-text text-center py-10 min-[2560px]:py-16 min-[3840px]:py-20 min-[2560px]:text-[2rem] min-[3840px]:text-[3rem]">{error}</p>
       ) : acceptedChallenges.length === 0 ? (
-        <p className="text-text opacity-70 text-center py-10">{t("profile.challenges.empty", "Todavía no aceptaste ningún reto.")}</p>
+        <p className="text-text opacity-70 text-center py-10 min-[2560px]:py-16 min-[3840px]:py-20 min-[2560px]:text-[1.6rem] min-[3840px]:text-[2.8rem]">{t("profile.challenges.empty", "Todavía no aceptaste ningún reto.")}</p>
       ) : (
-        <div className="flex flex-col gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-[repeat(auto-fit,minmax(24rem,24rem))] min-[2560px]:grid-cols-[repeat(auto-fit,minmax(28rem,28rem))] min-[3840px]:grid-cols-[repeat(auto-fit,minmax(32rem,32rem))] justify-start gap-4 min-[2560px]:gap-5 min-[3840px]:gap-7">
           {acceptedChallenges.map((challenge) => (
             <CardChallenge
               key={challenge.id}

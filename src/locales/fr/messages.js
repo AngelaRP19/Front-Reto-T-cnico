@@ -1,5 +1,6 @@
 export const messages = {
   "common.close": "Fermer",
+  "platformSelector.closeButton": "Fermer",
   "common.selectLanguage": "Choisir la langue",
   "navbar.changeTheme": "Changer de thème",
   "auth.backToHome": "Retour à l'accueil",

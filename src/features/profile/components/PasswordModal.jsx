@@ -48,7 +48,7 @@ function PasswordModal({ onClose, onSuccess }) {
 
   return (
     <Modal onClose={onClose}>
-      <h3 className="text-lg font-bold mb-4">Cambiar contraseña</h3>
+      <h3 className="text-lg min-[2560px]:text-3xl min-[3840px]:text-5xl font-bold mb-4 min-[2560px]:mb-6">Cambiar contraseña</h3>
       <form onSubmit={handleSubmit} className="text-left">
         <FormInput
           id="password-current"
@@ -81,20 +81,20 @@ function PasswordModal({ onClose, onSuccess }) {
           autoComplete="new-password"
         />
 
-        {serverError && <p className="text-error text-sm mb-4">{serverError}</p>}
+        {serverError && <p className="text-error text-sm min-[2560px]:text-xl min-[3840px]:text-3xl mb-4">{serverError}</p>}
 
-        <div className="flex gap-3 mt-2">
+        <div className="flex gap-3 min-[2560px]:gap-5 mt-2 min-[2560px]:mt-4">
           <button
             type="button"
             onClick={onClose}
-            className="flex-1 bg-snd-bg text-text rounded-full py-2.5 text-sm font-bold cursor-pointer hover:opacity-80 transition"
+            className="flex-1 bg-snd-bg text-text rounded-full py-2.5 min-[2560px]:py-4 min-[3840px]:py-6 text-sm min-[2560px]:text-xl min-[3840px]:text-3xl font-bold cursor-pointer hover:opacity-80 transition"
           >
             Cancelar
           </button>
           <button
             type="submit"
             disabled={submitting}
-            className="flex-1 bg-main hover:bg-hover text-bg rounded-full py-2.5 text-sm font-bold cursor-pointer disabled:opacity-60 transition"
+            className="flex-1 bg-main hover:bg-hover text-bg rounded-full py-2.5 min-[2560px]:py-4 min-[3840px]:py-6 text-sm min-[2560px]:text-xl min-[3840px]:text-3xl font-bold cursor-pointer disabled:opacity-60 transition"
           >
             {submitting ? "Guardando..." : "Guardar"}
           </button>

@@ -125,15 +125,15 @@ function ProfileInfoTab() {
   };
 
   return (
-    <div className="bg-card-bg rounded-2xl shadow-sm border border-snd-bg p-6 sm:p-8 transition-colors duration-300">
-      <div className="flex items-start justify-between gap-4 mb-6 flex-wrap">
-        <h1 className="text-2xl font-extrabold text-text">{t("profile.info.title", "Mi perfil")}</h1>
+    <div className="bg-card-bg rounded-2xl min-[2560px]:rounded-3xl shadow-sm border border-snd-bg p-6 sm:p-8 min-[2560px]:p-12 min-[3840px]:p-16 transition-colors duration-300">
+      <div className="flex items-start justify-between gap-4 min-[2560px]:gap-6 mb-6 min-[2560px]:mb-10 flex-wrap">
+        <h1 className="text-2xl min-[2560px]:text-5xl min-[3840px]:text-7xl font-extrabold text-text">{t("profile.info.title", "Mi perfil")}</h1>
         <div className="flex items-center gap-3">
           {user?.betaTester && (
             <button
               onClick={() => setShowBetaCancelConfirm(true)}
               disabled={betaSubmitting}
-              className="px-4 py-2 rounded-full text-sm font-bold text-accent-text border-2 border-accent bg-accent/10 hover:bg-accent/20 transition cursor-pointer disabled:opacity-60"
+              className="px-4 py-2 min-[2560px]:px-6 min-[2560px]:py-4 min-[2560px]:text-xl min-[3840px]:px-8 min-[3840px]:py-5 min-[3840px]:text-3xl rounded-full text-sm font-bold text-accent-text border-2 border-accent bg-accent/10 hover:bg-accent/20 transition cursor-pointer disabled:opacity-60"
             >
               {t("profile.info.betaTester", "Beta tester")}
             </button>
@@ -141,7 +141,7 @@ function ProfileInfoTab() {
           {!isEditing && (
             <button
               onClick={handleEditClick}
-              className="bg-main text-bg px-5 py-2 rounded-full font-bold hover:bg-hover transition"
+              className="bg-main text-bg px-5 py-2 min-[2560px]:px-8 min-[2560px]:py-4 min-[2560px]:text-2xl min-[3840px]:px-10 min-[3840px]:py-5 min-[3840px]:text-3xl rounded-full font-bold hover:bg-hover transition"
             >
               {t("profile.info.edit", "Editar")}
             </button>
@@ -206,7 +206,7 @@ function ProfileInfoTab() {
 
       {hasPassword && (
         <div className="w-full mb-4">
-          <label className="block text-xs font-bold tracking-[0.03125rem] uppercase text-text opacity-70 mb-2">
+          <label className="block text-xs min-[2560px]:text-base min-[3840px]:text-xl font-bold tracking-[0.03125rem] uppercase text-text opacity-70 mb-2 min-[2560px]:mb-3">
             {t("profile.info.password", "Contraseña")}
           </label>
           <div className="flex items-center gap-3">
@@ -214,11 +214,11 @@ function ProfileInfoTab() {
               type="password"
               value="········"
               disabled
-              className="flex-1 px-4 py-3 rounded-[0.625rem] border border-snd-bg bg-snd-bg text-text text-[0.9375rem]"
+              className="flex-1 px-4 py-3 min-[2560px]:px-6 min-[2560px]:py-4.5 min-[3840px]:px-8 min-[3840px]:py-6 rounded-[0.625rem] min-[2560px]:rounded-xl min-[3840px]:rounded-2xl border border-snd-bg bg-snd-bg text-text text-[0.9375rem] min-[2560px]:text-xl min-[3840px]:text-3xl"
             />
             <button
               onClick={() => setShowPasswordModal(true)}
-              className="text-sm font-bold text-main hover:text-hover transition whitespace-nowrap"
+              className="text-sm min-[2560px]:text-xl min-[3840px]:text-3xl font-bold text-main hover:text-hover transition whitespace-nowrap"
             >
               {t("profile.info.changePassword", "Cambiar")}
             </button>
@@ -233,17 +233,17 @@ function ProfileInfoTab() {
       {serverError && <p className="text-error text-sm mb-4">{serverError}</p>}
 
       {isEditing && (
-        <div className="flex gap-3 mt-4">
+        <div className="flex gap-3 min-[2560px]:gap-5 mt-4 min-[2560px]:mt-6">
           <button
             onClick={handleCancelEdit}
-            className="flex-1 bg-snd-bg text-text rounded-full py-3 text-sm font-bold cursor-pointer hover:opacity-80 transition"
+            className="flex-1 bg-snd-bg text-text rounded-full py-3 min-[2560px]:py-4.5 min-[3840px]:py-6 text-sm min-[2560px]:text-xl min-[3840px]:text-3xl font-bold cursor-pointer hover:opacity-80 transition"
           >
             {t("profile.info.cancel", "Cancelar")}
           </button>
           <button
             onClick={handleSaveClick}
             disabled={submitting}
-            className="flex-1 bg-main hover:bg-hover text-bg rounded-full py-3 text-sm font-bold cursor-pointer disabled:opacity-60 transition"
+            className="flex-1 bg-main hover:bg-hover text-bg rounded-full py-3 min-[2560px]:py-4.5 min-[3840px]:py-6 text-sm min-[2560px]:text-xl min-[3840px]:text-3xl font-bold cursor-pointer disabled:opacity-60 transition"
           >
             {submitting ? t("profile.info.saving", "Guardando...") : t("profile.info.save", "Guardar cambios")}
           </button>

@@ -36,9 +36,9 @@ function ResetPasswordPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-bg px-[1.25rem] py-[2.5rem]">
-      <div className="w-full max-w-[23.75rem] text-center">
-        <h1 className="font-nunito text-[1.5rem] font-extrabold text-text mb-[1.75rem]">
+    <div className="min-h-screen flex items-center justify-center bg-bg px-[1.25rem] min-[2560px]:px-12 min-[3840px]:px-20 py-[2.5rem] min-[2560px]:py-16 min-[3840px]:py-24">
+      <div className="w-full max-w-[23.75rem] min-[2560px]:max-w-[42rem] min-[3840px]:max-w-[56rem] text-center">
+        <h1 className="font-nunito text-[1.5rem] min-[2560px]:text-5xl min-[3840px]:text-7xl font-extrabold text-text mb-[1.75rem] min-[2560px]:mb-10">
           {t("auth.reset.title", "Restablecer contraseña")}
         </h1>
 

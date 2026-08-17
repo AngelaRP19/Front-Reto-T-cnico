@@ -51,8 +51,8 @@ function ProfilePurchasesTab() {
   }, []);
 
   return (
-    <div className="bg-card-bg rounded-2xl shadow-sm border border-snd-bg p-6 sm:p-8 transition-colors duration-300">
-      <h1 className="text-2xl font-extrabold text-text mb-6">{t("profile.purchases.title", "Historial de compras")}</h1>
+    <div className="bg-card-bg rounded-2xl min-[2560px]:rounded-3xl shadow-sm border border-snd-bg p-6 sm:p-8 min-[2560px]:p-12 min-[3840px]:p-16 transition-colors duration-300">
+      <h1 className="text-2xl min-[2560px]:text-5xl min-[3840px]:text-7xl font-extrabold text-text mb-6 min-[2560px]:mb-10">{t("profile.purchases.title", "Historial de compras")}</h1>
 
       {loading ? (
         <p className="text-text text-center py-10">{t("profile.purchases.loading", "Cargando compras...")}</p>
@@ -63,26 +63,26 @@ function ProfilePurchasesTab() {
           {t("profile.purchases.empty", "Todavía no realizaste ninguna compra.")}
         </p>
       ) : (
-        <div className="flex flex-col gap-4">
+        <div className="grid grid-cols-1 min-[2560px]:grid-cols-2 min-[3840px]:grid-cols-3 gap-4 min-[2560px]:gap-6 min-[3840px]:gap-8">
           {purchases.map((purchase) => (
             <button
               key={purchase.id}
               onClick={() => setSelectedPurchase(purchase)}
-              className="w-full text-left bg-snd-bg/50 border border-snd-bg rounded-2xl p-4 sm:p-5 shadow-sm transition-colors duration-300 hover:border-main cursor-pointer"
+              className="w-full text-left bg-snd-bg/50 border border-snd-bg rounded-2xl min-[2560px]:rounded-3xl p-4 sm:p-5 min-[2560px]:p-8 min-[3840px]:p-10 shadow-sm transition-colors duration-300 hover:border-main cursor-pointer"
             >
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
                 <div className="min-w-0">
                   <p className="text-xs font-bold text-main uppercase tracking-wider mb-1">
                     {t("profile.purchases.orderNumber", "Compra #{id}", { id: purchase.id })}
                   </p>
-                  <h3 className="text-base sm:text-lg font-bold text-text truncate">
+                  <h3 className="text-base sm:text-lg min-[2560px]:text-3xl min-[3840px]:text-4xl font-bold text-text truncate">
                     {purchaseSummary(purchase, t)}
                   </h3>
                   <p className="text-xs sm:text-sm text-text opacity-60 mt-1">
                     {formatPurchaseDate(purchase.purchaseDate)}
                   </p>
                 </div>
-                <span className="text-lg font-black text-price shrink-0">
+                <span className="text-lg min-[2560px]:text-3xl min-[3840px]:text-4xl font-black text-price shrink-0">
                   {purchase.totalPrice?.toLocaleString("es-CO", { style: "currency", currency: "COP" })}
                 </span>
               </div>
@@ -93,10 +93,10 @@ function ProfilePurchasesTab() {
 
       {selectedPurchase && (
         <Modal onClose={() => setSelectedPurchase(null)} maxWidthClass="max-w-lg">
-          <h2 className="text-xl font-bold text-text mb-1">
+          <h2 className="text-xl min-[2560px]:text-4xl min-[3840px]:text-5xl font-bold text-text mb-1 min-[2560px]:mb-3">
             {t("profile.purchases.orderNumber", "Compra #{id}", { id: selectedPurchase.id })}
           </h2>
-          <p className="text-sm text-text opacity-60 mb-5">{formatPurchaseDate(selectedPurchase.purchaseDate)}</p>
+          <p className="text-sm min-[2560px]:text-xl min-[3840px]:text-3xl text-text opacity-60 mb-5 min-[2560px]:mb-8">{formatPurchaseDate(selectedPurchase.purchaseDate)}</p>
 
           <div className="divide-y divide-snd-bg mb-5">
             {selectedPurchase.items?.map((item) => (
