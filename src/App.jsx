@@ -1,10 +1,18 @@
 import { Routes, Route } from "react-router-dom";
-
-import MainLayout from "./components/layout/MainLayout";
 import RequireAuth from "./components/common/RequireAuth";
-import HomePage from "./features/catalog/pages/HomePage";
-import OAuthProfileGate from "./features/auth/components/OAuthProfileGate";
 import { lazy, Suspense } from "react";
+
+const OAuthProfileGate = lazy(() =>
+  import("./features/auth/components/OAuthProfileGate")
+);
+
+const MainLayout = lazy(() =>
+  import("./components/layout/MainLayout")
+);
+
+const HomePage = lazy(() =>
+  import("./features/catalog/pages/HomePage")
+);
 
 const ExpansionDetailPage = lazy(() =>
   import("./features/catalog/pages/ExpansionDetailPage")
@@ -68,15 +76,15 @@ const CartPage = lazy(() =>
 
 function App() {
   return (
-    <>
-      <OAuthProfileGate />
-      <Suspense
+    <Suspense
       fallback={
         <div className="min-h-screen flex items-center justify-center bg-main-bg text-text">
           Cargando...
         </div>
-        }
-      >
+      }
+    >
+      <OAuthProfileGate />
+
       <Routes>
         <Route element={<MainLayout />}>
           <Route path="/" element={<HomePage />} />
@@ -120,7 +128,6 @@ function App() {
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
       </Suspense>
-    </>
   );
 }
 

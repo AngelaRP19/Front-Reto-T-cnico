@@ -124,6 +124,7 @@ function RegisterPage() {
   };
 
   const handleOAuthRegister = (provider) => {
+    sessionStorage.setItem("oauthPending", "1");
     clearLoggedOutMark();
     window.location.href = `${API_BASE_URL}/oauth2/authorization/${provider}`;
   };

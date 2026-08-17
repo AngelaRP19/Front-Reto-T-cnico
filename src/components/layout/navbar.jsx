@@ -264,10 +264,12 @@ function Navbar() {
       <div className="hidden lg:flex items-center gap-[0.9375rem] min-[2560px]:gap-6 justify-start">
         <div>
           <img
-            src="https://res.cloudinary.com/w1jl4sa5/image/upload/v1784825556/Logo_of_The_Sims_4.svg_jagzsl.webp"
-            alt="Logo"
-            className="w-[7.5rem] h-[7.5rem] min-[2560px]:w-[9rem] min-[2560px]:h-[9rem] min-[3840px]:w-[12rem] min-[3840px]:h-[12rem] m-4 object-contain"
-          />
+             src="https://res.cloudinary.com/w1jl4sa5/image/upload/f_auto,q_auto,w_256/v1784825556/Logo_of_The_Sims_4.svg_jagzsl.webp"
+             alt="Logo"
+             width={256}
+             height={256}
+             className="w-[7.5rem] h-auto min-[2560px]:w-[9rem] min-[3840px]:w-[12rem] m-4 object-contain"
+            />
         </div>
       </div>
 
