@@ -30,18 +30,23 @@ function HomePage() {
 
       <section
         id="catalogo"
-        className="w-full max-w-none ml-0 mr-auto my-[3.75rem] min-[2560px]:my-20 min-[3840px]:my-28 px-5 min-[2560px]:px-12 min-[3840px]:px-20 py-[1.875rem] min-[2560px]:py-14 min-[3840px]:py-20 md:p-[4.375rem] min-[2560px]:md:p-20 min-[3840px]:md:p-28 bg-bg transition-colors duration-400"
+        key={i18n.locale}
+        className="w-full max-w-none ml-0 mr-auto my-6 sm:my-10 min-[2560px]:my-14 min-[3840px]:my-20 px-4 sm:px-5 min-[2560px]:px-12 min-[3840px]:px-20 py-4 sm:py-6 min-[2560px]:py-10 md:px-[4.375rem] bg-bg transition-colors duration-400"
       >
-        <h2 className="text-2xl sm:text-3xl min-[2560px]:text-4xl min-[3840px]:text-6xl font-extrabold text-text mb-6 min-[2560px]:mb-10">
+        <h2 className="text-2xl sm:text-3xl min-[2560px]:text-4xl min-[3840px]:text-6xl font-extrabold text-text mb-4 sm:mb-6 min-[2560px]:mb-8">
           {t("navbar.catalog", "Catálogo")}
         </h2>
 
         {loading ? (
-          <p className="text-text w-full text-center py-10 min-[2560px]:py-16 min-[3840px]:py-20 min-[2560px]:text-[1.7rem] min-[3840px]:text-[2.7rem]">{t("catalog.loading", "Cargando catálogo...")}</p>
+          <p className="text-text w-full text-center py-10 min-[2560px]:py-16 min-[3840px]:py-20 min-[2560px]:text-[1.7rem] min-[3840px]:text-[2.7rem]">
+            {t("catalog.loading", "Cargando catálogo...")}
+          </p>
         ) : error ? (
-          <p className="text-text w-full text-center py-10 min-[2560px]:py-16 min-[3840px]:py-20 min-[2560px]:text-[1.7rem] min-[3840px]:text-[2.7rem]">{error}</p>
+          <p className="text-text w-full text-center py-10 min-[2560px]:py-16 min-[3840px]:py-20 min-[2560px]:text-[1.7rem] min-[3840px]:text-[2.7rem]">
+            {error}
+          </p>
         ) : (
-          <div className="grid grid-cols-[repeat(auto-fit,minmax(14.5rem,1fr))] gap-4 sm:gap-5 lg:gap-6 min-[2560px]:gap-7 min-[3840px]:gap-8 justify-items-stretch">
+          <div className="grid grid-cols-2 sm:grid-cols-[repeat(auto-fit,minmax(13rem,1fr))] gap-3 sm:gap-5 lg:gap-6 min-[2560px]:gap-7 min-[3840px]:gap-8 justify-items-stretch">
             {packs.map((pack) => (
               <Link
                 key={pack.id}
@@ -64,4 +69,3 @@ function HomePage() {
 }
 
 export default HomePage;
-
