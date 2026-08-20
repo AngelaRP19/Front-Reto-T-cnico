@@ -37,22 +37,25 @@ function LoginPage() {
   };
 
   const handleOAuthLogin = (provider) => {
+    sessionStorage.setItem("oauthPending", "1");
     clearLoggedOutMark();
     window.location.href = `${API_BASE_URL}/oauth2/authorization/${provider}`;
   };
 
   return (
-    <div className="min-h-screen w-full flex items-center justify-center bg-bg px-5 py-10 min-[2560px]:px-12 min-[2560px]:py-16 min-[3840px]:px-20 min-[3840px]:py-24 transition-colors duration-400">
+    <main className="min-h-screen w-full flex items-center justify-center bg-bg px-5 py-10 min-[2560px]:px-12 min-[2560px]:py-16 min-[3840px]:px-20 min-[3840px]:py-24 transition-colors duration-400">
       <div className="w-full max-w-[23.75rem] min-[2560px]:max-w-[42rem] min-[3840px]:max-w-[56rem] flex flex-col items-center text-center">
         <div
           onClick={() => navigate("/")}
           title={t("auth.backToHome", "Volver al inicio")}
           className="cursor-pointer"
         >
-          <img 
-            src="https://res.cloudinary.com/w1jl4sa5/image/upload/v1784825556/Logo_of_The_Sims_4.svg_jagzsl.webp" 
-            alt="Logo" 
-            className="w-[7.5rem] h-[7.5rem] min-[2560px]:w-[11rem] min-[2560px]:h-[11rem] min-[3840px]:w-[14rem] min-[3840px]:h-[14rem] object-contain" 
+          <img
+            width={120}
+            height={120}
+            src="https://res.cloudinary.com/w1jl4sa5/image/upload/v1784825556/Logo_of_The_Sims_4.svg_jagzsl.webp"
+            alt="Logo"
+            className="w-[7.5rem] h-[7.5rem] min-[2560px]:w-[11rem] min-[2560px]:h-[11rem] min-[3840px]:w-[14rem] min-[3840px]:h-[14rem] object-contain"
           />
         </div>
 
@@ -120,7 +123,7 @@ function LoginPage() {
           {t("login.register", "Crear cuenta")}
         </Button>
       </div>
-    </div>
+    </main>
   );
 }
 

@@ -1,11 +1,28 @@
+function getOptimizedImageUrl(url, width = 480) {
+  if (!url || !url.includes("res.cloudinary.com")) {
+    return url;
+  }
+
+  return url.replace(
+    "/upload/",
+    `/upload/f_auto,q_auto,w_${width}/`
+  );
+}
+
 function Card(props) {
+  const optimizedImage = getOptimizedImageUrl(props.image, 480);
+
   return (
     <div className="group bg-card-bg text-text rounded-[1.25rem] min-[2560px]:rounded-[2rem] min-[3840px]:rounded-[2.5rem] shadow-[0_0.375rem_1.125rem_rgba(0,0,0,0.6)] overflow-hidden w-full h-full max-w-none flex flex-col justify-between [transition:background-color_0.4s_ease,color_0.4s_ease,transform_0.3s_ease] hover:-translate-y-[0.375rem] min-[2560px]:hover:-translate-y-3">
 
       <div className="w-full aspect-[4/3] overflow-hidden relative">
         <img
+          width={480}
+          height={480}
+          loading="lazy"
+          decoding="async"
           className="w-full h-full object-cover block transition-transform duration-500 group-hover:scale-105"
-          src={props.image}
+          src={optimizedImage}
           alt={props.titulo}
         />
       </div>
@@ -15,10 +32,12 @@ function Card(props) {
           <span className="inline-block text-main text-[0.75rem] min-[2560px]:text-[1rem] min-[3840px]:text-[1.25rem] font-bold uppercase tracking-wider mb-1 min-[2560px]:mb-2">
             {props.plataforma}
           </span>
+
           <h3 className="text-xl min-[2560px]:text-[1.8rem] min-[3840px]:text-[2.35rem] font-extrabold mb-3 min-[2560px]:mb-4 text-text leading-tight">
             {props.titulo}
           </h3>
         </div>
+
         <p className="text-price text-[1.25rem] min-[2560px]:text-[1.8rem] min-[3840px]:text-[2.3rem] font-black">
           {props.precio}
         </p>

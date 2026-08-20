@@ -20,10 +20,15 @@ function Hero({ onExploreClick }) {
 
       <div className="flex-1 w-full lg:w-auto flex justify-center items-center h-[13.75rem] md:h-auto">
         <img
-          width={960}
-          height={540}
+          width={400}
+          height={225}
+          src="https://res.cloudinary.com/w1jl4sa5/image/upload/f_auto,q_auto,w_480/v1784588991/TS4_Royalty-and-Legacy_Sale-Hero_16x9-ES_mmadik.avif"
+          srcSet="
+          https://res.cloudinary.com/w1jl4sa5/image/upload/f_auto,q_auto,w_400/v1784588991/TS4_Royalty-and-Legacy_Sale-Hero_16x9-ES_mmadik.avif 400w,
+          https://res.cloudinary.com/w1jl4sa5/image/upload/f_auto,q_auto,w_640/v1784588991/TS4_Royalty-and-Legacy_Sale-Hero_16x9-ES_mmadik.avif 640w"
+          sizes="(max-width: 1023px) 372px, 600px"
+          fetchPriority="high"
           className="w-full max-w-[37.5rem] h-auto object-cover rounded-xl shadow-[0_0.375rem_1.25rem_rgba(0,0,0,0.5)]"
-          src="https://res.cloudinary.com/w1jl4sa5/image/upload/v1784588991/TS4_Royalty-and-Legacy_Sale-Hero_16x9-ES_mmadik.avif"
           alt={t("hero.imageAlt", "Imagen Hero")}
         />
       </div>

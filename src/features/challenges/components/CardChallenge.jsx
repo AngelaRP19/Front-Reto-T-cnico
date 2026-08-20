@@ -4,6 +4,17 @@ import { useLingui } from "@lingui/react";
 import { acceptChallenge, cancelChallenge, reactivateChallenge } from "../services/challengesService";
 import { translateErrorMessage } from "../../../utils/errorMessages";
 
+function getOptimizedImageUrl(url, width) {
+  if (!url || !url.includes("res.cloudinary.com")) {
+    return url;
+  }
+
+  return url.replace(
+    "/upload/",
+    `/upload/f_auto,q_auto,w_${width}/`
+  );
+}
+
 const STATUS_STYLES = {
   INICIADO: "bg-blue-100 text-blue-700",
   EN_PROGRESO: "bg-amber-100 text-amber-700",
@@ -113,7 +124,14 @@ function CardChallenge({ challenge, subscription, userId, isAuthenticated, onSub
             <div className="flex items-center gap-1.5 sm:gap-2 min-[3840px]:gap-2.5 flex-1 min-w-0">
               <div className="relative w-7 h-7 sm:w-8 sm:h-8 min-[2560px]:w-10 min-[2560px]:h-10 min-[3840px]:w-12 min-[3840px]:h-12 rounded-lg min-[2560px]:rounded-xl bg-snd-bg overflow-hidden shrink-0">
                 {challenge.image ? (
-                  <img src={challenge.image} alt={challenge.title} className="w-full h-full object-cover" />
+                  <img
+                    src={getOptimizedImageUrl(challenge.image, 96)}
+                    alt={challenge.title}
+                    width={48}
+                    height={48}
+                    decoding="async"
+                    className="w-full h-full object-cover"
+                  />
                 ) : (
                   <div className="w-full h-full flex items-center justify-center text-text opacity-40 text-xs min-[2560px]:text-base min-[3840px]:text-xl text-center">
                     {t("challenges.image", "Imagen")}
@@ -154,9 +172,16 @@ function CardChallenge({ challenge, subscription, userId, isAuthenticated, onSub
               ×
             </button>
 
-            <div className="w-full h-40 rounded-xl bg-snd-bg overflow-hidden mb-4">
+            <div className="w-full aspect-[4/1] rounded-xl bg-snd-bg overflow-hidden mb-4">
               {challenge.image ? (
-                <img src={challenge.image} alt={challenge.title} className="w-full h-full object-cover" />
+                <img
+                  src={getOptimizedImageUrl(challenge.image, 640)}
+                  alt={challenge.title}
+                  width={640}
+                  height={160}
+                  decoding="async"
+                  className="w-full h-full object-cover"
+                />
               ) : (
                 <div className="w-full h-full flex items-center justify-center text-text opacity-40 text-sm">
                   {t("challenges.image", "Imagen")}
