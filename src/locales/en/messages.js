@@ -118,7 +118,7 @@ export const messages = {
   "cart.page.paymentPseHint": "Direct debit from your bank account",
   "cart.page.backToCart": "← Back to cart",
   "cart.page.processing": "Processing...",
-  "cart.page.finalizePurchase": "Complete purchase ({amount})",
+  "cart.page.finalizePurchase": "Complete purchase",
   "cart.page.successTitle": "Purchase complete!",
   "cart.page.successBody": "Thank you for your purchase. Your order has been processed successfully.",
   "cart.page.orderNumber": "Order #:",
