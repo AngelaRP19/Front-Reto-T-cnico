@@ -65,7 +65,7 @@ function ChallengesPage() {
   };
 
   return (
-    <div className="w-full max-w-none ml-0 mr-auto px-5 min-[2560px]:px-10 min-[3840px]:px-14 py-10 min-[2560px]:py-16 min-[3840px]:py-24">
+    <div className="w-full max-w-none mx-auto px-5 min-[2560px]:px-10 min-[3840px]:px-14 py-10 min-[2560px]:py-16 min-[3840px]:py-24">
     <h1 className="text-4xl sm:text-5xl lg:text-6xl min-[2560px]:text-6xl min-[3840px]:text-[6.8rem] font-extrabold text-text mb-4 lg:mb-6 min-[2560px]:mb-5 min-[3840px]:mb-7">{t("challenges.title", "Retos")}</h1>
      <p className="text-text opacity-80 mb-8 lg:mb-10 min-[2560px]:mb-12 text-xl sm:text-2xl lg:text-[1.6rem] min-[2560px]:text-[2.2rem] min-[3840px]:text-[3.2rem] max-w-[42ch]">{t("challenges.description", "Descubrí los desafíos disponibles para tu cuenta.")} </p>
 
@@ -74,7 +74,7 @@ function ChallengesPage() {
       ) : error ? (
         <p className="text-text text-center py-10 min-[2560px]:py-16 min-[3840px]:py-20 text-2xl lg:text-[2rem] min-[2560px]:text-[2.3rem] min-[3840px]:text-[3.1rem]">{error}</p>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-[repeat(auto-fit,minmax(24rem,24rem))] min-[2560px]:grid-cols-[repeat(auto-fit,minmax(28rem,28rem))] min-[3840px]:grid-cols-[repeat(auto-fit,minmax(32rem,32rem))] justify-start gap-4 min-[2560px]:gap-5 min-[3840px]:gap-7">
+        <div className="grid grid-cols-1 sm:grid-cols-[repeat(auto-fit,minmax(24rem,24rem))] min-[2560px]:grid-cols-[repeat(auto-fit,minmax(28rem,28rem))] min-[3840px]:grid-cols-[repeat(auto-fit,minmax(32rem,32rem))] justify-center gap-4 min-[2560px]:gap-5 min-[3840px]:gap-7">
           {challenges.map((challenge) => (
             <CardChallenge
               key={challenge.id}

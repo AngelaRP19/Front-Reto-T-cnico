@@ -6,6 +6,7 @@ import useCartStore from "../store/cartStore";
 import { canAccessCart } from "../utils/cartAccess";
 import PlatformSelector from "./PlatformSelector/PlatformSelector";
 import { getPlatforms } from "../features/catalog/services/platformsService";
+import { getMyPurchases } from "../features/profile/services/purchasesService";
 
 const ExpansionDetail = ({ data: expansion, onBack }) => {
   const { i18n } = useLingui();
@@ -58,6 +59,32 @@ const ExpansionDetail = ({ data: expansion, onBack }) => {
       );
     } catch {
       matched = undefined;
+    }
+
+    /*
+     * Ya comprado en otra compra
+     *
+     * La misma expansión para la misma plataforma
+     * no puede volver a comprarse, aunque no esté
+     * en el carrito actual.
+     */
+    try {
+      const purchases = await getMyPurchases();
+      const alreadyPurchased = (purchases || []).some((purchase) =>
+        purchase.items?.some(
+          (purchasedItem) =>
+            purchasedItem.expansionPack?.id === expansion.id &&
+            purchasedItem.platform?.name?.toLowerCase() === platform.name.toLowerCase()
+        )
+      );
+
+      if (alreadyPurchased) {
+        setShowPlatformSelector(false);
+        setCartMessage(`Ya tienes "${expansion.title}" para la plataforma ${platform.name}.`);
+        return;
+      }
+    } catch {
+      // Si falla la consulta de compras, se continúa con la validación del carrito.
     }
 
     const result = addItem({
