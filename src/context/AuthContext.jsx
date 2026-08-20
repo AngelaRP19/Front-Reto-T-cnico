@@ -1,6 +1,5 @@
 import { createContext, useContext, useState, useEffect, useRef } from "react";
 import { getToken, isLoggedOut } from "../services/apiClient";
-import { checkOAuthSession, fetchCurrentUser } from "../features/auth/services/authService";
 import { getCartScopeId, switchCartScope } from "../store/cartStore";
 
 const AuthContext = createContext();
@@ -40,15 +39,26 @@ export function AuthProvider({ children }) {
   useEffect(() => {
     if (user || getToken() || isLoggedOut()) return;
 
-    checkOAuthSession()
-      .then(async (data) => {
-        if (data) {
-          const me = await fetchCurrentUser();
-          setUser({ name: data.name, email: data.email, provider: data.provider, ...me });
-        }
-      })
+    const oauthPending = sessionStorage.getItem("oauthPending");
+
+    // Solo comprobar la sesión OAuth si realmente se inició
+    // un login o registro con Google/Meta.
+    if (!oauthPending) return;
+
+    import("../features/auth/services/authService")
+      .then(({ checkOAuthSession, fetchCurrentUser }) =>
+        checkOAuthSession().then(async (data) => {
+          if (data) {
+            const me = await fetchCurrentUser();
+            setUser({ name: data.name, email: data.email, provider: data.provider, ...me });
+          }
+        })
+      )
       .catch(() => {
         // Caso normal: no hay sesión OAuth2 activa.
+      })
+      .finally(() => {
+        sessionStorage.removeItem("oauthPending");
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

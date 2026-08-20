@@ -22,14 +22,18 @@ function ChallengesPage() {
     async function load() {
       setLoading(true);
       try {
-        const list = await getChallenges(i18n.locale);
+        const subscriptionsPromise = user?.id
+          ? getUserChallengeSubscriptions(user.id)
+          : Promise.resolve({});
+
+        const [list, subs] = await Promise.all([
+          getChallenges(i18n.locale),
+          subscriptionsPromise,
+        ]);
+
         if (cancelled) return;
         setChallenges(list);
-
-        if (user?.id) {
-          const subs = await getUserChallengeSubscriptions(user.id);
-          if (!cancelled) setSubscriptions(subs);
-        }
+        setSubscriptions(subs);
       } catch (err) {
         if (!cancelled) setError(translateErrorMessage(err, t("errors.generic", "Ocurrió un error"), i18n));
       } finally {
