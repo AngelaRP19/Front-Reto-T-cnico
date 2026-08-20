@@ -49,28 +49,50 @@ function ChallengesPage() {
   };
 
   return (
-    <div className="w-full max-w-none mx-auto px-5 min-[2560px]:px-10 min-[3840px]:px-14 py-10 min-[2560px]:py-16 min-[3840px]:py-24">
-    <h1 className="text-4xl sm:text-5xl lg:text-6xl min-[2560px]:text-6xl min-[3840px]:text-[6.8rem] font-extrabold text-text mb-4 lg:mb-6 min-[2560px]:mb-5 min-[3840px]:mb-7">{t("challenges.title", "Retos")}</h1>
-     <p className="text-text opacity-80 mb-8 lg:mb-10 min-[2560px]:mb-12 text-xl sm:text-2xl lg:text-[1.6rem] min-[2560px]:text-[2.2rem] min-[3840px]:text-[3.2rem] max-w-[42ch]">{t("challenges.description", "Descubrí los desafíos disponibles para tu cuenta.")} </p>
-
-      {loading ? (
-        <p className="text-text text-center py-10 min-[2560px]:py-16 min-[3840px]:py-20 text-2xl lg:text-[2rem] min-[2560px]:text-[2.3rem] min-[3840px]:text-[3.1rem]">{t("challenges.loading", "Cargando retos...")}</p>
-      ) : error ? (
-        <p className="text-text text-center py-10 min-[2560px]:py-16 min-[3840px]:py-20 text-2xl lg:text-[2rem] min-[2560px]:text-[2.3rem] min-[3840px]:text-[3.1rem]">{error}</p>
-      ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-[repeat(auto-fit,minmax(24rem,24rem))] min-[2560px]:grid-cols-[repeat(auto-fit,minmax(28rem,28rem))] min-[3840px]:grid-cols-[repeat(auto-fit,minmax(32rem,32rem))] justify-center gap-4 min-[2560px]:gap-5 min-[3840px]:gap-7">
-          {challenges.map((challenge) => (
-            <CardChallenge
-              key={challenge.id}
-              challenge={challenge}
-              subscription={subscriptions[challenge.id] || null}
-              userId={user?.id}
-              isAuthenticated={isAuthenticated}
-              onSubscriptionChange={handleSubscriptionChange}
-            />
-          ))}
+    <div className="w-full max-w-[80rem] min-[2560px]:max-w-[112.5rem] min-[3840px]:max-w-[168.75rem] mx-auto px-[1rem] sm:px-[1.5rem] min-[2560px]:px-[2.5rem] min-[3840px]:px-[4rem] py-[2rem] sm:py-[3rem] min-[2560px]:py-[4rem] min-[3840px]:py-[6rem]">
+      {/* Tarjeta contenedora principal */}
+      <div className="bg-card-bg border border-snd-bg rounded-2xl min-[2560px]:rounded-3xl min-[3840px]:rounded-[2.5rem] p-[1.5rem] sm:p-[2.5rem] min-[2560px]:p-[3.5rem] min-[3840px]:p-[5rem] shadow-xl min-[2560px]:shadow-2xl">
+        
+        {/* Header */}
+        <div className="mb-[2rem] min-[2560px]:mb-[3rem] min-[3840px]:mb-[4rem]">
+          <span className="inline-block px-[0.75rem] py-[0.25rem] min-[2560px]:px-[1.25rem] min-[2560px]:py-[0.5rem] min-[3840px]:px-[1.75rem] min-[3840px]:py-[0.75rem] rounded-full text-xs sm:text-sm min-[2560px]:text-lg min-[3840px]:text-2xl font-black bg-main/15 text-main tracking-wider uppercase mb-[0.75rem] min-[2560px]:mb-[1.25rem]">
+            {t("challenges.badge", "Desafíos de la Comunidad")}
+          </span>
+          <h1 className="text-3xl sm:text-5xl min-[2560px]:text-6xl min-[3840px]:text-8xl font-black text-text tracking-tight mb-[0.75rem] min-[2560px]:mb-[1.25rem]">
+            {t("challenges.title", "Retos")}
+          </h1>
+          <p className="text-text opacity-75 text-base sm:text-lg min-[2560px]:text-2xl min-[3840px]:text-4xl max-w-[42rem] min-[2560px]:max-w-[56rem] min-[3840px]:max-w-[75rem] font-medium">
+            {t("challenges.description", "Descubrí los desafíos disponibles para tu cuenta y demuestra tus habilidades simmers.")}
+          </p>
         </div>
-      )}
+
+        {/* Contenido */}
+        {loading ? (
+          <div className="flex flex-col items-center justify-center py-[4rem] min-[2560px]:py-[6rem] min-[3840px]:py-[9rem]">
+            <div className="w-[2.5rem] h-[2.5rem] min-[2560px]:w-[4rem] min-[2560px]:h-[4rem] min-[3840px]:w-[6rem] min-[3840px]:h-[6rem] border-[0.25rem] min-[2560px]:border-[0.5rem] border-main border-t-transparent rounded-full animate-spin mb-[1rem]" />
+            <p className="text-text opacity-70 text-lg min-[2560px]:text-2xl min-[3840px]:text-4xl font-semibold">
+              {t("challenges.loading", "Cargando retos...")}
+            </p>
+          </div>
+        ) : error ? (
+          <div className="bg-red-500/10 border border-red-500/20 text-red-600 rounded-xl p-[1.5rem] text-center text-lg min-[2560px]:text-2xl min-[3840px]:text-4xl font-semibold my-[2rem]">
+            {error}
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 min-[2560px]:grid-cols-3 min-[3840px]:grid-cols-3 gap-[1.5rem] sm:gap-[2rem] min-[2560px]:gap-[2.5rem] min-[3840px]:gap-[3.5rem]">
+            {challenges.map((challenge) => (
+              <CardChallenge
+                key={challenge.id}
+                challenge={challenge}
+                subscription={subscriptions[challenge.id] || null}
+                userId={user?.id}
+                isAuthenticated={isAuthenticated}
+                onSubscriptionChange={handleSubscriptionChange}
+              />
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 }

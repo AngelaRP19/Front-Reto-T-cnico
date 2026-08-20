@@ -7,6 +7,7 @@ import { canAccessCart } from "../utils/cartAccess";
 import PlatformSelector from "./PlatformSelector/PlatformSelector";
 import { getPlatforms } from "../features/catalog/services/platformsService";
 import { getMyPurchases } from "../features/profile/services/purchasesService";
+import { Carousel } from "./Carousel";
 
 const ExpansionDetail = ({ data: expansion, onBack }) => {
   const { i18n } = useLingui();
@@ -20,15 +21,6 @@ const ExpansionDetail = ({ data: expansion, onBack }) => {
 
   const t = (id, message, values) => i18n._({ id, message, values });
 
-  /*
-   * Abrir selector de plataforma
-   *
-   * Si el usuario no está autenticado:
-   * → Redirige a la página de inicio de sesión.
-   *
-   * Si está autenticado:
-   * → Abre el selector de plataformas.
-   */
   const handleOpenPlatformSelector = () => {
     if (!canAccessCart(user)) {
       navigate("/login");
@@ -38,18 +30,6 @@ const ExpansionDetail = ({ data: expansion, onBack }) => {
     setShowPlatformSelector(true);
   };
 
-  /*
-   * Plataforma seleccionada
-   *
-   * PlatformSelector devuelve el objeto completo de la plataforma.
-   *
-   * Ejemplo:
-   * {
-   *   id: 1,
-   *   name: "Steam",
-   *   label: "Steam"
-   * }
-   */
   const handlePlatformSelected = async (platform) => {
     let matched;
     try {
@@ -61,13 +41,6 @@ const ExpansionDetail = ({ data: expansion, onBack }) => {
       matched = undefined;
     }
 
-    /*
-     * Ya comprado en otra compra
-     *
-     * La misma expansión para la misma plataforma
-     * no puede volver a comprarse, aunque no esté
-     * en el carrito actual.
-     */
     try {
       const purchases = await getMyPurchases();
       const alreadyPurchased = (purchases || []).some((purchase) =>
@@ -107,273 +80,250 @@ const ExpansionDetail = ({ data: expansion, onBack }) => {
 
   return (
     <>
-    <div className="min-h-screen bg-bg text-text py-6 sm:py-10 min-[2560px]:py-16 min-[3840px]:py-24 px-4 sm:px-6 lg:px-8 min-[2560px]:px-14 min-[3840px]:px-20 transition-colors duration-400">
-      <div className="max-w-5xl min-[2560px]:max-w-[96rem] min-[3840px]:max-w-[130rem] mx-auto">
+      <div className="min-h-screen bg-bg text-text py-6 sm:py-10 min-[2560px]:py-16 min-[3840px]:py-24 px-4 sm:px-6 lg:px-8 min-[2560px]:px-14 min-[3840px]:px-20 transition-colors duration-400">
+        <div className="max-w-5xl min-[2560px]:max-w-[96rem] min-[3840px]:max-w-[130rem] mx-auto">
 
-      {/* =========================================
-          BOTÓN REGRESAR
-          ========================================= */}
-      <button
-        onClick={onBack}
-        className="mb-6 min-[2560px]:mb-10 flex items-center gap-2 min-[2560px]:gap-3 text-sm min-[2560px]:text-xl min-[3840px]:text-3xl font-bold text-main hover:text-hover transition duration-200 cursor-pointer"
-      >
-        ← {t("catalog.back", "Volver al catálogo")}
-      </button>
+          {/* =========================================
+              BOTÓN REGRESAR
+              ========================================= */}
+          <button
+            onClick={onBack}
+            className="mb-6 min-[2560px]:mb-10 min-[3840px]:mb-14 flex items-center gap-2 min-[2560px]:gap-4 min-[3840px]:gap-6 text-sm min-[2560px]:text-2xl min-[3840px]:text-4xl font-bold text-main hover:text-hover transition duration-200 cursor-pointer"
+          >
+            ← {t("catalog.back", "Volver al catálogo")}
+          </button>
 
-      {/* =========================================
-          TARJETA PRINCIPAL
-          ========================================= */}
-      <div className="bg-card-bg rounded-3xl shadow-xl overflow-hidden border border-snd-bg transition-colors duration-400">
+          {/* =========================================
+              TARJETA PRINCIPAL
+              ========================================= */}
+          <div className="bg-card-bg rounded-3xl min-[2560px]:rounded-[2.5rem] min-[3840px]:rounded-[3.5rem] shadow-xl overflow-hidden border border-snd-bg transition-colors duration-400">
 
-        <div className="md:flex">
+            <div className="md:flex">
 
-          {/* =====================================
-              IMAGEN
-              ===================================== */}
-          <div className="md:w-1/2 bg-card-bg p-4 sm:p-6 flex items-center justify-center relative group overflow-hidden transition-colors duration-400">
+              {/* =====================================
+                  IMAGEN PORTADA
+                  ===================================== */}
+              <div className="md:w-1/2 bg-card-bg p-4 sm:p-6 min-[2560px]:p-10 min-[3840px]:p-14 flex items-center justify-center relative group transition-colors duration-400">
 
-            <span className="absolute top-4 left-4 bg-accent text-text text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider z-10 transition-opacity duration-200 ease-in-out group-hover:opacity-0 pointer-events-none">
-              {expansion.category}
-            </span>
-
-            <img
-              src={expansion.image}
-              alt={expansion.title}
-              className="rounded-3xl shadow-md w-full aspect-[4/3] max-h-[14rem] md:max-h-[20rem] object-cover transform group-hover:scale-105 transition duration-300"
-            />
-          </div>
-
-          {/* =====================================
-              INFORMACIÓN
-              ===================================== */}
-          <div className="md:w-1/2 p-5 sm:p-8 flex flex-col justify-between">
-
-            <div>
-
-              {/* Título */}
-              <h1 className="text-3xl min-[2560px]:text-5xl min-[3840px]:text-7xl font-extrabold text-text mb-2 min-[2560px]:mb-4 transition-colors duration-400">
-                {expansion.title}
-              </h1>
-
-              {/* Plataforma y fecha */}
-              <div className="flex items-center gap-3 mb-4 text-xs font-medium text-text opacity-60">
-
-                <span className="bg-snd-bg text-main px-2.5 py-1 rounded-md">
-                  {expansion.platform}
+                <span className="absolute top-6 left-6 min-[2560px]:top-10 min-[2560px]:left-10 min-[3840px]:top-14 min-[3840px]:left-14 bg-accent text-text text-xs min-[2560px]:text-xl min-[3840px]:text-3xl font-bold px-3 py-1 min-[2560px]:px-5 min-[2560px]:py-2 min-[3840px]:px-8 min-[3840px]:py-3 rounded-full uppercase tracking-wider z-10 transition-opacity duration-200 ease-in-out group-hover:opacity-0 pointer-events-none">
+                  {expansion.category}
                 </span>
 
-                <span>
-                  • {expansion.releaseDate}
-                </span>
-
+                {/* Envoltorio con overflow-hidden y rounded */}
+                <div className="w-full h-auto max-h-[26rem] min-[2560px]:max-h-[42rem] min-[3840px]:max-h-[58rem] rounded-2xl min-[2560px]:rounded-3xl min-[3840px]:rounded-[2.5rem] overflow-hidden shadow-md">
+                  <img
+                    src={expansion.image}
+                    alt={expansion.title}
+                    className="w-full h-full object-cover transform group-hover:scale-105 transition duration-300"
+                  />
+                </div>
               </div>
 
-              {/* Descripción */}
-              <p className="text-text mb-6 min-[2560px]:mb-8 text-sm min-[2560px]:text-xl min-[3840px]:text-3xl leading-relaxed transition-colors duration-400">
-                {expansion.description}
-              </p>
+              {/* =====================================
+                  INFORMACIÓN DEL PACK
+                  ===================================== */}
+              <div className="md:w-1/2 p-5 sm:p-8 min-[2560px]:p-12 min-[3840px]:p-16 flex flex-col justify-between">
 
-              {/* Incluye */}
-              <h3 className="text-base font-bold text-text mb-3 border-b border-snd-bg pb-2 transition-colors duration-400">
-                {t(
-                  "catalog.includes",
-                  "¿Qué incluye este pack?"
-                )}
-              </h3>
+                <div>
 
-              <ul className="space-y-2 mb-6 text-sm text-text">
+                  {/* Título */}
+                  <h1 className="text-3xl min-[2560px]:text-5xl min-[3840px]:text-7xl font-extrabold text-text mb-2 min-[2560px]:mb-4 min-[3840px]:mb-6 transition-colors duration-400">
+                    {expansion.title}
+                  </h1>
 
-                {expansion.features?.map((feature, idx) => (
-                  <li
-                    key={idx}
-                    className="flex items-start gap-2"
-                  >
-                    <span className="text-accent-text font-bold">
-                      ✓
+                  {/* Plataforma y fecha */}
+                  <div className="flex items-center gap-3 min-[2560px]:gap-5 min-[3840px]:gap-7 mb-4 min-[2560px]:mb-6 min-[3840px]:mb-8 text-xs min-[2560px]:text-xl min-[3840px]:text-3xl font-medium text-text opacity-60">
+
+                    <span className="bg-snd-bg text-main px-2.5 py-1 min-[2560px]:px-4 min-[2560px]:py-2 min-[3840px]:px-6 min-[3840px]:py-3 rounded-md min-[2560px]:rounded-xl">
+                      {expansion.platform}
                     </span>
 
                     <span>
-                      {feature}
+                      • {expansion.releaseDate}
                     </span>
-                  </li>
-                ))}
 
-              </ul>
+                  </div>
 
-            </div>
+                  {/* Descripción */}
+                  <p className="text-text mb-6 min-[2560px]:mb-10 min-[3840px]:mb-14 text-sm min-[2560px]:text-2xl min-[3840px]:text-4xl leading-relaxed transition-colors duration-400">
+                    {expansion.description}
+                  </p>
 
-            {/* =====================================
-                PRECIO Y BOTÓN
-                ===================================== */}
-            <div className="pt-4 border-t border-snd-bg flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:justify-between">
+                  {/* Incluye */}
+                  <h3 className="text-base min-[2560px]:text-2xl min-[3840px]:text-4xl font-bold text-text mb-3 min-[2560px]:mb-6 min-[3840px]:mb-8 border-b border-snd-bg pb-2 min-[2560px]:pb-4 transition-colors duration-400">
+                    {t(
+                      "catalog.includes",
+                      "¿Qué incluye este pack?"
+                    )}
+                  </h3>
 
-              <div>
+                  <ul className="space-y-2 min-[2560px]:space-y-4 min-[3840px]:space-y-6 mb-6 min-[2560px]:mb-10 min-[3840px]:mb-12 text-sm min-[2560px]:text-2xl min-[3840px]:text-3xl text-text">
 
-                <span className="text-xs text-text opacity-60 block">
-                  {t(
-                    "catalog.totalPrice",
-                    "Precio total"
-                  )}
-                </span>
+                    {expansion.features?.map((feature, idx) => (
+                      <li
+                        key={idx}
+                        className="flex items-start gap-2 min-[2560px]:gap-4 min-[3840px]:gap-5"
+                      >
+                        <span className="text-accent-text font-bold">
+                          ✓
+                        </span>
 
-                <span className="text-2xl min-[2560px]:text-4xl min-[3840px]:text-6xl font-black text-price">
-                  {expansion.price}
-                </span>
+                        <span>
+                          {feature}
+                        </span>
+                      </li>
+                    ))}
+
+                  </ul>
+
+                </div>
+
+                {/* =====================================
+                    PRECIO Y BOTÓN
+                    ===================================== */}
+                <div className="pt-4 min-[2560px]:pt-8 min-[3840px]:pt-10 border-t border-snd-bg flex flex-col sm:flex-row items-start sm:items-center gap-4 min-[2560px]:gap-8 sm:justify-between">
+
+                  <div>
+
+                    <span className="text-xs min-[2560px]:text-xl min-[3840px]:text-3xl text-text opacity-60 block mb-1">
+                      {t(
+                        "catalog.totalPrice",
+                        "Precio total"
+                      )}
+                    </span>
+
+                    <span className="text-2xl min-[2560px]:text-5xl min-[3840px]:text-7xl font-black text-price">
+                      {expansion.price}
+                    </span>
+
+                  </div>
+
+                  {/* Añadir al carrito */}
+                  <button
+                    onClick={handleOpenPlatformSelector}
+                    className="bg-main hover:bg-hover text-bg font-bold py-3 px-6 min-[2560px]:py-5 min-[2560px]:px-10 min-[2560px]:text-2xl min-[3840px]:py-7 min-[3840px]:px-14 min-[3840px]:text-4xl rounded-2xl min-[2560px]:rounded-3xl shadow-lg transition duration-300 cursor-pointer"
+                  >
+                    {t(
+                      "cart.add",
+                      "Añadir al carrito"
+                    )}
+                  </button>
+
+                </div>
 
               </div>
 
-              {/* Añadir al carrito */}
-              <button
-                onClick={handleOpenPlatformSelector}
-                className="bg-main hover:bg-hover text-bg font-bold py-3 px-6 min-[2560px]:py-5 min-[2560px]:px-10 min-[2560px]:text-2xl min-[3840px]:py-7 min-[3840px]:px-14 min-[3840px]:text-4xl rounded-2xl min-[2560px]:rounded-3xl shadow-lg transition duration-300 cursor-pointer"
-              >
-                {t(
-                  "cart.add",
-                  "Añadir al carrito"
-                )}{" "}
-                
-              </button>
-
             </div>
+
+            {/* =========================================
+                CAPTURAS DE PANTALLA Y TRÁILER
+                ========================================= */}
+            <div className="p-5 sm:p-8 pt-6 sm:pt-8 min-[2560px]:p-14 min-[2560px]:pt-10 min-[3840px]:p-20 min-[3840px]:pt-14">
+              <h3 className="text-base min-[2560px]:text-3xl min-[3840px]:text-5xl font-bold text-text mb-4 min-[2560px]:mb-7 min-[3840px]:mb-10 border-b border-snd-bg pb-2 min-[2560px]:pb-4 transition-colors duration-400">
+                {t("catalog.screenshots", "Capturas de pantalla y tráiler")}
+              </h3>
+
+              <Carousel 
+                media={expansion.screenshots} 
+                videoUrl={expansion.videoUrl || "https://www.youtube.com/watch?v=4e25uhObPto"} 
+              />
+            </div>
+
+            {/* =========================================
+                REQUISITOS DEL SISTEMA
+                ========================================= */}
+            {(expansion.minRequirements?.length > 0 ||
+              expansion.recommendedRequirements?.length > 0) && (
+
+              <div className="p-5 sm:p-8 pt-0 sm:pt-0 min-[2560px]:p-14 min-[2560px]:pt-0 min-[3840px]:p-20 min-[3840px]:pt-0">
+
+                <h3 className="text-base min-[2560px]:text-3xl min-[3840px]:text-5xl font-bold text-text mb-4 min-[2560px]:mb-8 min-[3840px]:mb-10 border-b border-snd-bg pb-2 min-[2560px]:pb-4 transition-colors duration-400">
+                  {t(
+                    "catalog.requirements",
+                    "Requisitos del sistema"
+                  )}
+                </h3>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 min-[2560px]:gap-12 min-[3840px]:gap-16">
+
+                  {/* Requisitos mínimos */}
+                  <div>
+
+                    <h4 className="text-sm min-[2560px]:text-2xl min-[3840px]:text-4xl font-bold text-text opacity-80 mb-3 min-[2560px]:mb-6">
+                      {t(
+                        "catalog.minRequirements",
+                        "Requisitos mínimos"
+                      )}
+                    </h4>
+
+                    <ul className="space-y-2 min-[2560px]:space-y-4 min-[3840px]:space-y-6 text-sm min-[2560px]:text-2xl min-[3840px]:text-3xl text-text">
+
+                      {expansion.minRequirements?.map(
+                        (req, idx) => (
+                          <li
+                            key={idx}
+                            className="flex items-start gap-2 min-[2560px]:gap-4"
+                          >
+                            <span className="text-accent-text font-bold">
+                              ✓
+                            </span>
+
+                            <span>
+                              {req}
+                            </span>
+                          </li>
+                        )
+                      )}
+
+                    </ul>
+
+                  </div>
+
+                  {/* Requisitos recomendados */}
+                  <div>
+
+                    <h4 className="text-sm min-[2560px]:text-2xl min-[3840px]:text-4xl font-bold text-text opacity-80 mb-3 min-[2560px]:mb-6">
+                      {t(
+                        "catalog.recommendedRequirements",
+                        "Requisitos recomendados"
+                      )}
+                    </h4>
+
+                    <ul className="space-y-2 min-[2560px]:space-y-4 min-[3840px]:space-y-6 text-sm min-[2560px]:text-2xl min-[3840px]:text-3xl text-text">
+
+                      {expansion.recommendedRequirements?.map(
+                        (req, idx) => (
+                          <li
+                            key={idx}
+                            className="flex items-start gap-2 min-[2560px]:gap-4"
+                          >
+                            <span className="text-accent-text font-bold">
+                              ✓
+                            </span>
+
+                            <span>
+                              {req}
+                            </span>
+                          </li>
+                        )
+                      )}
+
+                    </ul>
+
+                  </div>
+
+                </div>
+
+              </div>
+            )}
 
           </div>
 
         </div>
-
-        {/* =========================================
-            CAPTURAS DE PANTALLA
-            ========================================= */}
-        {expansion.screenshots?.length > 0 && (
-          <div className="p-5 sm:p-8 pt-6 sm:pt-8">
-
-            <h3 className="text-base font-bold text-text mb-4 border-b border-snd-bg pb-2 transition-colors duration-400">
-              {t(
-                "catalog.screenshots",
-                "Capturas de pantalla"
-              )}
-            </h3>
-
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4">
-
-              {expansion.screenshots.map((url, idx) => (
-                <div
-                  key={idx}
-                  className="overflow-hidden rounded-2xl group"
-                >
-                  <img
-                    src={url}
-                    alt={`${expansion.title} - ${idx + 1}`}
-                    className="w-full aspect-video object-cover transform group-hover:scale-105 transition duration-300"
-                  />
-                </div>
-              ))}
-
-            </div>
-
-          </div>
-        )}
-
-        {/* =========================================
-            REQUISITOS DEL SISTEMA
-            ========================================= */}
-        {(expansion.minRequirements?.length > 0 ||
-          expansion.recommendedRequirements?.length > 0) && (
-
-          <div className="p-5 sm:p-8 pt-0 sm:pt-0">
-
-            <h3 className="text-base font-bold text-text mb-4 border-b border-snd-bg pb-2 transition-colors duration-400">
-              {t(
-                "catalog.requirements",
-                "Requisitos del sistema"
-              )}
-            </h3>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-
-              {/* Requisitos mínimos */}
-              <div>
-
-                <h4 className="text-sm font-bold text-text opacity-80 mb-3">
-                  {t(
-                    "catalog.minRequirements",
-                    "Requisitos mínimos"
-                  )}
-                </h4>
-
-                <ul className="space-y-2 text-sm text-text">
-
-                  {expansion.minRequirements?.map(
-                    (req, idx) => (
-                      <li
-                        key={idx}
-                        className="flex items-start gap-2"
-                      >
-                        <span className="text-accent-text font-bold">
-                          ✓
-                        </span>
-
-                        <span>
-                          {req}
-                        </span>
-                      </li>
-                    )
-                  )}
-
-                </ul>
-
-              </div>
-
-              {/* Requisitos recomendados */}
-              <div>
-
-                <h4 className="text-sm font-bold text-text opacity-80 mb-3">
-                  {t(
-                    "catalog.recommendedRequirements",
-                    "Requisitos recomendados"
-                  )}
-                </h4>
-
-                <ul className="space-y-2 text-sm text-text">
-
-                  {expansion.recommendedRequirements?.map(
-                    (req, idx) => (
-                      <li
-                        key={idx}
-                        className="flex items-start gap-2"
-                      >
-                        <span className="text-accent-text font-bold">
-                          ✓
-                        </span>
-
-                        <span>
-                          {req}
-                        </span>
-                      </li>
-                    )
-                  )}
-
-                </ul>
-
-              </div>
-
-            </div>
-
-          </div>
-        )}
-
-      </div>
-
-      </div>
       </div>
 
       {/* =========================================
           SELECTOR DE PLATAFORMA
-          =========================================
-
-          IMPORTANTE:
-          Se envía expansion.id porque
-          PlatformSelector lo necesita para
-          consultar las plataformas disponibles.
           ========================================= */}
       <PlatformSelector
         expansionId={expansion.id}
@@ -383,7 +333,7 @@ const ExpansionDetail = ({ data: expansion, onBack }) => {
       />
 
       {/* =========================================
-          MENSAJE DEL CARRITO
+          MENSAJE DEL CARRITO (MODAL)
           ========================================= */}
       {cartMessage && (
         <div
@@ -392,15 +342,15 @@ const ExpansionDetail = ({ data: expansion, onBack }) => {
         >
 
           <div
-            className="bg-card-bg rounded-2xl min-[2560px]:rounded-3xl p-6 min-[2560px]:p-10 min-[3840px]:p-14 w-full max-w-md min-[2560px]:max-w-3xl min-[3840px]:max-w-5xl shadow-xl"
+            className="bg-card-bg rounded-2xl min-[2560px]:rounded-3xl min-[3840px]:rounded-[2.5rem] p-6 min-[2560px]:p-12 min-[3840px]:p-16 w-full max-w-md min-[2560px]:max-w-3xl min-[3840px]:max-w-5xl shadow-xl border border-snd-bg"
             onClick={(e) => e.stopPropagation()}
           >
 
-            <h2 className="text-xl min-[2560px]:text-4xl min-[3840px]:text-5xl font-bold mb-3 min-[2560px]:mb-5 text-text">
+            <h2 className="text-xl min-[2560px]:text-4xl min-[3840px]:text-6xl font-bold mb-3 min-[2560px]:mb-6 text-text">
               {t("cart.title", "Carrito")}
             </h2>
 
-            <p className="text-text mb-6 min-[2560px]:mb-8 min-[2560px]:text-2xl min-[3840px]:text-4xl">
+            <p className="text-text mb-6 min-[2560px]:mb-10 min-[3840px]:mb-12 text-base min-[2560px]:text-2xl min-[3840px]:text-4xl leading-relaxed">
               {cartMessage}
             </p>
 
@@ -408,7 +358,7 @@ const ExpansionDetail = ({ data: expansion, onBack }) => {
 
               <button
                 onClick={() => setCartMessage("")}
-                className="bg-main hover:bg-hover text-bg font-bold px-5 py-2 min-[2560px]:px-9 min-[2560px]:py-4 min-[2560px]:text-2xl min-[3840px]:px-12 min-[3840px]:py-5 min-[3840px]:text-3xl rounded-lg min-[2560px]:rounded-2xl transition duration-200"
+                className="bg-main hover:bg-hover text-bg font-bold px-5 py-2 min-[2560px]:px-9 min-[2560px]:py-4 min-[3840px]:px-14 min-[3840px]:py-6 text-sm min-[2560px]:text-2xl min-[3840px]:text-4xl rounded-lg min-[2560px]:rounded-2xl transition duration-200 cursor-pointer"
               >
                 {t("common.close", "Cerrar")}
               </button>
