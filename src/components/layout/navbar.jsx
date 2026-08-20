@@ -25,12 +25,10 @@ function Navbar() {
 
   const userMenuRef = useRef(null);
   const mobileUserMenuRef = useRef(null);
-  const betaWrapperRef = useRef(null);
   const cartWrapperRef = useRef(null);
   const mobileCartWrapperRef = useRef(null);
   const mobileNavWrapperRef = useRef(null);
   useClickOutside([userMenuRef, mobileUserMenuRef], () => setShowUserMenu(false), showUserMenu);
-  useClickOutside(betaWrapperRef, () => setShowBetaConfirm(false), showBetaConfirm);
   useClickOutside([cartWrapperRef, mobileCartWrapperRef], () => setShowCart(false), showCart);
   useClickOutside(mobileNavWrapperRef, () => setMenuOpen(false), menuOpen);
 
@@ -299,7 +297,7 @@ function Navbar() {
               {t("profile.info.betaTester", "Beta tester")}
             </button>
           ) : (
-            <div className="relative w-full max-w-sm lg:w-auto" ref={betaWrapperRef}>
+            <div className="w-full max-w-sm lg:w-auto">
               <button
                 onClick={handleBetaButtonClick}
                 disabled={betaSubmitting}
@@ -307,32 +305,6 @@ function Navbar() {
               >
                 {t("beta.title", "¿Quieres ser beta tester?")}
               </button>
-
-              {showBetaConfirm && (
-                <div className="absolute left-1/2 -translate-x-1/2 lg:left-auto lg:right-0 lg:translate-x-0 top-full mt-2 min-[2560px]:mt-3 w-72 min-[2560px]:w-[26rem] min-[3840px]:w-[32rem] max-w-[90vw] bg-card-bg text-text rounded-xl min-[2560px]:rounded-2xl shadow-xl p-4 min-[2560px]:p-6 min-[3840px]:p-8 z-[1300] transition-colors duration-300">
-                  <p className="text-sm min-[2560px]:text-xl min-[3840px]:text-3xl font-bold mb-3 min-[2560px]:mb-5">{t("beta.confirmTitle", "¿Quieres suscribirte a beta testing?")}</p>
-                  <div className="flex gap-2 min-[2560px]:gap-3">
-                    <button
-                      onClick={() => handleBetaConfirm(true)}
-                      className="flex-1 bg-accent text-text rounded-full py-2 min-[2560px]:py-2.5 min-[3840px]:py-3 text-sm min-[2560px]:text-[1rem] min-[3840px]:text-[1.2rem] font-bold cursor-pointer"
-                    >
-                      {t("beta.yes", "Sí, quiero")}
-                    </button>
-                    <button
-                      onClick={() => handleBetaConfirm(false)}
-                      className="flex-1 bg-snd-bg text-text rounded-full py-2 min-[2560px]:py-2.5 min-[3840px]:py-3 text-sm min-[2560px]:text-[1rem] min-[3840px]:text-[1.2rem] font-bold cursor-pointer"
-                    >
-                      {t("beta.no", "No, gracias")}
-                    </button>
-                  </div>
-                </div>
-              )}
-
-              {betaError && (
-                <div className="absolute left-1/2 -translate-x-1/2 lg:left-auto lg:right-0 lg:translate-x-0 top-full mt-2 min-[2560px]:mt-3 w-72 min-[2560px]:w-[26rem] min-[3840px]:w-[32rem] max-w-[90vw] bg-card-bg text-text rounded-xl min-[2560px]:rounded-2xl shadow-xl p-3 min-[2560px]:p-5 min-[3840px]:p-7 z-[1300]">
-                  <p className="text-error text-xs min-[2560px]:text-base min-[3840px]:text-xl font-semibold">{betaError}</p>
-                </div>
-              )}
             </div>
           )}
           {/* Login/avatar, carrito, idioma y tema: solo escritorio (en mobile viven en la fila superior) */}
@@ -467,6 +439,23 @@ function Navbar() {
         </div>
       </nav>
       </div>
+
+      {showBetaConfirm && (
+        <ConfirmDialog
+          title={t("beta.confirmTitle", "¿Quieres suscribirte a beta testing?")}
+          confirmLabel={t("beta.yes", "Sí, quiero")}
+          cancelLabel={t("beta.no", "No, gracias")}
+          confirmDisabled={betaSubmitting}
+          onConfirm={() => handleBetaConfirm(true)}
+          onCancel={() => handleBetaConfirm(false)}
+        />
+      )}
+
+      {betaError && (
+        <div className="fixed inset-x-4 bottom-4 sm:inset-x-auto sm:right-6 sm:bottom-6 min-[2560px]:right-10 min-[2560px]:bottom-10 max-w-sm min-[2560px]:max-w-lg bg-card-bg text-text rounded-xl min-[2560px]:rounded-2xl shadow-xl p-4 min-[2560px]:p-6 z-[1500] transition-colors duration-300">
+          <p className="text-error text-sm min-[2560px]:text-base font-semibold">{betaError}</p>
+        </div>
+      )}
 
       {showBetaCancelConfirm && (
         <ConfirmDialog
