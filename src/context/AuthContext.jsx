@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect, useRef } from "react";
-import { getToken, isLoggedOut } from "../services/apiClient";
+import { useNavigate } from "react-router-dom";
+import { getToken, setToken, clearToken, isLoggedOut } from "../services/apiClient";
 import { getCartScopeId, switchCartScope } from "../store/cartStore";
 
 const AuthContext = createContext();
@@ -7,6 +8,7 @@ const AuthContext = createContext();
 const USER_KEY = "authUser";
 
 export function AuthProvider({ children }) {
+  const navigate = useNavigate();
   const [user, setUserState] = useState(() => {
     const stored = localStorage.getItem(USER_KEY);
     return stored ? JSON.parse(stored) : null;
@@ -37,12 +39,45 @@ export function AuthProvider({ children }) {
   const clearUser = () => setUser(null);
 
   useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const urlToken = params.get("token");
+    const oauthError = params.get("error");
+
+    if (urlToken || oauthError) {
+      params.delete("token");
+      params.delete("error");
+      const cleanSearch = params.toString();
+      window.history.replaceState(
+        null,
+        "",
+        window.location.pathname + (cleanSearch ? `?${cleanSearch}` : "") + window.location.hash
+      );
+    }
+
+    if (oauthError) {
+      navigate("/login", { replace: true, state: { oauthError: true } });
+      return;
+    }
+
+    if (urlToken) {
+      setToken(urlToken);
+      import("../features/auth/services/authService")
+        .then(({ fetchCurrentUser }) => fetchCurrentUser())
+        .then((me) => {
+          if (me) {
+            setUser(me);
+          } else {
+            // Token inválido o vencido: no queda nada útil que persistir.
+            clearToken();
+            navigate("/login", { replace: true, state: { oauthError: true } });
+          }
+        });
+      return;
+    }
     if (user || getToken() || isLoggedOut()) return;
 
     const oauthPending = sessionStorage.getItem("oauthPending");
 
-    // Solo comprobar la sesión OAuth si realmente se inició
-    // un login o registro con Google/Meta.
     if (!oauthPending) return;
 
     import("../features/auth/services/authService")
