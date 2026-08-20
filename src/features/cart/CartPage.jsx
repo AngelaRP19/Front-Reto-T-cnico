@@ -195,7 +195,7 @@ export const CartPage = () => {
             >
               {purchasing
                 ? t("cart.page.processing", "Procesando...")
-                : t("cart.page.finalizePurchase", "Finalizar compra ({amount})", {
+                : t("cart.page.finalizePurchase", "Finalizar compra", {
                     amount: subtotal.toLocaleString("es-CO", { style: "currency", currency: "COP" }),
                   })}
             </button>
