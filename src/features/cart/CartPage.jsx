@@ -51,32 +51,32 @@ export const CartPage = () => {
   };
 
   return (
-    <div className="max-w-[56rem] mx-auto p-6 my-8 bg-card-bg rounded-xl shadow-md border border-snd-bg text-text transition-colors duration-300">
+    <div className="max-w-[56rem] min-[2560px]:max-w-[80rem] min-[3840px]:max-w-[110rem] mx-auto p-6 min-[2560px]:p-10 min-[3840px]:p-14 my-8 min-[2560px]:my-12 min-[3840px]:my-16 bg-card-bg rounded-xl min-[2560px]:rounded-2xl min-[3840px]:rounded-3xl shadow-md border border-snd-bg text-text transition-colors duration-300">
       {/* PASO 1: VISTA DEL CARRITO */}
       {step === "cart" && (
         <div>
-          <h1 className="text-2xl font-bold text-text mb-6 pb-2 border-b border-snd-bg">
+          <h1 className="text-2xl min-[2560px]:text-5xl min-[3840px]:text-7xl font-bold text-text mb-6 min-[2560px]:mb-10 min-[3840px]:mb-14 pb-2 min-[2560px]:pb-4 border-b border-snd-bg">
             {t("cart.page.title", "Tu carrito de compras")}
           </h1>
 
           {items.length === 0 ? (
-            <p className="text-text opacity-60 py-8 text-center">{t("cart.page.empty", "El carrito está vacío.")}</p>
+            <p className="text-text opacity-60 py-8 min-[2560px]:py-12 min-[3840px]:py-16 text-center min-[2560px]:text-2xl min-[3840px]:text-4xl">{t("cart.page.empty", "El carrito está vacío.")}</p>
           ) : (
             <>
               <div className="divide-y divide-snd-bg">
                 {items.map((item) => (
-                  <div key={`${item.id}-${item.platform}`} className="py-4 flex justify-between items-center gap-4">
+                  <div key={`${item.id}-${item.platform}`} className="py-4 min-[2560px]:py-6 min-[3840px]:py-8 flex justify-between items-center gap-4 min-[2560px]:gap-6">
                     <div className="min-w-0">
-                      <h3 className="font-semibold text-text truncate">{item.title}</h3>
-                      <p className="text-sm text-text opacity-70">
+                      <h3 className="font-semibold text-text truncate min-[2560px]:text-2xl min-[3840px]:text-4xl">{item.title}</h3>
+                      <p className="text-sm min-[2560px]:text-xl min-[3840px]:text-3xl text-text opacity-70">
                         {t("cart.page.platformLabel", "Plataforma:")} <span className="font-medium text-main">{item.platform}</span>
                       </p>
                     </div>
-                    <div className="flex items-center gap-4 shrink-0">
-                      <span className="font-bold text-text">{item.price}</span>
+                    <div className="flex items-center gap-4 min-[2560px]:gap-6 shrink-0">
+                      <span className="font-bold text-text min-[2560px]:text-2xl min-[3840px]:text-4xl">{item.price}</span>
                       <button
                         onClick={() => removeItem(item.id, item.platform)}
-                        className="text-sm text-red-500 hover:text-red-600 font-semibold cursor-pointer"
+                        className="text-sm min-[2560px]:text-xl min-[3840px]:text-3xl text-red-500 hover:text-red-600 font-semibold cursor-pointer"
                       >
                         {t("cart.remove", "Quitar")}
                       </button>
@@ -85,23 +85,23 @@ export const CartPage = () => {
                 ))}
               </div>
 
-              <div className="mt-6 pt-4 border-t border-snd-bg flex justify-between items-center">
-                <span className="text-lg font-semibold text-text">{t("cart.page.total", "Total:")}</span>
-                <span className="text-2xl font-bold text-price">
+              <div className="mt-6 min-[2560px]:mt-10 min-[3840px]:mt-14 pt-4 min-[2560px]:pt-6 border-t border-snd-bg flex justify-between items-center">
+                <span className="text-lg min-[2560px]:text-3xl min-[3840px]:text-5xl font-semibold text-text">{t("cart.page.total", "Total:")}</span>
+                <span className="text-2xl min-[2560px]:text-4xl min-[3840px]:text-6xl font-bold text-price">
                   {subtotal.toLocaleString("es-CO", { style: "currency", currency: "COP" })}
                 </span>
               </div>
 
-              <div className="mt-6 flex flex-col sm:flex-row justify-end gap-3">
+              <div className="mt-6 min-[2560px]:mt-10 min-[3840px]:mt-14 flex flex-col sm:flex-row justify-end gap-3 min-[2560px]:gap-5">
                 <button
                   onClick={clearCart}
-                  className="bg-red-600 hover:bg-red-700 text-white font-medium px-6 py-2.5 rounded-lg transition-colors cursor-pointer"
+                  className="bg-red-600 hover:bg-red-700 text-white font-medium px-6 py-2.5 min-[2560px]:px-9 min-[2560px]:py-4 min-[2560px]:text-xl min-[3840px]:px-12 min-[3840px]:py-5.5 min-[3840px]:text-3xl rounded-lg min-[2560px]:rounded-xl transition-colors cursor-pointer"
                 >
                   {t("cart.clear", "Vaciar carrito")}
                 </button>
                 <button
                   onClick={() => setStep("payment")}
-                  className="bg-main hover:bg-hover text-bg font-medium px-6 py-2.5 rounded-lg transition-colors cursor-pointer"
+                  className="bg-main hover:bg-hover text-bg font-medium px-6 py-2.5 min-[2560px]:px-9 min-[2560px]:py-4 min-[2560px]:text-xl min-[3840px]:px-12 min-[3840px]:py-5.5 min-[3840px]:text-3xl rounded-lg min-[2560px]:rounded-xl transition-colors cursor-pointer"
                 >
                   {t("cart.page.proceedToPayment", "Proceder al pago")}
                 </button>
@@ -114,14 +114,14 @@ export const CartPage = () => {
       {/* PASO 2: SELECCIÓN DE MÉTODO DE PAGO / PASARELA */}
       {step === "payment" && (
         <div>
-          <h2 className="text-xl font-bold text-text mb-2">{t("cart.page.selectPaymentMethod", "Selecciona el método de pago")}</h2>
-          <p className="text-sm text-text opacity-70 mb-6">
+          <h2 className="text-xl min-[2560px]:text-4xl min-[3840px]:text-6xl font-bold text-text mb-2 min-[2560px]:mb-4">{t("cart.page.selectPaymentMethod", "Selecciona el método de pago")}</h2>
+          <p className="text-sm min-[2560px]:text-xl min-[3840px]:text-3xl text-text opacity-70 mb-6 min-[2560px]:mb-10 min-[3840px]:mb-14">
             {t("cart.page.selectPaymentMethodSubtitle", "Elige la pasarela o método con el que deseas completar tu pedido.")}
           </p>
 
-          <div className="space-y-3 my-6">
+          <div className="space-y-3 min-[2560px]:space-y-5 my-6 min-[2560px]:my-10 min-[3840px]:my-14">
             <label
-              className={`flex items-center p-4 border rounded-xl cursor-pointer transition ${
+              className={`flex items-center p-4 min-[2560px]:p-6 min-[3840px]:p-8 border rounded-xl min-[2560px]:rounded-2xl cursor-pointer transition ${
                 paymentMethod === "CARD" ? "border-main bg-main/10" : "border-snd-bg hover:bg-snd-bg/50"
               }`}
             >
@@ -131,16 +131,16 @@ export const CartPage = () => {
                 value="CARD"
                 checked={paymentMethod === "CARD"}
                 onChange={(e) => setPaymentMethod(e.target.value)}
-                className="w-4 h-4 accent-main"
+                className="w-4 h-4 min-[2560px]:w-6 min-[2560px]:h-6 min-[3840px]:w-8 min-[3840px]:h-8 accent-main"
               />
-              <div className="ml-3">
-                <span className="flex items-center gap-2 font-semibold text-text"><CreditCard size={18} /> {t("cart.page.paymentCard", "Tarjeta de crédito / débito")}</span>
-                <span className="text-xs text-text opacity-70">{t("cart.page.paymentCardHint", "Pago directo y seguro con tarjeta")}</span>
+              <div className="ml-3 min-[2560px]:ml-5">
+                <span className="flex items-center gap-2 min-[2560px]:gap-3 font-semibold text-text min-[2560px]:text-2xl min-[3840px]:text-4xl"><CreditCard size={18} className="min-[2560px]:w-7 min-[2560px]:h-7 min-[3840px]:w-10 min-[3840px]:h-10" /> {t("cart.page.paymentCard", "Tarjeta de crédito / débito")}</span>
+                <span className="text-xs min-[2560px]:text-lg min-[3840px]:text-2xl text-text opacity-70">{t("cart.page.paymentCardHint", "Pago directo y seguro con tarjeta")}</span>
               </div>
             </label>
 
             <label
-              className={`flex items-center p-4 border rounded-xl cursor-pointer transition ${
+              className={`flex items-center p-4 min-[2560px]:p-6 min-[3840px]:p-8 border rounded-xl min-[2560px]:rounded-2xl cursor-pointer transition ${
                 paymentMethod === "PAYPAL" ? "border-main bg-main/10" : "border-snd-bg hover:bg-snd-bg/50"
               }`}
             >
@@ -150,16 +150,16 @@ export const CartPage = () => {
                 value="PAYPAL"
                 checked={paymentMethod === "PAYPAL"}
                 onChange={(e) => setPaymentMethod(e.target.value)}
-                className="w-4 h-4 accent-main"
+                className="w-4 h-4 min-[2560px]:w-6 min-[2560px]:h-6 min-[3840px]:w-8 min-[3840px]:h-8 accent-main"
               />
-              <div className="ml-3">
-                <span className="flex items-center gap-2 font-semibold text-text"><Wallet size={18} /> {t("cart.page.paymentPaypal", "PayPal")}</span>
-                <span className="text-xs text-text opacity-70">{t("cart.page.paymentPaypalHint", "Paga con tu cuenta o saldo de PayPal")}</span>
+              <div className="ml-3 min-[2560px]:ml-5">
+                <span className="flex items-center gap-2 min-[2560px]:gap-3 font-semibold text-text min-[2560px]:text-2xl min-[3840px]:text-4xl"><Wallet size={18} className="min-[2560px]:w-7 min-[2560px]:h-7 min-[3840px]:w-10 min-[3840px]:h-10" /> {t("cart.page.paymentPaypal", "PayPal")}</span>
+                <span className="text-xs min-[2560px]:text-lg min-[3840px]:text-2xl text-text opacity-70">{t("cart.page.paymentPaypalHint", "Paga con tu cuenta o saldo de PayPal")}</span>
               </div>
             </label>
 
             <label
-              className={`flex items-center p-4 border rounded-xl cursor-pointer transition ${
+              className={`flex items-center p-4 min-[2560px]:p-6 min-[3840px]:p-8 border rounded-xl min-[2560px]:rounded-2xl cursor-pointer transition ${
                 paymentMethod === "PSE" ? "border-main bg-main/10" : "border-snd-bg hover:bg-snd-bg/50"
               }`}
             >
@@ -169,29 +169,29 @@ export const CartPage = () => {
                 value="PSE"
                 checked={paymentMethod === "PSE"}
                 onChange={(e) => setPaymentMethod(e.target.value)}
-                className="w-4 h-4 accent-main"
+                className="w-4 h-4 min-[2560px]:w-6 min-[2560px]:h-6 min-[3840px]:w-8 min-[3840px]:h-8 accent-main"
               />
-              <div className="ml-3">
-                <span className="flex items-center gap-2 font-semibold text-text"><Landmark size={18} /> {t("cart.page.paymentPse", "Transferencia bancaria (PSE)")}</span>
-                <span className="text-xs text-text opacity-70">{t("cart.page.paymentPseHint", "Débito directo desde tu cuenta bancaria")}</span>
+              <div className="ml-3 min-[2560px]:ml-5">
+                <span className="flex items-center gap-2 min-[2560px]:gap-3 font-semibold text-text min-[2560px]:text-2xl min-[3840px]:text-4xl"><Landmark size={18} className="min-[2560px]:w-7 min-[2560px]:h-7 min-[3840px]:w-10 min-[3840px]:h-10" /> {t("cart.page.paymentPse", "Transferencia bancaria (PSE)")}</span>
+                <span className="text-xs min-[2560px]:text-lg min-[3840px]:text-2xl text-text opacity-70">{t("cart.page.paymentPseHint", "Débito directo desde tu cuenta bancaria")}</span>
               </div>
             </label>
           </div>
 
-          {purchaseError && <p className="text-error text-sm mb-4">{purchaseError}</p>}
+          {purchaseError && <p className="text-error text-sm min-[2560px]:text-xl min-[3840px]:text-3xl mb-4 min-[2560px]:mb-6">{purchaseError}</p>}
 
-          <div className="flex justify-between items-center pt-4 border-t border-snd-bg">
+          <div className="flex justify-between items-center pt-4 min-[2560px]:pt-6 border-t border-snd-bg">
             <button
               onClick={() => setStep("cart")}
               disabled={purchasing}
-              className="text-text opacity-70 hover:opacity-100 font-medium px-4 py-2 cursor-pointer disabled:opacity-40"
+              className="text-text opacity-70 hover:opacity-100 font-medium px-4 py-2 min-[2560px]:px-6 min-[2560px]:py-3 min-[2560px]:text-xl min-[3840px]:px-8 min-[3840px]:py-4 min-[3840px]:text-3xl cursor-pointer disabled:opacity-40"
             >
               {t("cart.page.backToCart", "← Volver al carrito")}
             </button>
             <button
               onClick={handleConfirmPurchase}
               disabled={purchasing}
-              className="bg-main hover:bg-hover text-bg font-medium px-6 py-2.5 rounded-lg transition-colors cursor-pointer disabled:opacity-60"
+              className="bg-main hover:bg-hover text-bg font-medium px-6 py-2.5 min-[2560px]:px-9 min-[2560px]:py-4 min-[2560px]:text-xl min-[3840px]:px-12 min-[3840px]:py-5.5 min-[3840px]:text-3xl rounded-lg min-[2560px]:rounded-xl transition-colors cursor-pointer disabled:opacity-60"
             >
               {purchasing
                 ? t("cart.page.processing", "Procesando...")
@@ -205,14 +205,14 @@ export const CartPage = () => {
 
       {/* PASO 3: CONFIRMACIÓN DE COMPRA */}
       {step === "success" && (
-        <div className="text-center py-8">
-          <div className="w-16 h-16 bg-accent/20 text-accent-text rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold">
+        <div className="text-center py-8 min-[2560px]:py-12 min-[3840px]:py-16">
+          <div className="w-16 h-16 min-[2560px]:w-24 min-[2560px]:h-24 min-[3840px]:w-32 min-[3840px]:h-32 bg-accent/20 text-accent-text rounded-full flex items-center justify-center mx-auto mb-4 min-[2560px]:mb-6 text-2xl min-[2560px]:text-4xl min-[3840px]:text-5xl font-bold">
             ✓
           </div>
-          <h2 className="text-2xl font-bold text-text mb-2">{t("cart.page.successTitle", "¡Compra completada!")}</h2>
-          <p className="text-text opacity-70 mb-6">{t("cart.page.successBody", "Gracias por tu compra. Tu orden ha sido procesada exitosamente.")}</p>
+          <h2 className="text-2xl min-[2560px]:text-5xl min-[3840px]:text-7xl font-bold text-text mb-2 min-[2560px]:mb-4">{t("cart.page.successTitle", "¡Compra completada!")}</h2>
+          <p className="text-text opacity-70 mb-6 min-[2560px]:mb-10 min-[3840px]:mb-14 min-[2560px]:text-2xl min-[3840px]:text-4xl">{t("cart.page.successBody", "Gracias por tu compra. Tu orden ha sido procesada exitosamente.")}</p>
 
-          <div className="bg-snd-bg p-4 rounded-lg max-w-sm mx-auto text-left text-sm text-text space-y-2 mb-6 border border-snd-bg">
+          <div className="bg-snd-bg p-4 min-[2560px]:p-7 min-[3840px]:p-10 rounded-lg min-[2560px]:rounded-2xl max-w-sm min-[2560px]:max-w-xl min-[3840px]:max-w-2xl mx-auto text-left text-sm min-[2560px]:text-xl min-[3840px]:text-3xl text-text space-y-2 min-[2560px]:space-y-3 mb-6 min-[2560px]:mb-10 border border-snd-bg">
             <p><strong>{t("cart.page.orderNumber", "N° de orden:")}</strong> #{completedOrder?.id}</p>
             <p><strong>{t("cart.page.total", "Total:")}</strong> {completedOrder?.totalPrice}</p>
             <p><strong>{t("cart.page.paymentMethodSelected", "Método seleccionado:")}</strong> {completedOrder?.paymentMethod || paymentMethod}</p>
@@ -221,7 +221,7 @@ export const CartPage = () => {
 
           <button
             onClick={() => navigate("/")}
-            className="bg-main hover:bg-hover text-white font-medium px-6 py-2.5 rounded-lg transition-colors cursor-pointer"
+            className="bg-main hover:bg-hover text-white font-medium px-6 py-2.5 min-[2560px]:px-9 min-[2560px]:py-4 min-[2560px]:text-xl min-[3840px]:px-12 min-[3840px]:py-5.5 min-[3840px]:text-3xl rounded-lg min-[2560px]:rounded-xl transition-colors cursor-pointer"
           >
             {t("auth.backToHome", "Volver al inicio")}
           </button>

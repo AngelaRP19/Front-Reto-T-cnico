@@ -1,12 +1,29 @@
+function getOptimizedImageUrl(url, width = 480) {
+  if (!url || !url.includes("res.cloudinary.com")) {
+    return url;
+  }
+
+  return url.replace(
+    "/upload/",
+    `/upload/f_auto,q_auto,w_${width}/`
+  );
+}
+
 function Card(props) {
+  const optimizedImage = getOptimizedImageUrl(props.image, 480);
+
   return (
     <div className="group bg-card-bg text-text rounded-2xl min-[2560px]:rounded-[2rem] min-[3840px]:rounded-[2.5rem] shadow-lg overflow-hidden w-full h-full max-w-none flex flex-col [transition:background-color_0.4s_ease,color_0.4s_ease,transform_0.3s_ease] hover:-translate-y-[0.375rem] min-[2560px]:hover:-translate-y-3">
 
       {/* Imagen en formato cuadrado */}
       <div className="w-full aspect-square overflow-hidden relative">
         <img
+          width={480}
+          height={480}
+          loading="lazy"
+          decoding="async"
           className="w-full h-full object-cover object-top block transition-transform duration-500 group-hover:scale-105"
-          src={props.image}
+          src={optimizedImage}
           alt={props.titulo}
         />
       </div>

@@ -139,18 +139,22 @@ function Hero({ onExploreClick }) {
               />
             ))}
 
-            <div className="absolute bottom-[1rem] right-[1.5rem] min-[2560px]:bottom-[1.75rem] min-[2560px]:right-[2.5rem] min-[3840px]:bottom-[2.5rem] min-[3840px]:right-[3.5rem] flex items-center gap-[0.5rem] min-[2560px]:gap-[0.75rem] min-[3840px]:gap-[1.25rem] z-20">
+            <div className="absolute bottom-[0.5rem] right-[1rem] min-[2560px]:bottom-[1.25rem] min-[2560px]:right-[2rem] min-[3840px]:bottom-[1.75rem] min-[3840px]:right-[2.75rem] flex items-center z-20">
               {CAROUSEL_IMAGES.map((_, idx) => (
                 <button
                   key={idx}
                   onClick={() => setCurrentImageIndex(idx)}
-                  className={`h-[0.5rem] min-[2560px]:h-[0.75rem] min-[3840px]:h-[1.25rem] rounded-full transition-all duration-300 cursor-pointer ${
-                    idx === currentImageIndex 
-                      ? "w-[1.75rem] min-[2560px]:w-[2.75rem] min-[3840px]:w-[4.5rem] bg-accent" 
-                      : "w-[0.5rem] min-[2560px]:w-[0.75rem] min-[3840px]:w-[1.25rem] bg-white/50 hover:bg-white/80"
-                  }`}
+                  className="group flex items-center justify-center p-[0.5rem] min-[2560px]:p-[0.625rem] min-[3840px]:p-[0.75rem] cursor-pointer"
                   aria-label={`Ir a la imagen ${idx + 1}`}
-                />
+                >
+                  <span
+                    className={`block h-[0.5rem] min-[2560px]:h-[0.75rem] min-[3840px]:h-[1.25rem] rounded-full transition-all duration-300 ${
+                      idx === currentImageIndex
+                        ? "w-[1.75rem] min-[2560px]:w-[2.75rem] min-[3840px]:w-[4.5rem] bg-accent"
+                        : "w-[0.5rem] min-[2560px]:w-[0.75rem] min-[3840px]:w-[1.25rem] bg-white/50 group-hover:bg-white/80"
+                    }`}
+                  />
+                </button>
               ))}
             </div>
 
